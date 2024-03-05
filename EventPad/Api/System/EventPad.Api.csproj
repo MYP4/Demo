@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+
+	<ItemGroup>
+		<PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Serilog" Version="3.1.1" />
+		<PackageReference Include="Serilog.Enrichers.CorrelationId" Version="3.0.1" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.1" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.5.0" />
+	</ItemGroup>
+	
+	
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\ApacheKafka\ApacheKafka.csproj" />
+    <ProjectReference Include="..\..\Shared\EventPad.Common\EventPad.Common.csproj" />
+    <ProjectReference Include="..\..\Shared\EventPad.Logger\EventPad.Services.Logger.csproj" />
+    <ProjectReference Include="..\..\Shared\EventPad.Settings\EventPad.Services.Settings.csproj" />
+    <ProjectReference Include="..\Data\EventPad.Api.Context.Migrations\EventPad.Api.Context.Migrations.MSSQL\EventPad.Api.Context.Migrations.MSSQL.csproj" />
+    <ProjectReference Include="..\Data\EventPad.Api.Context.Migrations\EventPad.Api.Context.Migrations.PgSql\EventPad.Api.Context.Migrations.PgSql.csproj" />
+    <ProjectReference Include="..\Data\EventPad.Api.Context.Seeder\EventPad.Api.Context.Seeder.csproj" />
+    <ProjectReference Include="..\Data\EventPad.Api.Context\EventPad.Api.Context.csproj" />
+    <ProjectReference Include="..\Services\EventPad.Services.Events\EventPad.Services.Events.csproj" />
+    <ProjectReference Include="..\Services\EventPad.Services.SpecificEvents\EventPad.Services.SpecificEvent.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <Folder Include="logs\" />
+  </ItemGroup>
+
+</Project>
