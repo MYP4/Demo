@@ -7,7 +7,7 @@ public static class EventContextConfiguration
 {
     public static void ConfigureEvents(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Event>().ToTable("events");
+        modelBuilder.Entity<Event>().ToTable("events", ApiDbContext.Schema);
 
         modelBuilder.Entity<Event>().Property(x => x.Name).IsRequired();
         modelBuilder.Entity<Event>().Property(x => x.Name).HasMaxLength(50);

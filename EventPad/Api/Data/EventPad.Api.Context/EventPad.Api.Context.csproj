@@ -23,7 +23,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\Shared\EventPad.Common\EventPad.Common.csproj" />
-	  <ProjectReference Include="..\..\..\Shared\EventPad.Settings\EventPad.Services.Settings.csproj" />
+	  <ProjectReference Include="..\..\..\Shared\EventPad.Settings\EventPad.Settings.csproj" />
 	  <ProjectReference Include="..\EventPad.Api.Context.Entities\EventPad.Api.Context.Entities.csproj" />
 	</ItemGroup>
 

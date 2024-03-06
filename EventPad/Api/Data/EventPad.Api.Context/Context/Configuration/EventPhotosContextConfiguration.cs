@@ -7,7 +7,7 @@ public static class EventPhotosContextConfiguration
 {
     public static void ConfigureEventPhotos(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<EventPhoto>().ToTable("event_photos");
+        modelBuilder.Entity<EventPhoto>().ToTable("event_photos", ApiDbContext.Schema);
 
         modelBuilder.Entity<EventPhoto>().Property(x => x.Path).IsRequired();
 

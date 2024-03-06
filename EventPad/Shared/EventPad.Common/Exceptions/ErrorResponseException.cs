@@ -1,6 +1,5 @@
-﻿namespace EventPad.Common.Exceptions;
+﻿namespace EventPad.Common;
 
-using Responses;
 using System;
 
 /// <summary>

@@ -1,6 +1,6 @@
 ﻿namespace EventPad.Api.Configuration;
 
-using Common;
+using EventPad.Common;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 public static class HealthCheckConfiguration

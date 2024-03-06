@@ -1,7 +1,7 @@
 ﻿namespace EventPad.Api.Configuration;
 
-using Common.Helpers;
-using Common.Validator;
+using EventPad.Common;
+using EventPad.Common;
 using FluentValidation.AspNetCore;
 
 public static class ValidatorConfiguration

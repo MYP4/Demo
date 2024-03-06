@@ -1,4 +1,4 @@
-﻿namespace EventPad.Common.Helpers;
+﻿namespace EventPad.Common;
 
 using Microsoft.Extensions.DependencyInjection;
 using System;

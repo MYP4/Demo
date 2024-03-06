@@ -1,6 +1,5 @@
 ﻿using Asp.Versioning;
 using AutoMapper;
-using EventPad.Api.Controllers.Events;
 using EventPad.Api.Services.Specific;
 using EventPad.Logger;
 using Microsoft.AspNetCore.Mvc;
@@ -60,7 +59,7 @@ public class SpecificEventController : ControllerBase
     [HttpPost("")]
     public async Task<SpecificResponse> Create(CreateSpecificRequest request)
     {
-        var result = await specificEventService.Create(mapper.Map<CreateSpecificEventModel>(request));
+        var result = await specificEventService.Create(mapper.Map<CreateSpecificModel>(request));
 
         return mapper.Map<SpecificResponse>(result);
     }

@@ -1,7 +1,7 @@
 ﻿namespace EventPad.Api.Configuration;
 
-using Common;
-using Common.Extensions;
+using EventPad.Common;
+using EventPad.Common;
 using Microsoft.AspNetCore.Mvc;
 
 public static class ControllerAndViewsConfiguration

@@ -1,7 +1,6 @@
-﻿namespace EventPad.Common.Extensions;
+﻿namespace EventPad.Common;
 
-using Exceptions;
-using Responses;
+
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 

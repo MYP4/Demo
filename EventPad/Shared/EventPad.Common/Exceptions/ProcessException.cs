@@ -1,4 +1,4 @@
-﻿namespace EventPad.Common.Exceptions;
+﻿namespace EventPad.Common;
 
 using Microsoft.AspNetCore.Identity;
 using System;

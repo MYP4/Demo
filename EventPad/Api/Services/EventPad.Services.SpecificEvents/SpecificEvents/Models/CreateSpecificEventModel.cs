@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventPad.Api.Services.Specific;
 
-public class CreateSpecificEventModel
+public class CreateSpecificModel
 {
     public Guid EventId { get; set; }
     public string? Description { get; set; }
@@ -26,7 +26,7 @@ public class CreateModelProfile : Profile
 {
     public CreateModelProfile()
     {
-        CreateMap<CreateSpecificEventModel, SpecificEvent>()
+        CreateMap<CreateSpecificModel, SpecificEvent>()
             .ForMember(dest => dest.EventId, opt => opt.Ignore())
             .ForMember(dest => dest.Code, opt => opt.Ignore())
             .ForMember(dest => dest.Tickets, opt => opt.Ignore())
@@ -35,7 +35,7 @@ public class CreateModelProfile : Profile
     }
 }
 
-public class CreateModelActions : IMappingAction<CreateSpecificEventModel, SpecificEvent>
+public class CreateModelActions : IMappingAction<CreateSpecificModel, SpecificEvent>
 {
     private readonly IDbContextFactory<ApiDbContext> dbContextFactory;
 
@@ -44,20 +44,19 @@ public class CreateModelActions : IMappingAction<CreateSpecificEventModel, Speci
         this.dbContextFactory = dbContextFactory;
     }
 
-    public void Process(CreateSpecificEventModel sourse, SpecificEvent dest, ResolutionContext context)
+    public void Process(CreateSpecificModel sourse, SpecificEvent dest, ResolutionContext context)
     {
         using var db = dbContextFactory.CreateDbContext();
         var _event = db.Events.FirstOrDefault(x => x.Uid == sourse.EventId);
 
         var article = Guid.NewGuid().ToString().ToUpper().Replace("-", "");
 
-
         dest.EventId = _event.Id;
         dest.Code = article;
     }
 }
 
-public class CreateModelValidator : AbstractValidator<CreateSpecificEventModel>
+public class CreateModelValidator : AbstractValidator<CreateSpecificModel>
 {
     public CreateModelValidator(IDbContextFactory<ApiDbContext> contextFactory)
     {
@@ -95,7 +94,7 @@ public class CreateModelValidator : AbstractValidator<CreateSpecificEventModel>
 
                 return model.DayOfWeek != null;
             })
-            .WithName(nameof(CreateSpecificEventModel.DayOfWeek))
+            .WithName(nameof(CreateSpecificModel.DayOfWeek))
             .WithMessage("Day of week is required");
 
         RuleFor(x => x)
@@ -108,7 +107,7 @@ public class CreateModelValidator : AbstractValidator<CreateSpecificEventModel>
 
                 return model.Date != null;
             })
-            .WithName(nameof(CreateSpecificEventModel.Date))
+            .WithName(nameof(CreateSpecificModel.Date))
             .WithMessage("Date is required");
     }
 }

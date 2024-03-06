@@ -1,6 +1,6 @@
 ﻿namespace EventPad.Api.Context;
 
-using EventPad.Common.Settings;
+using EventPad.Common;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

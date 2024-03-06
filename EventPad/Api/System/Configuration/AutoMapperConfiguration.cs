@@ -1,6 +1,6 @@
 ﻿namespace EventPad.Api.Configuration;
 
-using EventPad.Common.Helpers;
+using EventPad.Common;
 
 /// <summary>
 /// AutoMapper configuration

@@ -1,8 +1,8 @@
 ﻿namespace EventPad.Api.Configuration;
 
-using EventPad.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using EventPad.Settings;
 using System.Linq;
 
 /// <summary>

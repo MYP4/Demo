@@ -55,8 +55,8 @@ namespace EventPad.Api.Context.Migrations.PgSql.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<double>("Rating")
-                        .HasColumnType("double precision");
+                    b.Property<float>("Rating")
+                        .HasColumnType("real");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer");
@@ -71,7 +71,7 @@ namespace EventPad.Api.Context.Migrations.PgSql.Migrations
                     b.HasIndex("Uid")
                         .IsUnique();
 
-                    b.ToTable("events", (string)null);
+                    b.ToTable("events", "main");
                 });
 
             modelBuilder.Entity("EventPad.Api.Context.Entities.EventPhoto", b =>
@@ -99,7 +99,7 @@ namespace EventPad.Api.Context.Migrations.PgSql.Migrations
                     b.HasIndex("Uid")
                         .IsUnique();
 
-                    b.ToTable("event_photos", (string)null);
+                    b.ToTable("event_photos", "main");
                 });
 
             modelBuilder.Entity("EventPad.Api.Context.Entities.SpecificEvent", b =>
@@ -155,7 +155,7 @@ namespace EventPad.Api.Context.Migrations.PgSql.Migrations
                     b.HasIndex("Uid")
                         .IsUnique();
 
-                    b.ToTable("specific_events", (string)null);
+                    b.ToTable("specific_events", "main");
                 });
 
             modelBuilder.Entity("EventPad.Api.Context.Entities.Ticket", b =>
@@ -193,7 +193,7 @@ namespace EventPad.Api.Context.Migrations.PgSql.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("event_tickets", (string)null);
+                    b.ToTable("event_tickets", "main");
                 });
 
             modelBuilder.Entity("EventPad.Api.Context.Entities.User", b =>

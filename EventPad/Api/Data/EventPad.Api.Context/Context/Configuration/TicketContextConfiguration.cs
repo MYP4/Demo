@@ -7,7 +7,7 @@ public static class TicketContextConfiguration
 {
     public static void ConfigureTickets(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Ticket>().ToTable("event_tickets");
+        modelBuilder.Entity<Ticket>().ToTable("event_tickets", ApiDbContext.Schema);
 
         modelBuilder.Entity<Ticket>().Property(x => x.Status).IsRequired();
 

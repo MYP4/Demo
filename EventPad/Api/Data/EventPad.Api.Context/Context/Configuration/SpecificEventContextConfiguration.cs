@@ -8,7 +8,7 @@ public static class SpecificEventContextConfiguration
 {
     public static void ConfigureSpecificEvents(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<SpecificEvent>().ToTable("specific_events");
+        modelBuilder.Entity<SpecificEvent>().ToTable("specific_events", ApiDbContext.Schema);
 
         modelBuilder.Entity<SpecificEvent>().Property(x => x.Time).IsRequired();
         modelBuilder.Entity<SpecificEvent>().Property(x => x.Code).IsRequired();

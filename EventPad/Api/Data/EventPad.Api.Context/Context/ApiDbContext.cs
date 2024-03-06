@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 public class ApiDbContext : DbContext
 {
+    public static readonly string Schema = "main";
+
     public DbSet<User> Users { get; set; }
     public DbSet<Event> Events { get; set; }
     public DbSet<EventPhoto> EventPhotos { get; set; }
@@ -22,6 +24,5 @@ public class ApiDbContext : DbContext
         modelBuilder.ConfigureEventPhotos();
         modelBuilder.ConfigureSpecificEvents();
         modelBuilder.ConfigureTickets();
-        ;
     }
 }

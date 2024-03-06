@@ -1,4 +1,4 @@
-﻿namespace EventPad.Common.Helpers;
+﻿namespace EventPad.Common;
 
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;

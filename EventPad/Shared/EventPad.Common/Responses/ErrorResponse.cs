@@ -1,4 +1,4 @@
-﻿namespace EventPad.Common.Responses;
+﻿namespace EventPad.Common;
 
 public class ErrorResponse
 {

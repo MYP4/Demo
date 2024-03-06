@@ -1,10 +1,9 @@
+using EventPad.Common;
 using EventPad.Api;
 using EventPad.Api.Configuration;
-using EventPad.Common.Settings;
+using EventPad.Api.Context;
 using EventPad.Logger;
 using EventPad.Settings;
-using EventPad.Api.Context;
-using EventPad.Api.Context.Seeder;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,7 +40,7 @@ services.AddAppValidator();
 
 var app = builder.Build();
 
-var logger = app.Services.GetRequiredService<IAppLogger>();
+var Logger = app.Services.GetRequiredService<IAppLogger>();
 
 app.UseAppSwagger();
 
@@ -57,8 +56,8 @@ DbInitializer.Execute(app.Services);
 //DbSeeder.Execute(app.Services);
 
 
-logger.Information("The EventPad API was started");
+Logger.Information("The EventPad API was started");
 
 app.Run();
 
-logger.Information("The EventPad API was stopped");
+Logger.Information("The EventPad API was stopped");

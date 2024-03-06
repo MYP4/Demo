@@ -1,4 +1,4 @@
-﻿namespace EventPad.Common.Settings;
+﻿namespace EventPad.Common;
 
 using Microsoft.Extensions.Configuration;
 

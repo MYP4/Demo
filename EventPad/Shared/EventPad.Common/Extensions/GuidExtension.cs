@@ -1,4 +1,4 @@
-﻿namespace EventPad.Common.Extensions;
+﻿namespace EventPad.Common;
 
 using System;
 

@@ -26,16 +26,16 @@
 	
 	
   <ItemGroup>
-    <ProjectReference Include="..\..\Shared\ApacheKafka\ApacheKafka.csproj" />
     <ProjectReference Include="..\..\Shared\EventPad.Common\EventPad.Common.csproj" />
-    <ProjectReference Include="..\..\Shared\EventPad.Logger\EventPad.Services.Logger.csproj" />
-    <ProjectReference Include="..\..\Shared\EventPad.Settings\EventPad.Services.Settings.csproj" />
+    <ProjectReference Include="..\..\Shared\EventPad.Logger\EventPad.Logger.csproj" />
+    <ProjectReference Include="..\..\Shared\EventPad.Settings\EventPad.Settings.csproj" />
     <ProjectReference Include="..\Data\EventPad.Api.Context.Migrations\EventPad.Api.Context.Migrations.MSSQL\EventPad.Api.Context.Migrations.MSSQL.csproj" />
     <ProjectReference Include="..\Data\EventPad.Api.Context.Migrations\EventPad.Api.Context.Migrations.PgSql\EventPad.Api.Context.Migrations.PgSql.csproj" />
     <ProjectReference Include="..\Data\EventPad.Api.Context.Seeder\EventPad.Api.Context.Seeder.csproj" />
     <ProjectReference Include="..\Data\EventPad.Api.Context\EventPad.Api.Context.csproj" />
     <ProjectReference Include="..\Services\EventPad.Services.Events\EventPad.Services.Events.csproj" />
     <ProjectReference Include="..\Services\EventPad.Services.SpecificEvents\EventPad.Services.SpecificEvent.csproj" />
+    <ProjectReference Include="..\Services\EventPad.Services.Tickets\EventPad.Services.Tickets.csproj" />
   </ItemGroup>
 
   <ItemGroup>

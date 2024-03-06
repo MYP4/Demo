@@ -21,6 +21,6 @@ public class SpecificCreateProfile : Profile
 {
     public SpecificCreateProfile()
     {
-        CreateMap<CreateSpecificRequest, CreateSpecificEventModel>();
+        CreateMap<CreateSpecificRequest, CreateSpecificModel>();
     }
 }

@@ -1,8 +1,9 @@
 ﻿namespace EventPad.Settings;
 
-using EventPad.Common.Settings;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using EventPad.Common;
 
 public static class Bootstrapper
 {

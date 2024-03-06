@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using EventPad.Api.Context;
 using EventPad.Api.Context.Entities;
-using EventPad.Common.Exceptions;
-using EventPad.Common.Validator;
+using EventPad.Common;
+using EventPad.Common;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -10,15 +10,14 @@ namespace EventPad.Api.Services.Specific;
 
 public class SpecificEventService : ISpecificEventService
 {
-
     private readonly IDbContextFactory<ApiDbContext> dbContextFactory;
     private readonly IMapper mapper;
-    private readonly IModelValidator<CreateSpecificEventModel> createModelValidator;
+    private readonly IModelValidator<CreateSpecificModel> createModelValidator;
     private readonly IModelValidator<UpdateSpecificEventModel> updateModelValidator;
 
     public SpecificEventService(IDbContextFactory<ApiDbContext> dbContextFactory,
         IMapper mapper,
-        IModelValidator<CreateSpecificEventModel> createModelValidator,
+        IModelValidator<CreateSpecificModel> createModelValidator,
         IModelValidator<UpdateSpecificEventModel> updateModelValidator)
     {
         this.dbContextFactory = dbContextFactory;
@@ -101,7 +100,7 @@ public class SpecificEventService : ISpecificEventService
         return result;
     }
      
-    public async Task<SpecificEventModel> Create(CreateSpecificEventModel model)
+    public async Task<SpecificEventModel> Create(CreateSpecificModel model)
     {
         await createModelValidator.CheckAsync(model);
 

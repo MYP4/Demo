@@ -1,7 +1,4 @@
 ﻿using EventPad.Common;
-using EventPad.Common.Exceptions;
-using EventPad.Common.Extensions;
-using EventPad.Common.Responses;
 using FluentValidation;
 
 namespace EventPad.Api;

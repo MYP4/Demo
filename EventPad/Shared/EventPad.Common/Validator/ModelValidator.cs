@@ -1,4 +1,4 @@
-﻿namespace EventPad.Common.Validator;
+﻿namespace EventPad.Common;
 
 using FluentValidation;
 

@@ -1,4 +1,4 @@
-﻿namespace EventPad.Common.Exceptions;
+﻿namespace EventPad.Common;
 
 using System;
 
