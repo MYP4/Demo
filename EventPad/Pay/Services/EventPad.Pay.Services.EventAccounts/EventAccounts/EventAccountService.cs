@@ -1,108 +1,106 @@
-﻿
-using AutoMapper;
-using EventPad.Common.Exceptions;
-using EventPad.Common.Validator;
-using EventPad.Context;
-using EventPad.Context.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿//using AutoMapper;
+//using EventPad.Common;
+//using EventPad.Pay.Context;
+//using EventPad.Pay.Context.Entities;
+//using Microsoft.EntityFrameworkCore;
 
-namespace EventPad.Services.EventAccounts;
+//namespace EventPad.Api.Services.EventAccounts;
 
-public class EventAccountService : IEventAccountService
-{
-    private readonly IDbContextFactory<MainDbContext> dbContextFactory;
-    private readonly IMapper mapper;
-    private readonly IModelValidator<CreateEventAccountModel> createModelValidator;
-    private readonly IModelValidator<UpdateEventAccountModel> updateModelValidator;
+//public class EventAccountService : IEventAccountService
+//{
+//    private readonly IDbContextFactory<PayDbContext> dbContextFactory;
+//    private readonly IMapper mapper;
+//    private readonly IModelValidator<CreateEventAccountModel> createModelValidator;
+//    private readonly IModelValidator<UpdateEventAccountModel> updateModelValidator;
 
-    public EventAccountService(IDbContextFactory<MainDbContext> dbContextFactory,
-        IMapper mapper,
-        IModelValidator<CreateEventAccountModel> createModelValidator,
-        IModelValidator<UpdateEventAccountModel> updateModelValidator)
-    {
-        this.dbContextFactory = dbContextFactory;
-        this.mapper = mapper;
-        this.createModelValidator = createModelValidator;
-        this.updateModelValidator = updateModelValidator;
-    }
+//    public EventAccountService(IDbContextFactory<PayDbContext> dbContextFactory,
+//        IMapper mapper,
+//        IModelValidator<CreateEventAccountModel> createModelValidator,
+//        IModelValidator<UpdateEventAccountModel> updateModelValidator)
+//    {
+//        this.dbContextFactory = dbContextFactory;
+//        this.mapper = mapper;
+//        this.createModelValidator = createModelValidator;
+//        this.updateModelValidator = updateModelValidator;
+//    }
 
 
-    public async Task<IEnumerable<EventAccountModel>> GetEventAccounts()
-    {
-        using var context = await dbContextFactory.CreateDbContextAsync();
+//    public async Task<IEnumerable<EventAccountModel>> GetEventAccounts()
+//    {
+//        using var context = await dbContextFactory.CreateDbContextAsync();
 
-        var eventAccounts = context.EventAccounts.AsQueryable();
+//        var eventAccounts = context.EventAccounts.AsQueryable();
 
-        var eventAccountList = await eventAccounts.ToListAsync();
+//        var eventAccountList = await eventAccounts.ToListAsync();
 
-        var result = mapper.Map<IEnumerable<EventAccountModel>>(eventAccountList);
+//        var result = mapper.Map<IEnumerable<EventAccountModel>>(eventAccountList);
 
-        return result;
-    }
-    
-    public async Task<EventAccountModel> GetEventAccountById(Guid id)
-    {
-        using var context = await dbContextFactory.CreateDbContextAsync();
+//        return result;
+//    }
 
-        var _event = await context.Events.FirstOrDefaultAsync(x => x.Uid == id);
+//    public async Task<EventAccountModel> GetEventAccountById(Guid id)
+//    {
+//        using var context = await dbContextFactory.CreateDbContextAsync();
 
-        if (_event == null)
-            throw new ProcessException($"Event (ID = {id}) not found.");
+//        var _event = await context.EventAccounts.FirstOrDefaultAsync(x => x.Uid == id);
 
-        var eventAccount = await context.EventAccounts.FirstOrDefaultAsync(x => x.EventId == _event.Id);
+//        if (_event == null)
+//            throw new ProcessException($"Event (ID = {id}) not found.");
 
-        var result = mapper.Map<EventAccountModel>(eventAccount);
+//        var eventAccount = await context.EventAccounts.FirstOrDefaultAsync(x => x.EventId == _event.Id);
 
-        return result;
-    }
+//        var result = mapper.Map<EventAccountModel>(eventAccount);
 
-    public async Task<EventAccountModel> Create(CreateEventAccountModel model)
-    {
-        await createModelValidator.CheckAsync(model);
+//        return result;
+//    }
 
-        using var context = await dbContextFactory.CreateDbContextAsync();
+//    public async Task<EventAccountModel> Create(CreateEventAccountModel model)
+//    {
+//        await createModelValidator.CheckAsync(model);
 
-        var eventAccount = mapper.Map<EventAccount>(model);
+//        using var context = await dbContextFactory.CreateDbContextAsync();
 
-        await context.EventAccounts.AddAsync(eventAccount);
+//        var eventAccount = mapper.Map<EventAccount>(model);
 
-        return mapper.Map<EventAccountModel>(eventAccount);
-    }
+//        await context.EventAccounts.AddAsync(eventAccount);
 
-    public async Task<EventAccount> Create()
-    {
-        var eventAccount = new EventAccount()
-        {
-            AccountNumber = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString().PadLeft(16, '0'),
-            Balance = 0
-        };
+//        return mapper.Map<EventAccountModel>(eventAccount);
+//    }
 
-        using var context = await dbContextFactory.CreateDbContextAsync();
+//    public async Task<EventAccount> Create()
+//    {
+//        var eventAccount = new EventAccount()
+//        {
+//            AccountNumber = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString().PadLeft(16, '0'),
+//            Balance = 0
+//        };
 
-        await context.EventAccounts.AddAsync(eventAccount);
+//        using var context = await dbContextFactory.CreateDbContextAsync();
 
-        return eventAccount;
-    }
+//        await context.EventAccounts.AddAsync(eventAccount);
 
-    public async Task<EventAccountModel> Update(Guid id, UpdateEventAccountModel model)
-    {
-        await updateModelValidator.CheckAsync(model);
+//        return eventAccount;
+//    }
 
-        using var context = await dbContextFactory.CreateDbContextAsync();
+//    public async Task<EventAccountModel> Update(Guid id, UpdateEventAccountModel model)
+//    {
+//        await updateModelValidator.CheckAsync(model);
 
-        var _event = await context.Events.FirstOrDefaultAsync(x => x.Uid == id);
+//        using var context = await dbContextFactory.CreateDbContextAsync();
 
-        if (_event == null)
-            throw new ProcessException($"Event (ID = {id}) not found.");
+//        var _event = await context.Events.FirstOrDefaultAsync(x => x.Uid == id);
 
-        var eventAccount = await context.EventAccounts.FirstOrDefaultAsync(x => x.EventId == _event.Id);
+//        if (_event == null)
+//            throw new ProcessException($"Event (ID = {id}) not found.");
 
-        eventAccount = mapper.Map(model, eventAccount);
+//        var eventAccount = await context.EventAccounts.FirstOrDefaultAsync(x => x.EventId == _event.Id);
 
-        context.EventAccounts.Update(eventAccount);
+//        eventAccount = mapper.Map(model, eventAccount);
 
-        await context.SaveChangesAsync();
+//        context.EventAccounts.Update(eventAccount);
 
-        return mapper.Map<EventAccountModel>(eventAccount);
-    }
-}
+//        await context.SaveChangesAsync();
+
+//        return mapper.Map<EventAccountModel>(eventAccount);
+//    }
+//}

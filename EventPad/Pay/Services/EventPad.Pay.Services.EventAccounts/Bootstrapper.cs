@@ -1,7 +1,6 @@
-﻿namespace EventPad.Services.EventAccounts;
+﻿using Microsoft.Extensions.DependencyInjection;
 
-using Microsoft.Extensions.DependencyInjection;
-
+namespace EventPad.Api.Services.EventAccounts;
 public static class Bootstrapper
 {
     public static IServiceCollection AddEventAccountService(this IServiceCollection services)

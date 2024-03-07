@@ -2,6 +2,7 @@
 
 using EventPad.Logger;
 using EventPad.Settings;
+using EventPad.RabbitMq;
 
 public static class Bootstrapper
 {
@@ -12,6 +13,7 @@ public static class Bootstrapper
             .AddSwaggerSettings()
             .AddLogSettings()
             .AddAppLogger()
+            .AddRabbitMq()
             ;
 
         return services;

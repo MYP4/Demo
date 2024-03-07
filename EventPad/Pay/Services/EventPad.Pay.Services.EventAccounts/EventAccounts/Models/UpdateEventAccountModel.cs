@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using EventPad.Context.Entities;
+using EventPad.Pay.Context.Entities;
 using FluentValidation;
 
-namespace EventPad.Services.EventAccounts;
+namespace EventPad.Api.Services.EventAccounts;
 
 public class UpdateEventAccountModel
 {

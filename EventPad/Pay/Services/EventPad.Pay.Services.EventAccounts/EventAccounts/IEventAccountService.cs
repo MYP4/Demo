@@ -1,6 +1,6 @@
-﻿using EventPad.Context.Entities;
+﻿using EventPad.Pay.Context.Entities;
 
-namespace EventPad.Services.EventAccounts;
+namespace EventPad.Api.Services.EventAccounts;
 
 public interface IEventAccountService
 {

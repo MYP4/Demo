@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using EventPad.Context.Entities;
-using EventPad.Context;
+using EventPad.Pay.Context;
+using EventPad.Pay.Context.Entities;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
-namespace EventPad.Services.EventAccounts;
+namespace EventPad.Api.Services.EventAccounts;
 
 public class CreateEventAccountModel
 {
@@ -20,34 +20,34 @@ public class CreateEventAccountModelProfile : Profile
     public CreateEventAccountModelProfile()
     {
         CreateMap<CreateEventAccountModel, EventAccount>()
-            .ForMember(dest => dest.EventId, opt => opt.Ignore())
-
-            .AfterMap<CreateEventAccountModelActions>();
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            //.AfterMap<CreateEventAccountModelActions>();
+            ;
     }
 }
 
-public class CreateEventAccountModelActions : IMappingAction<CreateEventAccountModel, EventAccount>
-{
-    private readonly IDbContextFactory<MainDbContext> dbContextFactory;
+//public class CreateEventAccountModelActions : IMappingAction<CreateEventAccountModel, EventAccount>
+//{
+//    private readonly IDbContextFactory<PayDbContext> dbContextFactory;
 
-    public CreateEventAccountModelActions(IDbContextFactory<MainDbContext> dbContextFactory)
-    {
-        this.dbContextFactory = dbContextFactory;
-    }
+//    public CreateEventAccountModelActions(IDbContextFactory<PayDbContext> dbContextFactory)
+//    {
+//        this.dbContextFactory = dbContextFactory;
+//    }
 
-    public void Process(CreateEventAccountModel source, EventAccount dest, ResolutionContext context)
-    {
-        using var db = dbContextFactory.CreateDbContext();
+//    public void Process(CreateEventAccountModel source, EventAccount dest, ResolutionContext context)
+//    {
+//        using var db = dbContextFactory.CreateDbContext();
 
-        var _event = db.Events.FirstOrDefault(e => e.Uid == source.Id);
+//        var eventAccount = db.EventAccounts.FirstOrDefault(x => x.Uid == source.Id);
 
-        dest.EventId = _event.Id;
-    }
-}
+//        dest. = eventAccount.Id;
+//    }
+//}
 
 public class CreateEventAccountModelValidator : AbstractValidator<CreateEventAccountModel>
 {
-    public CreateEventAccountModelValidator(IDbContextFactory<MainDbContext> contextFactory)
+    public CreateEventAccountModelValidator(IDbContextFactory<PayDbContext> contextFactory)
     {
         RuleFor(x => x.AccountNumber)
             .NotEmpty().WithMessage("AccountNumber is required")
