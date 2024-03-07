@@ -28,6 +28,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\Shared\EventPad.Actions\EventPad.Actions.csproj" />
 	  <ProjectReference Include="..\..\Shared\EventPad.Common\EventPad.Common.csproj" />
 	  <ProjectReference Include="..\..\Shared\EventPad.Logger\EventPad.Logger.csproj" />
 	  <ProjectReference Include="..\..\Shared\EventPad.RabbitMq\EventPad.RabbitMq.csproj" />

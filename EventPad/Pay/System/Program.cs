@@ -4,6 +4,7 @@ using EventPad.Settings;
 using EventPad.Pay;
 using EventPad.Pay.Configuration;
 using EventPad.Pay.Context;
+using EventPad.Pay.TaskExecutor;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,7 +41,7 @@ services.AddAppValidator();
 
 var app = builder.Build();
 
-var Logger = app.Services.GetRequiredService<IAppLogger>();
+var logger = app.Services.GetRequiredService<IAppLogger>();
 
 app.UseAppSwagger();
 
@@ -56,8 +57,16 @@ DbInitializer.Execute(app.Services);
 //DbSeeder.Execute(app.Services);
 
 
-Logger.Information("The PayMS API was started");
+logger.Information("The PayMS API was started");
+
+
+logger.Information("Try to connect to RabbitMq");
+
+app.Services.GetRequiredService<ITaskExecutor>().Start();
+
+logger.Information("RabbitMq connected");
+
 
 app.Run();
 
-Logger.Information("The PayMS API was stopped");
+logger.Information("The PayMS API was stopped");

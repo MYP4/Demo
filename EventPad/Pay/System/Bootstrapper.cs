@@ -16,6 +16,8 @@ public static class Bootstrapper
             .AddRabbitMq()
             ;
 
+        services.AddSingleton<ITaskExecutor, TaskExecutor>();
+
         return services;
     }
 }

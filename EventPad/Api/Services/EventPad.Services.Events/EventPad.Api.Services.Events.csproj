@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\EventPad.Api.Context.Entities\EventPad.Api.Context.Entities.csproj" />
     <ProjectReference Include="..\..\Data\EventPad.Api.Context\EventPad.Api.Context.csproj" />
+    <ProjectReference Include="..\EventPad.Api.Services.Actions\EventPad.Api.Services.Actions.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EventPad.Api.Context;
 using EventPad.Api.Context.Entities;
+using EventPad.Api.Services.Actions;
 using EventPad.Common;
 using EventPad.Common;
 using Microsoft.EntityFrameworkCore;
@@ -11,15 +12,18 @@ public class EventService : IEventService
 {
     private readonly IDbContextFactory<ApiDbContext> dbContextFactory;
     private readonly IMapper mapper;
+    private readonly IAction action;
     private readonly IModelValidator<CreateEventModel> createModelValidator;
     private readonly IModelValidator<UpdateEventModel> updateModelValidator;
 
     public EventService(IDbContextFactory<ApiDbContext> dbContextFactory,
         IMapper mapper,
+        IAction action,
         IModelValidator<CreateEventModel> createModelValidator,
         IModelValidator<UpdateEventModel> updateModelValidator)
     {
         this.dbContextFactory = dbContextFactory;
+        this.action = action;
         this.mapper = mapper;
         this.createModelValidator = createModelValidator;
         this.updateModelValidator = updateModelValidator;
@@ -108,6 +112,11 @@ public class EventService : IEventService
         await context.Events.AddAsync(_event);
 
         await context.SaveChangesAsync();
+
+        await action.CreateEventAccount(new CreateEventAccount()
+        {
+            Id =  _event.Uid,
+        });
 
         return mapper.Map<EventModel>(_event);
     }
