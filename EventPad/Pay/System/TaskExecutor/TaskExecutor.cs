@@ -2,9 +2,9 @@
 using EventPad.Logger;
 using EventPad.RabbitMq;
 
-namespace EventPad.Pay.TaskExecutor;
+namespace EventPad.Pay;
 
-public class TaskExecutor
+public class TaskExecutor : ITaskExecutor
 {
     private readonly IAppLogger logger;
     private readonly IRabbitMq rabbitMq;

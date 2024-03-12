@@ -36,6 +36,7 @@
 	  <ProjectReference Include="..\Data\EventPad.Pay.Context.Migrations\EventPad.Pay.Context.Migrations.PgSql\EventPad.Pay.Context.Migrations.PgSql.csproj" />
 	  <ProjectReference Include="..\Data\EventPad.Pay.Context.Seeder\EventPad.Pay.Context.Seeder.csproj" />
 	  <ProjectReference Include="..\Data\EventPad.Pay.Context\EventPad.Pay.Context.csproj" />
+	  <ProjectReference Include="..\Services\EventPad.Pay.Services.Transactions\EventPad.Pay.Services.Transactions.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -3,7 +3,6 @@ using EventPad.Api.Context;
 using EventPad.Api.Context.Entities;
 using EventPad.Api.Services.Actions;
 using EventPad.Common;
-using EventPad.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventPad.Api.Services.Events;

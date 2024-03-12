@@ -65,11 +65,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPad.Pay.Services.Event
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPad.RabbitMq", "Shared\EventPad.RabbitMq\EventPad.RabbitMq.csproj", "{48D626E0-24C6-4CEE-A251-7C9B1D516FE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventPad.Pay.Services.Transactions", "Pay\Services\EventPad.Services.Pay.Transactions\EventPad.Pay.Services.Transactions.csproj", "{2311180A-70D9-439A-86D3-A297820BA986}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPad.Pay.Services.Actions", "Pay\Services\EventPad.Pay.Services.Actions\EventPad.Pay.Services.Actions.csproj", "{E74D0F0F-F9A1-46A2-8215-0B730F39A21B}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPad.Actions", "Shared\EventPad.Actions\EventPad.Actions.csproj", "{5FE972E6-11B5-46EF-A4C2-812771A9EEDF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPad.Pay.Services.Transactions", "Pay\Services\EventPad.Pay.Services.Transactions\EventPad.Pay.Services.Transactions.csproj", "{FFE07AFE-7B40-4BEC-81DF-2F739F20241B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -157,18 +155,14 @@ Global
 		{48D626E0-24C6-4CEE-A251-7C9B1D516FE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48D626E0-24C6-4CEE-A251-7C9B1D516FE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48D626E0-24C6-4CEE-A251-7C9B1D516FE9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2311180A-70D9-439A-86D3-A297820BA986}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2311180A-70D9-439A-86D3-A297820BA986}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2311180A-70D9-439A-86D3-A297820BA986}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2311180A-70D9-439A-86D3-A297820BA986}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E74D0F0F-F9A1-46A2-8215-0B730F39A21B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E74D0F0F-F9A1-46A2-8215-0B730F39A21B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E74D0F0F-F9A1-46A2-8215-0B730F39A21B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E74D0F0F-F9A1-46A2-8215-0B730F39A21B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5FE972E6-11B5-46EF-A4C2-812771A9EEDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5FE972E6-11B5-46EF-A4C2-812771A9EEDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FE972E6-11B5-46EF-A4C2-812771A9EEDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FE972E6-11B5-46EF-A4C2-812771A9EEDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFE07AFE-7B40-4BEC-81DF-2F739F20241B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFE07AFE-7B40-4BEC-81DF-2F739F20241B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFE07AFE-7B40-4BEC-81DF-2F739F20241B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFE07AFE-7B40-4BEC-81DF-2F739F20241B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -202,9 +196,8 @@ Global
 		{9AB62CCC-DEB6-486F-B80A-01EC2BDA9637} = {70CB18CD-CBA9-4D02-B2FE-E92371F71087}
 		{794D6915-F988-4CAE-8FCF-2D1D081B95CF} = {70CB18CD-CBA9-4D02-B2FE-E92371F71087}
 		{48D626E0-24C6-4CEE-A251-7C9B1D516FE9} = {7EB24221-9E77-4114-A9AC-9F7BB2ACC3C0}
-		{2311180A-70D9-439A-86D3-A297820BA986} = {70CB18CD-CBA9-4D02-B2FE-E92371F71087}
-		{E74D0F0F-F9A1-46A2-8215-0B730F39A21B} = {70CB18CD-CBA9-4D02-B2FE-E92371F71087}
 		{5FE972E6-11B5-46EF-A4C2-812771A9EEDF} = {7EB24221-9E77-4114-A9AC-9F7BB2ACC3C0}
+		{FFE07AFE-7B40-4BEC-81DF-2F739F20241B} = {70CB18CD-CBA9-4D02-B2FE-E92371F71087}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AA88F5F6-BF6B-4735-B04A-FDF8C7ED7572}

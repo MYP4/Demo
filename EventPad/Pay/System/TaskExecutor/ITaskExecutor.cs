@@ -1,4 +1,4 @@
-﻿namespace EventPad.Pay.TaskExecutor;
+﻿namespace EventPad.Pay;
 
 public interface ITaskExecutor
 {

@@ -4,7 +4,6 @@ using EventPad.Settings;
 using EventPad.Pay;
 using EventPad.Pay.Configuration;
 using EventPad.Pay.Context;
-using EventPad.Pay.TaskExecutor;
 
 
 var builder = WebApplication.CreateBuilder(args);
