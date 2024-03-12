@@ -107,4 +107,9 @@ public class EventAccountService : IEventAccountService
 
         return mapper.Map<EventAccountModel>(new EventAccount());
     }
+
+    public Task Delete(Guid id)
+    {
+        throw new NotImplementedException();
+    }
 }

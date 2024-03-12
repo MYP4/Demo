@@ -18,7 +18,8 @@ public class TaskExecutor : ITaskExecutor
         this.rabbitMq = rabbitMq;
     }
 
-    public void Start()
+
+    public void CreateEventAccount()
     {
         rabbitMq.Subscribe<CreateEventAccount>(QueueNames.CREATE_EVENT_ACCOUNT, async data =>
         {
@@ -28,5 +29,37 @@ public class TaskExecutor : ITaskExecutor
 
             logger.Information($"The event_account was created::: {data.Id}");
         });
+    }
+
+    public void CreateUserAccount()
+    {
+        throw new NotImplementedException();
+    }
+
+
+    public void DeleteEventAccount()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DeleteUserAccount()
+    {
+        throw new NotImplementedException();
+    }
+
+
+    public void CreatePurchase()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void CreateRefund()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void CreateCashout()
+    {
+        throw new NotImplementedException();
     }
 }

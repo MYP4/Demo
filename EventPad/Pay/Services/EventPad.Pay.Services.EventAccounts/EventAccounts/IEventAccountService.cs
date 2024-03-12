@@ -9,5 +9,5 @@ public interface IEventAccountService
     Task<EventAccountModel> Create(CreateEventAccountModel model);
     Task<EventAccount> Create();
     Task<EventAccountModel> Update(Guid id, UpdateEventAccountModel model);
-    //Task Delete(Guid id);
+    Task Delete(Guid id);
 }
