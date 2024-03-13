@@ -4,7 +4,7 @@ using EventPad.Pay.Context;
 using EventPad.Pay.Context.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EventPad.Api.Services.EventAccounts;
+namespace EventPad.Pay.Services.EventAccounts;
 
 public class EventAccountService : IEventAccountService
 {
@@ -40,19 +40,16 @@ public class EventAccountService : IEventAccountService
 
     public async Task<EventAccountModel> GetEventAccountById(Guid id)
     {
-        //using var context = await dbContextFactory.CreateDbContextAsync();
+        using var context = await dbContextFactory.CreateDbContextAsync();
 
-        //var _event = await context.EventAccounts.FirstOrDefaultAsync(x => x.Uid == id);
+        var eventAccount = await context.EventAccounts.FirstOrDefaultAsync(x => x.Uid == id);
 
-        //if (_event == null)
-        //    throw new ProcessException($"Event (ID = {id}) not found.");
+        if (eventAccount == null)
+            throw new ProcessException($"EventAccount (ID = {id}) not found.");
 
-        //var eventAccount = await context.EventAccounts.FirstOrDefaultAsync(x => x.EventId == _event.Id);
+        var result = mapper.Map<EventAccountModel>(eventAccount);
 
-        //var result = mapper.Map<EventAccountModel>(eventAccount);
-
-        //return result;
-        return mapper.Map<EventAccountModel>(new EventAccount());
+        return result;
     }
 
     public async Task<EventAccountModel> Create(CreateEventAccountModel model)
@@ -61,55 +58,47 @@ public class EventAccountService : IEventAccountService
 
         using var context = await dbContextFactory.CreateDbContextAsync();
 
-        var eventAccount = mapper.Map<EventAccount>(model);
+        var eventAccount = new EventAccount()
+        {
+            Uid = model.EventId,
+            AccountNumber = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString().PadLeft(16, '0'),
+            Balance = 0
+        };
 
         await context.EventAccounts.AddAsync(eventAccount);
 
         return mapper.Map<EventAccountModel>(eventAccount);
     }
 
-    public async Task<EventAccount> Create()
+    public async Task<EventAccountModel> Update(Guid id, UpdateEventAccountModel model)
     {
-        var eventAccount = new EventAccount()
-        {
-            AccountNumber = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString().PadLeft(16, '0'),
-            Balance = 0
-        };
+        await updateModelValidator.CheckAsync(model);
 
         using var context = await dbContextFactory.CreateDbContextAsync();
 
-        await context.EventAccounts.AddAsync(eventAccount);
+        var eventAccount = await context.EventAccounts.FirstOrDefaultAsync(x => x.Uid == id);
 
-        return eventAccount;
+        if (eventAccount == null)
+            throw new ProcessException($"UserAccount (ID = {id}) not found.");
+
+        eventAccount.Balance += model.Amount;
+
+        context.EventAccounts.Update(eventAccount);
+
+        await context.SaveChangesAsync();
+
+        return mapper.Map<EventAccountModel>(eventAccount);
     }
 
-
-    public async Task<EventAccountModel> Update(Guid id, UpdateEventAccountModel model)
+    public async Task Delete(Guid id)
     {
-        //await updateModelValidator.CheckAsync(model);
+        using var context = await dbContextFactory.CreateDbContextAsync();
 
-        //using var context = await dbContextFactory.CreateDbContextAsync();
+        var eventAccount = await context.EventAccounts.FirstOrDefaultAsync(x => x.Uid == id);
 
-        //var _event = await context.Events.FirstOrDefaultAsync(x => x.Uid == id);
+        if (eventAccount == null)
+            throw new ProcessException($"UserAccount (ID = {id}) not found.");
 
-        //if (_event == null)
-        //    throw new ProcessException($"Event (ID = {id}) not found.");
-
-        //var eventAccount = await context.EventAccounts.FirstOrDefaultAsync(x => x.EventId == _event.Id);
-
-        //eventAccount = mapper.Map(model, eventAccount);
-
-        //context.EventAccounts.Update(eventAccount);
-
-        //await context.SaveChangesAsync();
-
-        //return mapper.Map<EventAccountModel>(eventAccount);
-
-        return mapper.Map<EventAccountModel>(new EventAccount());
-    }
-
-    public Task Delete(Guid id)
-    {
-        throw new NotImplementedException();
+        context.Remove(eventAccount);
     }
 }

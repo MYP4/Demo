@@ -3,6 +3,8 @@
 using EventPad.Logger;
 using EventPad.Settings;
 using EventPad.RabbitMq;
+using EventPad.Api.Services.Actions;
+using EventPad.Pay.Services.EventAccounts;
 
 public static class Bootstrapper
 {
@@ -13,6 +15,8 @@ public static class Bootstrapper
             .AddSwaggerSettings()
             .AddLogSettings()
             .AddAppLogger()
+            .AddEventAccountService()
+            .AddActions()
             .AddRabbitMq()
             ;
 

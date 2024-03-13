@@ -3,7 +3,7 @@ using EventPad.Pay.Context;
 using EventPad.Pay.Context.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EventPad.Api.Services.EventAccounts;
+namespace EventPad.Pay.Services.EventAccounts;
 
 public class EventAccountModel
 {

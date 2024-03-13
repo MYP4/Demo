@@ -4,10 +4,9 @@ namespace EventPad.Pay.Services.UserAccounts;
 
 public interface IUserAccountService
 {
-    Task<IEnumerable<UserAccountModel>> GetEventAccounts();
-    Task<UserAccountModel> GetEventAccountById(Guid id);
+    Task<IEnumerable<UserAccountModel>> GetUserAccounts();
+    Task<UserAccountModel> GetUserAccountById(Guid id);
     Task<UserAccountModel> Create(CreateUserAccountModel model);
-    Task<UserAccount> Create();
     Task<UserAccountModel> Update(Guid id, UpdateUserAccountModel model);
     Task Delete(Guid id);
 }

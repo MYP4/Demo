@@ -1,6 +1,7 @@
 ﻿namespace EventPad.Api;
 
 using EventPad.Api.Context.Seeder;
+using EventPad.Api.Services.Actions;
 using EventPad.Api.Services.Events;
 using EventPad.Api.Services.Specific;
 using EventPad.Api.Services.Tickets;
@@ -21,6 +22,7 @@ public static class Bootstrapper
             .AddEventService()
             .AddSpecificEventService()
             .AddTicketService()
+            .AddActions()
             .AddRabbitMq()
             ;
 

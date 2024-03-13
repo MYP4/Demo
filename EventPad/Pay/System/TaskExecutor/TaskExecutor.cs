@@ -1,5 +1,7 @@
 ﻿using EventPad.Api.Services.Actions;
 using EventPad.Logger;
+using EventPad.Pay.Services.EventAccounts;
+using EventPad.Pay.Services.UserAccounts;
 using EventPad.RabbitMq;
 
 namespace EventPad.Pay;
@@ -8,57 +10,68 @@ public class TaskExecutor : ITaskExecutor
 {
     private readonly IAppLogger logger;
     private readonly IRabbitMq rabbitMq;
+    private readonly IEventAccountService eventAccountService;
+    private readonly IUserAccountService userAccountService;
 
     public TaskExecutor(
         IAppLogger logger,
         IRabbitMq rabbitMq
-    )
+,
+        IUserAccountService userAccountService,
+        IEventAccountService eventAccountService)
     {
         this.logger = logger;
         this.rabbitMq = rabbitMq;
+        this.userAccountService = userAccountService;
+        this.eventAccountService = eventAccountService;
     }
 
 
-    public void CreateEventAccount()
+    public void Start()
+    {
+        SubscribeOnCreateEventAccount();
+    }
+
+    private void SubscribeOnCreateEventAccount()
     {
         rabbitMq.Subscribe<CreateEventAccount>(QueueNames.CREATE_EVENT_ACCOUNT, async data =>
         {
             logger.Information($"Starting creating of the event_account::: {data.Id}");
 
-            await Task.Delay(3000);
+            await eventAccountService.Create(new CreateEventAccountModel() { EventId = data.Id });
 
             logger.Information($"The event_account was created::: {data.Id}");
         });
     }
 
-    public void CreateUserAccount()
+    private void SubscribeOnCreateUserAccount()
     {
         throw new NotImplementedException();
     }
 
 
-    public void DeleteEventAccount()
+    private void SubscribeOnDeleteEventAccount()
     {
         throw new NotImplementedException();
     }
 
-    public void DeleteUserAccount()
+    private void SubscribeOnDeleteUserAccount()
     {
         throw new NotImplementedException();
     }
 
 
-    public void CreatePurchase()
+    private void SubscribeOnCreatePurchase()
     {
         throw new NotImplementedException();
     }
 
-    public void CreateRefund()
+    private void SubscribeOnCreateRefund()
     {
         throw new NotImplementedException();
     }
 
-    public void CreateCashout()
+    private void SubscribeOnCreateCashout()
     {
         throw new NotImplementedException();
     }

@@ -2,21 +2,21 @@
 using EventPad.Pay.Context.Entities;
 using FluentValidation;
 
-namespace EventPad.Api.Services.EventAccounts;
+namespace EventPad.Pay.Services.EventAccounts;
 
 public class UpdateEventAccountModel
 {
-    public string AccountNumber { get; set; }
-    public float Balance { get; set; }
+    public float Amount { get; set; }
 }
-
 
 public class UpdateEventAccountModelProfile : Profile
 {
     public UpdateEventAccountModelProfile()
     {
         CreateMap<UpdateEventAccountModel, EventAccount>()
-            .ForMember(dest => dest.AccountNumber, opt => opt.Ignore());
+            .ForMember(dest => dest.AccountNumber, opt => opt.Ignore())
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            ;
     }
 }
 
@@ -24,7 +24,7 @@ public class UpdateEventAccountModelValidator : AbstractValidator<UpdateEventAcc
 {
     public UpdateEventAccountModelValidator()
     {
-        RuleFor(x => x.Balance)
-            .GreaterThanOrEqualTo(0).WithMessage("Balance must be greater than or equal to  0");
+        RuleFor(x => x.Amount)
+           .NotEmpty().WithMessage("Amount is required");
     }
 }
