@@ -5,6 +5,7 @@ using EventPad.Common;
 using EventPad.Api.Context;
 using EventPad.Api.Context.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Sockets;
 
 namespace EventPad.Api.Services.Tickets;
 
@@ -62,9 +63,12 @@ public class TicketService : ITicketService
     {
         using var context = await dbContextFactory.CreateDbContextAsync();
 
-        var tickets = await context.Tickets.FirstOrDefaultAsync(x => x.Uid == id);
+        var ticket = await context.Tickets.FirstOrDefaultAsync(x => x.Uid == id);
 
-        var result = mapper.Map<TicketModel>(tickets);
+        if (ticket == null)
+            throw new ProcessException($"Ticket (ID = {id}) not found.");
+
+        var result = mapper.Map<TicketModel>(ticket);
 
         return result;
     }

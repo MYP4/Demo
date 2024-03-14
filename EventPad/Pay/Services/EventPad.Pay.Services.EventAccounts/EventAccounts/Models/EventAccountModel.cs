@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using EventPad.Pay.Context;
 using EventPad.Pay.Context.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace EventPad.Pay.Services.EventAccounts;
 

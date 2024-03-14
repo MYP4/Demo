@@ -2,7 +2,6 @@
 using EventPad.Api.Context;
 using EventPad.Api.Context.Entities;
 using EventPad.Common;
-using EventPad.Common;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -95,11 +94,14 @@ public class SpecificEventService : ISpecificEventService
 
         var _event = await context.SpecificEvents.FirstOrDefaultAsync(x => x.Uid == id);
 
+        if (_event == null)
+            throw new ProcessException($"Specific Event (ID = {id}) not found.");
+
         var result = mapper.Map<SpecificEventModel>(_event);
 
         return result;
     }
-     
+
     public async Task<SpecificEventModel> Create(CreateSpecificModel model)
     {
         await createModelValidator.CheckAsync(model);
@@ -107,8 +109,6 @@ public class SpecificEventService : ISpecificEventService
         using var context = await dbContextFactory.CreateDbContextAsync();
 
         var _event = mapper.Map<SpecificEvent>(model);
-
-        _event.Uid = Guid.NewGuid();
 
         await context.SpecificEvents.AddAsync(_event);
 

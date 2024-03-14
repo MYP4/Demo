@@ -48,7 +48,6 @@ public class TransactionService : ITransactionService
             transactions = transactions.Where(e => e.Type == type);
         }
 
-
         if (date != null)
         {
             transactions = transactions.Where(e => e.Date == date);
@@ -75,9 +74,19 @@ public class TransactionService : ITransactionService
         return result;
     }
 
-    public Task<TransactionModel> Create(CreateTransactionModel model)
+    public async Task<TransactionModel> Create(CreateTransactionModel model)
     {
-        throw new NotImplementedException();
-    }
+        await createModelValidator.CheckAsync(model);
 
+        using var context = await dbContextFactory.CreateDbContextAsync();
+
+
+        var transaction = mapper.Map<Transaction>(model);
+
+        await context.Transactions.AddAsync(transaction);
+
+        await context.SaveChangesAsync();
+
+        return mapper.Map<TransactionModel>(transaction);
+    }
 }

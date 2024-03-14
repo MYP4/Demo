@@ -44,13 +44,14 @@ public class CreateModelActions : IMappingAction<CreateSpecificModel, SpecificEv
         this.dbContextFactory = dbContextFactory;
     }
 
-    public void Process(CreateSpecificModel sourse, SpecificEvent dest, ResolutionContext context)
+    public void Process(CreateSpecificModel source, SpecificEvent dest, ResolutionContext context)
     {
         using var db = dbContextFactory.CreateDbContext();
-        var _event = db.Events.FirstOrDefault(x => x.Uid == sourse.EventId);
+        var _event = db.Events.FirstOrDefault(x => x.Uid == source.EventId);
 
         var article = Guid.NewGuid().ToString().ToUpper().Replace("-", "");
 
+        dest.Uid = Guid.NewGuid();
         dest.EventId = _event.Id;
         dest.Code = article;
     }
