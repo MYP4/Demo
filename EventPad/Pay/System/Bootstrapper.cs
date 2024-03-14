@@ -3,8 +3,10 @@
 using EventPad.Logger;
 using EventPad.Settings;
 using EventPad.RabbitMq;
-using EventPad.Api.Services.Actions;
+using EventPad.Services.Actions;
 using EventPad.Pay.Services.EventAccounts;
+using EventPad.Pay.Services.UserAccounts;
+using EventPad.Pay.Services.Transactions;
 
 public static class Bootstrapper
 {
@@ -15,9 +17,11 @@ public static class Bootstrapper
             .AddSwaggerSettings()
             .AddLogSettings()
             .AddAppLogger()
-            .AddEventAccountService()
             .AddActions()
             .AddRabbitMq()
+            .AddUserAccountService()
+            .AddEventAccountService()
+            //.AddTransactionService()
             ;
 
         services.AddSingleton<ITaskExecutor, TaskExecutor>();

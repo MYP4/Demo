@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using EventPad.Api.Context;
 using EventPad.Api.Context.Entities;
-using EventPad.Api.Services.Actions;
 using EventPad.Common;
+using EventPad.Services.Actions;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventPad.Api.Services.Events;
@@ -76,8 +76,6 @@ public class EventService : IEventService
 
         var events = context.Events.AsQueryable();
 
-       
-
         events = events.Skip((page - 1) * pageSize).Take(pageSize);
 
         var eventList = await events.ToListAsync();
@@ -93,6 +91,9 @@ public class EventService : IEventService
 
         var _event = await context.Events.FirstOrDefaultAsync(x => x.Uid == id);
 
+        if (_event == null)
+            throw new ProcessException($"Event (ID = {id}) not found.");
+
         var result = mapper.Map<EventModel>(_event);
 
         return result;
@@ -107,15 +108,16 @@ public class EventService : IEventService
         var _event = mapper.Map<Event>(model);
 
         _event.Uid = Guid.NewGuid();
+        _event.Account = _event.Uid;
 
         await context.Events.AddAsync(_event);
 
-        await context.SaveChangesAsync();
-
         await action.CreateEventAccount(new CreateEventAccount()
         {
-            Id =  _event.Uid,
+            Id = _event.Uid,
         });
+
+        await context.SaveChangesAsync();
 
         return mapper.Map<EventModel>(_event);
     }
@@ -146,13 +148,9 @@ public class EventService : IEventService
         if (_event == null)
             throw new ProcessException($"Event (ID = {id}) not found.");
 
-        //var eventAccount = await context.EventAccounts.FirstOrDefaultAsync(x => x.EventId == _event.Id);
-
-        //if (_event == null)
-        //  throw new ProcessException($"EventAccount (ID = {id}) not found.");
+        await action.DeleteEventAccount(_event.Uid);
 
         context.Events.Remove(_event);
-        //context.EventAccounts.Remove(eventAccount);
 
         await context.SaveChangesAsync();
     }

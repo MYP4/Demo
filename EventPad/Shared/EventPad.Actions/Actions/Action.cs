@@ -1,6 +1,6 @@
 ﻿using EventPad.RabbitMq;
 
-namespace EventPad.Api.Services.Actions;
+namespace EventPad.Services.Actions;
 
 public class Action : IAction
 {
@@ -19,6 +19,16 @@ public class Action : IAction
     public async Task CreateUserAccount(CreateUserAccount model)
     {
         await rabbitMq.PushAsync(QueueNames.CREATE_USER_ACCOUNT, model);
+    }
+
+    public async Task DeleteEventAccount(Guid id)
+    {
+        await rabbitMq.PushAsync(QueueNames.DELETE_EVENT_ACCOUNT, id);
+    }
+
+    public async Task DeleteUserAccount(Guid id)
+    {
+        await rabbitMq.PushAsync(QueueNames.DELETE_USER_ACCOUNT, id);
     }
 }
 

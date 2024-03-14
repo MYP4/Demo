@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var mainSettings = Settings.Load<MainSettings>("Main");
 var logSettings = Settings.Load<LogSettings>("Log");
-var swaggerSettings = Settings.Load<SwaggerSettings>("Swagger");
+//var swaggerSettings = Settings.Load<SwaggerSettings>("Swagger");
 
 
 builder.AddAppLogger(mainSettings, logSettings);
@@ -21,15 +21,15 @@ services.AddHttpContextAccessor();
 
 services.AddAppDbContext(builder.Configuration);
 
-services.AddAppCors();
+//services.AddAppCors();
 
-services.AddAppControllerAndViews();
+//services.AddAppControllerAndViews();
 
 services.AddAppHealthChecks();
 
-services.AddAppVersioning();
+//services.AddAppVersioning();
 
-services.AddAppSwagger(mainSettings, swaggerSettings);
+//services.AddAppSwagger(mainSettings, swaggerSettings);
 
 services.RegisterServices(builder.Configuration);
 
@@ -42,11 +42,11 @@ var app = builder.Build();
 
 var logger = app.Services.GetRequiredService<IAppLogger>();
 
-app.UseAppSwagger();
+//app.UseAppSwagger();
 
 app.UseAppHealthChecks();
-app.UseAppCors();
-app.UseAppControllerAndViews();
+//app.UseAppCors();
+//app.UseAppControllerAndViews();
 
 app.UseAppMiddlewares();
 
@@ -54,7 +54,6 @@ app.UseAppMiddlewares();
 DbInitializer.Execute(app.Services);
 
 //DbSeeder.Execute(app.Services);
-
 
 logger.Information("The PayMS API was started");
 

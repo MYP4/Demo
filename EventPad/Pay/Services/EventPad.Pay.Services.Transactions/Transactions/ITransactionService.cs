@@ -4,10 +4,7 @@ namespace EventPad.Pay.Services.Transactions;
 
 public interface ITransactionService
 {
-    Task<IEnumerable<TransactionModel>> GetEventAccounts();
-    Task<TransactionModel> GetEventAccountById(Guid id);
+    Task<IEnumerable<TransactionModel>> GetTransactions(int page = 1, int pageSize = 10, TransactionModelFilter filter = null);
+    Task<TransactionModel> GetTransactionById(Guid id);
     Task<TransactionModel> Create(CreateTransactionModel model);
-    Task<Transaction> Create();
-    Task<TransactionModel> Update(Guid id, UpdateTransactionModel model);
-    Task Delete(Guid id);
 }

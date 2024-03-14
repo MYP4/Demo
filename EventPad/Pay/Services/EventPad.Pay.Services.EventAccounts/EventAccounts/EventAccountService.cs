@@ -67,6 +67,8 @@ public class EventAccountService : IEventAccountService
 
         await context.EventAccounts.AddAsync(eventAccount);
 
+        await context.SaveChangesAsync();
+
         return mapper.Map<EventAccountModel>(eventAccount);
     }
 
@@ -99,6 +101,8 @@ public class EventAccountService : IEventAccountService
         if (eventAccount == null)
             throw new ProcessException($"UserAccount (ID = {id}) not found.");
 
-        context.Remove(eventAccount);
+        context.EventAccounts.Remove(eventAccount);
+
+        await context.SaveChangesAsync();
     }
 }

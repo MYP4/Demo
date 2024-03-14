@@ -13,6 +13,7 @@ public class Transaction : BaseEntity
 
     public string Details { get; set; }
     public Guid Ticket {  get; set; }
-    public DateTime DateTime {  get; set; }
+    public DateOnly Date {  get; set; }
+    public TimeOnly Time { get; set; }
     public float Amount { get; set; }
 }

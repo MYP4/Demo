@@ -1,4 +1,4 @@
-﻿namespace EventPad.Api.Services.Actions;
+﻿namespace EventPad.Services.Actions;
 
 public class CreateEventAccount
 {

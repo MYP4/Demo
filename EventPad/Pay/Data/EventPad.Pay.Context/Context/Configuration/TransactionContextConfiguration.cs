@@ -11,7 +11,7 @@ public static class TransactionContextConfiguration
 
         modelBuilder.Entity<Transaction>().Property(x => x.Type).IsRequired();
         modelBuilder.Entity<Transaction>().Property(x => x.Ticket).HasMaxLength(16);
-        modelBuilder.Entity<Transaction>().HasIndex(x => x.DateTime).IsUnique();
+        modelBuilder.Entity<Transaction>().Property(x => x.Date).IsRequired();
         modelBuilder.Entity<Transaction>().Property(x => x.Amount).IsRequired();
 
 

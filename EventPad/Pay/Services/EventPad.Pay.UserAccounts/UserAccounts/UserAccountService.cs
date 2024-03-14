@@ -67,6 +67,8 @@ public class UserAccountService : IUserAccountService
 
         await context.UserAccounts.AddAsync(userAccount);
 
+        await context.SaveChangesAsync();
+
         return mapper.Map<UserAccountModel>(userAccount);
     }
 
@@ -100,6 +102,8 @@ public class UserAccountService : IUserAccountService
         if (userAccount == null)
             throw new ProcessException($"UserAccount (ID = {id}) not found.");
 
-        context.Remove(userAccount);
+        context.UserAccounts.Remove(userAccount);
+
+        await context.SaveChangesAsync();
     }
 }

@@ -32,14 +32,6 @@ public class EventController : ControllerBase
         return mapper.Map<IEnumerable<EventResponse>>(result);
     }
 
-    //[HttpGet("")]
-    //public async Task<IEnumerable<EventResponse>> GetUsersEvents([FromQuery] Guid id, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
-    //{
-    //    var result = await eventService.GetUserEvents(id, page, pageSize);
-
-    //    return mapper.Map<IEnumerable<EventResponse>>(result);
-    //}
-
 
     [HttpGet("{id:Guid}")]
     public async Task<IActionResult> Get([FromRoute] Guid id)

@@ -1,6 +1,6 @@
 ﻿namespace EventPad.Services.Actions;
 
-public class CreateUserAccount
+public class DeleteUserAccount
 {
     public Guid Id { get; set; }
 }
