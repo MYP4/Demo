@@ -65,9 +65,6 @@ public class TicketService : ITicketService
 
         var ticket = await context.Tickets.FirstOrDefaultAsync(x => x.Uid == id);
 
-        if (ticket == null)
-            throw new ProcessException($"Ticket (ID = {id}) not found.");
-
         var result = mapper.Map<TicketModel>(ticket);
 
         return result;

@@ -44,9 +44,6 @@ public class EventAccountService : IEventAccountService
 
         var eventAccount = await context.EventAccounts.FirstOrDefaultAsync(x => x.Uid == id);
 
-        if (eventAccount == null)
-            throw new ProcessException($"EventAccount (ID = {id}) not found.");
-
         var result = mapper.Map<EventAccountModel>(eventAccount);
 
         return result;

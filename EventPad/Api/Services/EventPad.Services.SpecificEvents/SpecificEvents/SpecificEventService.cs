@@ -94,9 +94,6 @@ public class SpecificEventService : ISpecificEventService
 
         var _event = await context.SpecificEvents.FirstOrDefaultAsync(x => x.Uid == id);
 
-        if (_event == null)
-            throw new ProcessException($"Specific Event (ID = {id}) not found.");
-
         var result = mapper.Map<SpecificEventModel>(_event);
 
         return result;
