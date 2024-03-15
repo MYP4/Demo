@@ -1,9 +1,8 @@
 ﻿namespace EventPad.Actions.Actions;
 
-public class CashoutTicket
+public class Cashout
 {
-    public Guid? UserAccountID { get; set; }
-    public Guid? EventAccountID { get; set; }
+    public Guid? AccountID { get; set; }
     public float Amount { get; set; }
     public string Details { get; set; }
 }

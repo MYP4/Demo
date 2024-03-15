@@ -2,6 +2,8 @@
 using EventPad.Common;
 using EventPad.Pay.Context;
 using EventPad.Pay.Context.Entities;
+using EventPad.Pay.Services.EventAccounts;
+using EventPad.Pay.Services.UserAccounts;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventPad.Pay.Services.Transactions;
@@ -10,16 +12,23 @@ public class TransactionService : ITransactionService
 {
 
     private readonly IDbContextFactory<PayDbContext> dbContextFactory;
-    private readonly IMapper mapper;
     private readonly IModelValidator<CreateTransactionModel> createModelValidator;
+    private readonly IEventAccountService eventAccountService;
+    private readonly IUserAccountService userAccountService;
+    private readonly IMapper mapper;
 
-    public TransactionService(IDbContextFactory<PayDbContext> dbContextFactory,
-        IMapper mapper,
-        IModelValidator<CreateTransactionModel> createModelValidator)
+    public TransactionService(
+        IDbContextFactory<PayDbContext> dbContextFactory,
+        IModelValidator<CreateTransactionModel> createModelValidator,
+        IEventAccountService eventAccountService,
+        IUserAccountService userAccountService,
+        IMapper mapper)
     {
         this.dbContextFactory = dbContextFactory;
-        this.mapper = mapper;
         this.createModelValidator = createModelValidator;
+        this.eventAccountService = eventAccountService;
+        this.userAccountService = userAccountService;
+        this.mapper = mapper;
     }
 
     public async Task<IEnumerable<TransactionModel>> GetTransactions(int page = 1, int pageSize = 10, TransactionModelFilter filter = null)
@@ -80,8 +89,24 @@ public class TransactionService : ITransactionService
 
         using var context = await dbContextFactory.CreateDbContextAsync();
 
-
         var transaction = mapper.Map<Transaction>(model);
+
+        var type = transaction.Type;
+
+        if (type == TransactionType.Purchase)
+        {
+            userAccountService.Update(transaction.UserAccount.Uid, new UpdateUserAccountModel() { Amount =  0 - transaction.Amount });
+            eventAccountService.Update(transaction.EventAccount.Uid, new UpdateEventAccountModel() { Amount = transaction.Amount});          
+        }
+        if (type == TransactionType.Refund)
+        {
+            eventAccountService.Update(transaction.EventAccount.Uid, new UpdateEventAccountModel() { Amount = 0 - transaction.Amount });
+            userAccountService.Update(transaction.UserAccount.Uid, new UpdateUserAccountModel() { Amount = transaction.Amount });
+        }
+        if (type == TransactionType.Cashout)
+        {
+
+        }
 
         await context.Transactions.AddAsync(transaction);
 

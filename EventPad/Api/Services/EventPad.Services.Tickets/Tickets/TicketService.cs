@@ -1,11 +1,11 @@
 ﻿
 using AutoMapper;
 using EventPad.Common;
-using EventPad.Common;
 using EventPad.Api.Context;
 using EventPad.Api.Context.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Sockets;
+using EventPad.Services.Actions;
+using EventPad.Actions;
 
 namespace EventPad.Api.Services.Tickets;
 
@@ -15,16 +15,19 @@ public class TicketService : ITicketService
     private readonly IMapper mapper;
     private readonly IModelValidator<CreateTicketModel> createModelValidator;
     private readonly IModelValidator<UpdateTicketModel> updateModelValidator;
+    private readonly IAction action;
 
     public TicketService(IDbContextFactory<ApiDbContext> dbContextFactory,
         IMapper mapper,
         IModelValidator<CreateTicketModel> createModelValidator,
-        IModelValidator<UpdateTicketModel> updateModelValidator)
+        IModelValidator<UpdateTicketModel> updateModelValidator,
+        IAction action)
     {
         this.dbContextFactory = dbContextFactory;
         this.mapper = mapper;
         this.createModelValidator = createModelValidator;
         this.updateModelValidator = updateModelValidator;
+        this.action = action;
     }
 
     public async Task<IEnumerable<TicketModel>> GetAllTickets(int page = 1, int pageSize = 10, TicketModelFilter filter = null)
@@ -89,6 +92,12 @@ public class TicketService : ITicketService
         ticket.Uid = Guid.NewGuid();
 
         await context.Tickets.AddAsync(ticket);
+
+        await action.BuyTicket(new BuyTicket()
+        {
+            
+        });
+
 
         await context.SaveChangesAsync();
 

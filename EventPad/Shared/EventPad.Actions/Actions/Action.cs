@@ -1,4 +1,5 @@
-﻿using EventPad.RabbitMq;
+﻿using EventPad.Actions;
+using EventPad.RabbitMq;
 
 namespace EventPad.Services.Actions;
 
@@ -29,6 +30,16 @@ public class Action : IAction
     public async Task DeleteUserAccount(Guid id)
     {
         await rabbitMq.PushAsync(QueueNames.DELETE_USER_ACCOUNT, id);
+    }
+
+    public async Task BuyTicket(BuyTicket model)
+    {
+        await rabbitMq.PushAsync(QueueNames.BUY_TICKET, model);
+    }
+
+    public async Task RefundTicket(RefundTicket model)
+    {
+        await rabbitMq.PushAsync(QueueNames.REFUND_TICKET, model);
     }
 }
 

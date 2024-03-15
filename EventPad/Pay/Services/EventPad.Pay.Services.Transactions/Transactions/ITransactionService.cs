@@ -1,6 +1,4 @@
-﻿using EventPad.Pay.Context.Entities;
-
-namespace EventPad.Pay.Services.Transactions;
+﻿namespace EventPad.Pay.Services.Transactions;
 
 public interface ITransactionService
 {
