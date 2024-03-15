@@ -9,6 +9,7 @@ namespace EventPad.Api.Services.Tickets;
 public class CreateTicketModel
 {
     public Guid SpecificId { get; set; }
+    public Guid EventId { get; set; }
     public Guid UserId { get; set; }
 }
 
@@ -41,7 +42,7 @@ public class CreateModelActions : IMappingAction<CreateTicketModel, Ticket>
         using var db = dbContextFactory.CreateDbContext();
 
         var user = db.Users.FirstOrDefault(x => x.Uid == sourse.UserId);
-        var specific = db.SpecificEvents.FirstOrDefault(x =>x.Uid == sourse.SpecificId);
+        var specific = db.SpecificEvents.FirstOrDefault(x => x.Uid == sourse.SpecificId);
 
         dest.UserId = user.Id;
         dest.SpecificEventId = specific.Id;
@@ -53,14 +54,23 @@ public class CreateModelValidator : AbstractValidator<CreateTicketModel>
 {
     public CreateModelValidator(IDbContextFactory<ApiDbContext> contextFactory)
     {
-        RuleFor(x => x.SpecificId)
+        RuleFor(x => x.EventId)
             .NotEmpty().WithMessage("Event is required")
             .Must((id) => 
             {
                 using var context = contextFactory.CreateDbContext();
-                var found = context.SpecificEvents.Any(a => a.Uid == id);
+                var found = context.Events.Any(a => a.Uid == id);
                 return found;
             }).WithMessage("Event not fount");
+
+        RuleFor(x => x.SpecificId)
+            .NotEmpty().WithMessage("SpecificEvent is required")
+            .Must((id) =>
+            {
+                using var context = contextFactory.CreateDbContext();
+                var found = context.SpecificEvents.Any(a => a.Uid == id);
+                return found;
+            }).WithMessage("SpecificEvent not fount");
 
         RuleFor(x => x.UserId)
             .NotEmpty().WithMessage("Event is required")

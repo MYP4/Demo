@@ -21,7 +21,7 @@ public static class Bootstrapper
             .AddRabbitMq()
             .AddUserAccountService()
             .AddEventAccountService()
-            //.AddTransactionService()
+            .AddTransactionService()
             ;
 
         services.AddSingleton<ITaskExecutor, TaskExecutor>();

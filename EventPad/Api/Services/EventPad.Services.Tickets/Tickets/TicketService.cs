@@ -6,6 +6,7 @@ using EventPad.Api.Context.Entities;
 using Microsoft.EntityFrameworkCore;
 using EventPad.Services.Actions;
 using EventPad.Actions;
+using Microsoft.Extensions.Logging;
 
 namespace EventPad.Api.Services.Tickets;
 
@@ -79,7 +80,10 @@ public class TicketService : ITicketService
 
         using var context = await dbContextFactory.CreateDbContextAsync();
 
+        var eventUid = model.EventId;
         var specific = context.SpecificEvents.FirstOrDefault(x => x.Uid == model.SpecificId);
+        var user = context.Users.FirstOrDefault(x => x.Uid == model.UserId);
+
         var tickets = context.Tickets.Where(x => x.SpecificEvent.Uid == model.SpecificId);
 
         if (tickets.Count() >= specific.TicketCount)
@@ -95,8 +99,8 @@ public class TicketService : ITicketService
 
         await action.BuyTicket(new BuyTicket()
         {
-            UserAccountID = ticket.User.Uid,
-            EventAccountID = ticket.SpecificEvent.Uid,
+            UserAccountId = ticket.User.Uid,
+            EventAccountId = eventUid,
             Ticket = ticket.Uid,
             Amount = ticket.SpecificEvent.Price
         });
@@ -124,14 +128,25 @@ public class TicketService : ITicketService
         return mapper.Map<TicketModel>(ticket);
     }
 
+    // работа с UID
     public async Task Delete(Guid id)
     {
         using var context = await dbContextFactory.CreateDbContextAsync();
 
         var ticket = await context.Tickets.FirstOrDefaultAsync(x => x.Uid == id);
 
+        var eventUid = ticket.SpecificEvent.Uid;
+
         if (ticket == null)
             throw new ProcessException($"Ticket (ID = {id}) not found.");
+
+        await action.RefundTicket(new RefundTicket()
+        {
+            UserAccountId = ticket.User.Uid,
+            EventAccountId = eventUid,
+            Ticket = ticket.Uid,
+            Amount = ticket.SpecificEvent.Price
+        });
 
         context.Tickets.Remove(ticket);
 

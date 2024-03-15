@@ -12,20 +12,17 @@ public class TransactionService : ITransactionService
 {
 
     private readonly IDbContextFactory<PayDbContext> dbContextFactory;
-    private readonly IModelValidator<CreateTransactionModel> createModelValidator;
     private readonly IEventAccountService eventAccountService;
     private readonly IUserAccountService userAccountService;
     private readonly IMapper mapper;
 
     public TransactionService(
         IDbContextFactory<PayDbContext> dbContextFactory,
-        IModelValidator<CreateTransactionModel> createModelValidator,
         IEventAccountService eventAccountService,
         IUserAccountService userAccountService,
         IMapper mapper)
     {
         this.dbContextFactory = dbContextFactory;
-        this.createModelValidator = createModelValidator;
         this.eventAccountService = eventAccountService;
         this.userAccountService = userAccountService;
         this.mapper = mapper;
@@ -85,31 +82,32 @@ public class TransactionService : ITransactionService
 
     public async Task<TransactionModel> Create(CreateTransactionModel model)
     {
-        await createModelValidator.CheckAsync(model);
-
         using var context = await dbContextFactory.CreateDbContextAsync();
 
         var transaction = mapper.Map<Transaction>(model);
+        var userAccount = await context.UserAccounts.FirstOrDefaultAsync(x => x.Uid == model.UserAccountId);
+        var eventAccount = await context.EventAccounts.FirstOrDefaultAsync(x => x.Uid == model.EventAccountId);
+
 
         var type = transaction.Type;
 
+        await context.Transactions.AddAsync(transaction);
+
         if (type == TransactionType.Purchase)
         {
-            await userAccountService.Update(transaction.UserAccount.Uid, new UpdateUserAccountModel() { Amount = -transaction.Amount }, context);
-            await eventAccountService.Update(transaction.EventAccount.Uid, new UpdateEventAccountModel() { Amount = transaction.Amount }, context);
+            await userAccountService.Update(userAccount.Uid, new UpdateUserAccountModel() { Amount = -transaction.Amount }, context);
+            await eventAccountService.Update(eventAccount.Uid, new UpdateEventAccountModel() { Amount = transaction.Amount }, context);
         }
         if (type == TransactionType.Refund)
         {
 
-            await eventAccountService.Update(transaction.EventAccount.Uid, new UpdateEventAccountModel() { Amount = -transaction.Amount }, context);
-            await userAccountService.Update(transaction.UserAccount.Uid, new UpdateUserAccountModel() { Amount = transaction.Amount }, context);
+            await eventAccountService.Update(eventAccount.Uid, new UpdateEventAccountModel() { Amount = -transaction.Amount }, context);
+            await userAccountService.Update(userAccount.Uid, new UpdateUserAccountModel() { Amount = transaction.Amount }, context);
         }
         if (type == TransactionType.Cashout)
         {
 
         }
-
-        await context.Transactions.AddAsync(transaction);
 
         await context.SaveChangesAsync();
 

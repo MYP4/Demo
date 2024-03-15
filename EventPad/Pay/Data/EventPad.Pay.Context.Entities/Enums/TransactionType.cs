@@ -2,7 +2,7 @@
 
 public enum TransactionType
 {
-    Purchase = 0,
-    Refund = 1,
-    Cashout = 2
+    Purchase = 1,
+    Refund = 2,
+    Cashout = 3
 }

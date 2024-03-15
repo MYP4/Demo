@@ -8,7 +8,6 @@ public class Ticket : BaseEntity
     public int SpecificEventId { get; set; }
     public virtual SpecificEvent SpecificEvent { get; set; }
 
-
     public TicketStatus Status { get; set; }
     public string Feedback { get; set; }
     public double Rating { get; set; }

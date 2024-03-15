@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using EventPad.Pay.Context;
 using EventPad.Pay.Context.Entities;
-using FluentValidation;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace EventPad.Pay.Services.Transactions;
@@ -44,11 +44,12 @@ public class CreateModelActions : IMappingAction<CreateTransactionModel, Transac
 
     public void Process(CreateTransactionModel source, Transaction dest, ResolutionContext context)
     {
-        using var db = dbContextFactory.CreateDbContext();
+         using var db = dbContextFactory.CreateDbContext();
 
         var eventAccount = db.EventAccounts.FirstOrDefault(x => x.Uid == source.EventAccountId);
-
         var userAccount = db.UserAccounts.FirstOrDefault(x => x.Uid == source.UserAccountId);
+
+        dest.Uid = Guid.NewGuid();
 
         dest.Date = DateOnly.FromDateTime(DateTime.Now);
         dest.Time = TimeOnly.FromDateTime(DateTime.Now);
@@ -58,18 +59,3 @@ public class CreateModelActions : IMappingAction<CreateTransactionModel, Transac
     }
 }
 
-
-public class CreateTransactionModelValidator : AbstractValidator<CreateTransactionModel>
-{
-    public CreateTransactionModelValidator() 
-    {
-        RuleFor(x => x.Type)
-            .NotEmpty().WithMessage("Type is required");
-
-        RuleFor(x => x.Amount)
-            .NotEmpty().WithMessage("Amount is required");
-
-        RuleFor(x => x.TicketId)
-            .NotEmpty().WithMessage("TicketId is required");
-    }
-}

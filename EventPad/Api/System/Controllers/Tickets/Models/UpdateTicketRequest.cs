@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using EventPad.Api.Context.Entities;
-using EventPad.Api.Controllers.Specific;
-using EventPad.Api.Services.Specific;
 using EventPad.Api.Services.Tickets;
 
 namespace EventPad.Api.Controllers.Tickets;

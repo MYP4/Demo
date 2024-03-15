@@ -1,5 +1,8 @@
-﻿using EventPad.Logger;
+﻿using EventPad.Actions;
+using EventPad.Logger;
+using EventPad.Pay.Context.Entities;
 using EventPad.Pay.Services.EventAccounts;
+using EventPad.Pay.Services.Transactions;
 using EventPad.Pay.Services.UserAccounts;
 using EventPad.RabbitMq;
 using EventPad.Services.Actions;
@@ -12,18 +15,21 @@ public class TaskExecutor : ITaskExecutor
     private readonly IRabbitMq rabbitMq;
     private readonly IEventAccountService eventAccountService;
     private readonly IUserAccountService userAccountService;
+    private readonly ITransactionService transactionService;
 
     public TaskExecutor(
         IAppLogger logger,
         IRabbitMq rabbitMq
 ,
         IUserAccountService userAccountService,
-        IEventAccountService eventAccountService)
+        IEventAccountService eventAccountService,
+        ITransactionService transactionService)
     {
         this.logger = logger;
         this.rabbitMq = rabbitMq;
         this.userAccountService = userAccountService;
         this.eventAccountService = eventAccountService;
+        this.transactionService = transactionService;
     }
 
 
@@ -33,6 +39,9 @@ public class TaskExecutor : ITaskExecutor
         SubscribeOnCreateUserAccount();
         SubscribeOnDeleteEventAccount();
         SubscribeOnDeleteUserAccount();
+
+        SubscribeOnPayTransaction();
+        SubscribeOnRefundTransaction();
     }
 
     private void SubscribeOnCreateEventAccount()
@@ -85,8 +94,41 @@ public class TaskExecutor : ITaskExecutor
     }
 
 
-    private void SubscribeOnCreateTransaction()
+    private void SubscribeOnPayTransaction()
     {
-        throw new NotImplementedException();
+        rabbitMq.Subscribe<BuyTicket>(QueueNames.BUY_TICKET, async data =>
+        {
+            logger.Information($"Starting purchase creating of the transaction::: {data}");
+
+            await transactionService.Create(new CreateTransactionModel()
+            {
+                Type = TransactionType.Purchase,
+                EventAccountId = data.EventAccountId,
+                UserAccountId = data.UserAccountId,
+                TicketId = data.Ticket,
+                Amount = data.Amount,
+            });
+
+            logger.Information($"The purchase transaction created::: {data}");
+        });
+    }
+
+    private void SubscribeOnRefundTransaction()
+    {
+        rabbitMq.Subscribe<RefundTicket>(QueueNames.REFUND_TICKET, async data =>
+        {
+            logger.Information($"Starting creating of the refund transaction::: {data}");
+
+            await transactionService.Create(new CreateTransactionModel()
+            {
+                Type = TransactionType.Refund,
+                EventAccountId = data.EventAccountId,
+                UserAccountId = data.UserAccountId,
+                TicketId = data.Ticket,
+                Amount = data.Amount,
+            });
+
+            logger.Information($"The refund transaction created::: {data}");
+        });
     }
 }

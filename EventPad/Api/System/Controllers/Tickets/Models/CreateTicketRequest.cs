@@ -5,8 +5,9 @@ namespace EventPad.Api.Controllers.Tickets;
 
 public class CreateTicketRequest
 {
-    public Guid UserId { get; set; }
     public Guid SpecificId { get; set; }
+    public Guid EventId { get; set; }
+    public Guid UserId { get; set; }
 }
 
 

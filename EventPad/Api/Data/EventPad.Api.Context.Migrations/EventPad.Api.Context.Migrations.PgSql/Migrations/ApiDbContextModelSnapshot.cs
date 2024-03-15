@@ -166,6 +166,9 @@ namespace EventPad.Api.Context.Migrations.PgSql.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("EventId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Feedback")
                         .HasColumnType("text");
 
@@ -185,6 +188,8 @@ namespace EventPad.Api.Context.Migrations.PgSql.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EventId");
 
                     b.HasIndex("SpecificEventId");
 
@@ -265,6 +270,12 @@ namespace EventPad.Api.Context.Migrations.PgSql.Migrations
 
             modelBuilder.Entity("EventPad.Api.Context.Entities.Ticket", b =>
                 {
+                    b.HasOne("EventPad.Api.Context.Entities.Event", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("EventPad.Api.Context.Entities.SpecificEvent", "SpecificEvent")
                         .WithMany("Tickets")
                         .HasForeignKey("SpecificEventId")
@@ -276,6 +287,8 @@ namespace EventPad.Api.Context.Migrations.PgSql.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Event");
 
                     b.Navigation("SpecificEvent");
 

@@ -38,7 +38,7 @@ public class UserAccountModelActions : IMappingAction<UserAccount, UserAccountMo
     {
         using var db = dbContextFactory.CreateDbContext();
 
-        var model = db.EventAccounts.FirstOrDefaultAsync(x => x.Uid == source.Uid).GetAwaiter().GetResult();
+        var model = db.UserAccounts.FirstOrDefaultAsync(x => x.Uid == source.Uid).GetAwaiter().GetResult();
 
         dest.Id = model.Uid;
     }
