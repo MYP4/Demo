@@ -73,22 +73,25 @@ public class UserAccountService : IUserAccountService
     }
 
 
-    public async Task<UserAccountModel> Update(Guid id, UpdateUserAccountModel model)
+    public async Task<UserAccountModel> Update(Guid id, UpdateUserAccountModel model, PayDbContext context = null)
     {
         await updateModelValidator.CheckAsync(model);
 
-        using var context = await dbContextFactory.CreateDbContextAsync();
+        using var localContext = await dbContextFactory.CreateDbContextAsync();
 
-        var userAccount = await context.UserAccounts.FirstOrDefaultAsync(x => x.Uid == id);
+        var ctx = context ?? localContext;
+
+        var userAccount = await ctx.UserAccounts.FirstOrDefaultAsync(x => x.Uid == id);
 
         if (userAccount == null)
             throw new ProcessException($"UserAccount (ID = {id}) not found.");
 
         userAccount.Balance += model.Amount;
 
-        context.UserAccounts.Update(userAccount);
+        ctx.UserAccounts.Update(userAccount);
 
-        await context.SaveChangesAsync();
+        if (context == null)
+            await ctx.SaveChangesAsync();
 
         return mapper.Map<UserAccountModel>(userAccount);
     }

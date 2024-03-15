@@ -95,13 +95,14 @@ public class TransactionService : ITransactionService
 
         if (type == TransactionType.Purchase)
         {
-            userAccountService.Update(transaction.UserAccount.Uid, new UpdateUserAccountModel() { Amount =  0 - transaction.Amount });
-            eventAccountService.Update(transaction.EventAccount.Uid, new UpdateEventAccountModel() { Amount = transaction.Amount});          
+            await userAccountService.Update(transaction.UserAccount.Uid, new UpdateUserAccountModel() { Amount = -transaction.Amount }, context);
+            await eventAccountService.Update(transaction.EventAccount.Uid, new UpdateEventAccountModel() { Amount = transaction.Amount }, context);
         }
         if (type == TransactionType.Refund)
         {
-            eventAccountService.Update(transaction.EventAccount.Uid, new UpdateEventAccountModel() { Amount = 0 - transaction.Amount });
-            userAccountService.Update(transaction.UserAccount.Uid, new UpdateUserAccountModel() { Amount = transaction.Amount });
+
+            await eventAccountService.Update(transaction.EventAccount.Uid, new UpdateEventAccountModel() { Amount = -transaction.Amount }, context);
+            await userAccountService.Update(transaction.UserAccount.Uid, new UpdateUserAccountModel() { Amount = transaction.Amount }, context);
         }
         if (type == TransactionType.Cashout)
         {

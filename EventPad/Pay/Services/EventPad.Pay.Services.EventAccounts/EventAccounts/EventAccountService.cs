@@ -69,22 +69,25 @@ public class EventAccountService : IEventAccountService
         return mapper.Map<EventAccountModel>(eventAccount);
     }
 
-    public async Task<EventAccountModel> Update(Guid id, UpdateEventAccountModel model)
+    public async Task<EventAccountModel> Update(Guid id, UpdateEventAccountModel model, PayDbContext context = null)
     {
         await updateModelValidator.CheckAsync(model);
 
-        using var context = await dbContextFactory.CreateDbContextAsync();
+        using var localContext = await dbContextFactory.CreateDbContextAsync();
 
-        var eventAccount = await context.EventAccounts.FirstOrDefaultAsync(x => x.Uid == id);
+        var ctx = context ?? localContext;
+
+        var eventAccount = await ctx.EventAccounts.FirstOrDefaultAsync(x => x.Uid == id);
 
         if (eventAccount == null)
             throw new ProcessException($"UserAccount (ID = {id}) not found.");
 
         eventAccount.Balance += model.Amount;
 
-        context.EventAccounts.Update(eventAccount);
+        ctx.EventAccounts.Update(eventAccount);
 
-        await context.SaveChangesAsync();
+        if (context == null)
+            await ctx.SaveChangesAsync();
 
         return mapper.Map<EventAccountModel>(eventAccount);
     }

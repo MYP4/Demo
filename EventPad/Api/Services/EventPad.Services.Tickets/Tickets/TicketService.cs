@@ -95,7 +95,10 @@ public class TicketService : ITicketService
 
         await action.BuyTicket(new BuyTicket()
         {
-            
+            UserAccountID = ticket.User.Uid,
+            EventAccountID = ticket.SpecificEvent.Uid,
+            Ticket = ticket.Uid,
+            Amount = ticket.SpecificEvent.Price
         });
 
 
