@@ -112,11 +112,6 @@ public class EventService : IEventService
 
         await context.Events.AddAsync(_event);
 
-        await action.CreateEventAccount(new CreateEventAccount()
-        {
-            Id = _event.Uid,
-        });
-
         await context.SaveChangesAsync();
 
         return mapper.Map<EventModel>(_event);
@@ -147,8 +142,6 @@ public class EventService : IEventService
 
         if (_event == null)
             throw new ProcessException($"Event (ID = {id}) not found.");
-
-        await action.DeleteEventAccount(_event.Uid);
 
         context.Events.Remove(_event);
 

@@ -9,7 +9,6 @@ public class TicketModel
 {
     public Guid Id { get; set; }
     public Guid SpecificId { get; set; }
-    public Guid UserId { get; set; }
 
     public TicketStatus Status { get; set; }
     public string FeedBack {  get; set; }
@@ -25,7 +24,6 @@ public class TicketModelProfile : Profile
             .BeforeMap<TicketModelActions>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.SpecificId, opt => opt.Ignore())
-            .ForMember(dest => dest.UserId, opt => opt.Ignore())
             ;
     }
 }
@@ -47,6 +45,5 @@ public class TicketModelActions : IMappingAction<Ticket, TicketModel>
 
         dest.Id = model.Uid;
         dest.SpecificId = model.SpecificEvent.Uid;
-        dest.UserId = model.User.Uid;
     }
 }

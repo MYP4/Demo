@@ -33,7 +33,7 @@ public class TicketService : ITicketService
 
     public async Task<IEnumerable<TicketModel>> GetAllTickets(int page = 1, int pageSize = 10, TicketModelFilter filter = null)
     {
-        var specific = filter?.SpecificId;
+        var _event = filter?.EventId;
         var user = filter?.UserId;
         var status = filter?.Status;
 
@@ -41,9 +41,9 @@ public class TicketService : ITicketService
 
         var tickets = context.Tickets.AsQueryable();
 
-        if (specific != null)
+        if (_event != null)
         {
-            tickets = tickets.Where(x => x.SpecificEvent.Uid == specific);
+            tickets = tickets.Where(x => x.SpecificEvent.Event.Uid == _event);
         }
         if (user != null)
         {
@@ -80,7 +80,6 @@ public class TicketService : ITicketService
 
         using var context = await dbContextFactory.CreateDbContextAsync();
 
-        var eventUid = model.EventId;
         var specific = context.SpecificEvents.FirstOrDefault(x => x.Uid == model.SpecificId);
         var user = context.Users.FirstOrDefault(x => x.Uid == model.UserId);
 
@@ -99,8 +98,8 @@ public class TicketService : ITicketService
 
         await action.BuyTicket(new BuyTicket()
         {
+            EventAccountId = ticket.SpecificEvent.Uid,
             UserAccountId = ticket.User.Uid,
-            EventAccountId = eventUid,
             Ticket = ticket.Uid,
             Amount = ticket.SpecificEvent.Price
         });
@@ -135,15 +134,13 @@ public class TicketService : ITicketService
 
         var ticket = await context.Tickets.FirstOrDefaultAsync(x => x.Uid == id);
 
-        var eventUid = ticket.SpecificEvent.Uid;
-
         if (ticket == null)
             throw new ProcessException($"Ticket (ID = {id}) not found.");
 
         await action.RefundTicket(new RefundTicket()
         {
             UserAccountId = ticket.User.Uid,
-            EventAccountId = eventUid,
+            EventAccountId = ticket.SpecificEvent.Uid,
             Ticket = ticket.Uid,
             Amount = ticket.SpecificEvent.Price
         });

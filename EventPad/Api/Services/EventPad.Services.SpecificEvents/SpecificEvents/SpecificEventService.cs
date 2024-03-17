@@ -2,6 +2,7 @@
 using EventPad.Api.Context;
 using EventPad.Api.Context.Entities;
 using EventPad.Common;
+using EventPad.Services.Actions;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -13,16 +14,19 @@ public class SpecificEventService : ISpecificEventService
     private readonly IMapper mapper;
     private readonly IModelValidator<CreateSpecificModel> createModelValidator;
     private readonly IModelValidator<UpdateSpecificEventModel> updateModelValidator;
+    private readonly IAction action;
 
     public SpecificEventService(IDbContextFactory<ApiDbContext> dbContextFactory,
         IMapper mapper,
         IModelValidator<CreateSpecificModel> createModelValidator,
-        IModelValidator<UpdateSpecificEventModel> updateModelValidator)
+        IModelValidator<UpdateSpecificEventModel> updateModelValidator,
+        IAction action)
     {
         this.dbContextFactory = dbContextFactory;
         this.mapper = mapper;
         this.createModelValidator = createModelValidator;
         this.updateModelValidator = updateModelValidator;
+        this.action = action;
     }
 
 
@@ -109,6 +113,11 @@ public class SpecificEventService : ISpecificEventService
 
         await context.SpecificEvents.AddAsync(_event);
 
+        await action.CreateEventAccount(new CreateEventAccount()
+        {
+            Id = _event.Uid,
+        });
+
         await context.SaveChangesAsync();
 
         return mapper.Map<SpecificEventModel>(_event);
@@ -139,6 +148,8 @@ public class SpecificEventService : ISpecificEventService
 
         if (_event == null)
             throw new ProcessException($"Specific Event (ID = {id}) not found.");
+
+        await action.DeleteEventAccount(_event.Uid);
 
         context.SpecificEvents.Remove(_event);
 

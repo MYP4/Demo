@@ -8,7 +8,6 @@ public class TicketResponce
 {
     public Guid Id { get; set; }
     public Guid UserId { get; set; }
-    public Guid EventId { get; set; }
     public Guid SpecificId { get; set; }
     public TicketStatus Status { get; set; }
     public string Feedback { get; set; }

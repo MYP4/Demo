@@ -9,7 +9,6 @@ namespace EventPad.Api.Services.Tickets;
 public class CreateTicketModel
 {
     public Guid SpecificId { get; set; }
-    public Guid EventId { get; set; }
     public Guid UserId { get; set; }
 }
 
@@ -54,15 +53,6 @@ public class CreateModelValidator : AbstractValidator<CreateTicketModel>
 {
     public CreateModelValidator(IDbContextFactory<ApiDbContext> contextFactory)
     {
-        RuleFor(x => x.EventId)
-            .NotEmpty().WithMessage("Event is required")
-            .Must((id) => 
-            {
-                using var context = contextFactory.CreateDbContext();
-                var found = context.Events.Any(a => a.Uid == id);
-                return found;
-            }).WithMessage("Event not fount");
-
         RuleFor(x => x.SpecificId)
             .NotEmpty().WithMessage("SpecificEvent is required")
             .Must((id) =>

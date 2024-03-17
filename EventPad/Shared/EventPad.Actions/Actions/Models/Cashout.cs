@@ -2,7 +2,7 @@
 
 public class Cashout
 {
-    public Guid? AccountID { get; set; }
+    public Guid? AccountId { get; set; }
     public float Amount { get; set; }
     public string Details { get; set; }
 }

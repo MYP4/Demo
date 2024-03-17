@@ -56,6 +56,7 @@ public class CreateModelActions : IMappingAction<CreateTransactionModel, Transac
 
         dest.EventAccountId = eventAccount.Id;
         dest.UserAccountId = userAccount.Id;
+        dest.Ticket = source.TicketId;
     }
 }
 

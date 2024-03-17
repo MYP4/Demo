@@ -7,3 +7,4 @@ public class RefundTicket
     public Guid Ticket { get; set; }
     public float Amount { get; set; }
 }
+ 
