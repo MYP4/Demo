@@ -1,16 +1,18 @@
 ﻿using Asp.Versioning;
 using AutoMapper;
+using EventPad.Api.Configuration;
 using EventPad.Api.Controllers.Tickets;
 using EventPad.Api.Services.Tickets;
 using EventPad.Logger;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventPad.Api.Controllers;
 
-
 [ApiController]
 [ApiVersion("1.0")]
 [ApiExplorerSettings(GroupName = "Product")]
+//[Authorize(policy: AppScopes.Admin)]
 [Route("v{version:apiVersion}/[controller]")]
 public class TicketController : ControllerBase
 {

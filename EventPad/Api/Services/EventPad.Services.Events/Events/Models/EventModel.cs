@@ -53,7 +53,7 @@ public class EventModelActions : IMappingAction<Event, EventModel>
         var model = db.Events.FirstOrDefault(x => x.Id == source.Id);
 
         dest.Id = model.Uid;
-        dest.AdminId = model.Admin.Uid;
+        dest.AdminId = model.Admin.Id;
         dest.AdminName = model.Admin.FirstName + " " + model.Admin.SecondName;
     }
 }

@@ -1,6 +1,8 @@
-﻿namespace EventPad.Api.Context.Entities;
+﻿using Microsoft.AspNetCore.Identity;
 
-public class User : BaseEntity
+namespace EventPad.Api.Context.Entities;
+
+public class User : IdentityUser<Guid>
 {
     public string FirstName { get; set; }
     public string SecondName { get; set; }

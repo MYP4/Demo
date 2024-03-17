@@ -11,7 +11,7 @@ public class Event : BaseEntity
 
     public Guid Account {  get; set; }
 
-    public int AdminId { get; set; }
+    public Guid AdminId { get; set; }
     public virtual User Admin { get; set; }
 
     public virtual ICollection<EventPhoto> Photos { get; set; }

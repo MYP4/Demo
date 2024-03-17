@@ -1,6 +1,5 @@
 ﻿namespace EventPad.RabbitMq;
 
-
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
@@ -30,6 +29,7 @@ public class RabbitMq : IRabbitMq, IDisposable
         channel?.Close();
         connection?.Close();
     }
+
 
     private IModel GetChannel()
     {

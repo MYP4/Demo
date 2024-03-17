@@ -47,7 +47,7 @@ public class TicketService : ITicketService
         }
         if (user != null)
         {
-            tickets = tickets.Where(x => x.User.Uid == user);
+            tickets = tickets.Where(x => x.User.Id == user);
         }
         if (status != null)
         {
@@ -81,7 +81,7 @@ public class TicketService : ITicketService
         using var context = await dbContextFactory.CreateDbContextAsync();
 
         var specific = context.SpecificEvents.FirstOrDefault(x => x.Uid == model.SpecificId);
-        var user = context.Users.FirstOrDefault(x => x.Uid == model.UserId);
+        var user = context.Users.FirstOrDefault(x => x.Id == model.UserId);
 
         var tickets = context.Tickets.Where(x => x.SpecificEvent.Uid == model.SpecificId);
 
@@ -99,7 +99,7 @@ public class TicketService : ITicketService
         await action.BuyTicket(new BuyTicket()
         {
             EventAccountId = ticket.SpecificEvent.Uid,
-            UserAccountId = ticket.User.Uid,
+            UserAccountId = ticket.User.Id,
             Ticket = ticket.Uid,
             Amount = ticket.SpecificEvent.Price
         });
@@ -139,7 +139,7 @@ public class TicketService : ITicketService
 
         await action.RefundTicket(new RefundTicket()
         {
-            UserAccountId = ticket.User.Uid,
+            UserAccountId = ticket.User.Id,
             EventAccountId = ticket.SpecificEvent.Uid,
             Ticket = ticket.Uid,
             Amount = ticket.SpecificEvent.Price

@@ -40,7 +40,7 @@ public class CreateModelActions : IMappingAction<CreateTicketModel, Ticket>
     {
         using var db = dbContextFactory.CreateDbContext();
 
-        var user = db.Users.FirstOrDefault(x => x.Uid == sourse.UserId);
+        var user = db.Users.FirstOrDefault(x => x.Id == sourse.UserId);
         var specific = db.SpecificEvents.FirstOrDefault(x => x.Uid == sourse.SpecificId);
 
         dest.UserId = user.Id;
@@ -67,7 +67,7 @@ public class CreateModelValidator : AbstractValidator<CreateTicketModel>
             .Must((id) =>
             {
                 using var context = contextFactory.CreateDbContext();
-                var found = context.Users.Any(a => a.Uid == id);
+                var found = context.Users.Any(a => a.Id == id);
                 return found;
             }).WithMessage("Event not fount");
     }

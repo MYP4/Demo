@@ -1,9 +1,11 @@
 ﻿namespace EventPad.Api.Context;
 
 using EventPad.Api.Context.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-public class ApiDbContext : DbContext
+public class ApiDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {
     public static readonly string Schema = "main";
 

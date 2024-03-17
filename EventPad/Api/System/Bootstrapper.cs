@@ -1,5 +1,6 @@
 ﻿namespace EventPad.Api;
 
+using EventPad.Api.Configuration;
 using EventPad.Api.Context.Seeder;
 using EventPad.Api.Services.Events;
 using EventPad.Api.Services.Specific;

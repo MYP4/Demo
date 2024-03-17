@@ -1,9 +1,10 @@
 ﻿namespace EventPad.Api.Context.Seeder;
 
 using EventPad.Api.Context;
+using EventPad.Api.Context.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-//using EventPad.Services.UserAccount;
 using System;
 
 public static class DbSeeder
@@ -23,8 +24,8 @@ public static class DbSeeder
     {
         Task.Run(async () =>
         {
+            await AddAdministrator(serviceProvider);
             await AddDemoData(serviceProvider);
-            //await AddAdministrator(serviceProvider);
         })
             .GetAwaiter()
             .GetResult();
@@ -45,31 +46,47 @@ public static class DbSeeder
         if (await context.Events.AnyAsync())
             return;
 
-        await context.Events.AddRangeAsync(new DemoHelper().GetEvents);
+        //await context.Events.AddRangeAsync(new DemoHelper().GetEvents);
 
         await context.SaveChangesAsync();
     }
 
-    //private static async Task AddAdministrator(IServiceProvider serviceProvider)
-    //{
-    //    using var scope = ServiceScope(serviceProvider);
-    //    if (scope == null)
-    //        return;
+    private static async Task AddAdministrator(IServiceProvider serviceProvider)
+    {
+        using var scope = ServiceScope(serviceProvider);
+        if (scope == null)
+            return;
 
-    //    var settings = scope.ServiceProvider.GetService<DbSettings>();
-    //    if (!(settings.Init?.AddAdministrator ?? false))
-    //        return;
+        //var settings = scope.ServiceProvider.GetService<DbSettings>();
+        //if (!(settings.Init?.AddAdministrator ?? false))
+        //    return;
 
-    //    var userAccountService = scope.ServiceProvider.GetService<IUserAccountService>();
+        var userManager = scope.ServiceProvider.GetService<UserManager<User>>();
 
-    //    if (!(await userAccountService.IsEmpty()))
-    //        return;
+        if ((await userManager.Users.AnyAsync()))
+            return;
 
-    //    await userAccountService.Create(new RegisterUserAccountModel()
-    //    {
-    //        Name = settings.Init.Administrator.Name,
-    //        Email = settings.Init.Administrator.Email,
-    //        Password = settings.Init.Administrator.Password,
-    //    });
-    //}
+        var adminId = Guid.Parse("5152F065-E458-4869-B4D0-4C11F72DEECA");
+
+        var admin = new User()
+        {
+            Id = adminId,
+
+            FirstName = "Admin",
+            SecondName = "Admin",
+            Role = UserRole.Administrator,
+            Ratings = 0.0,
+            Account = adminId,
+
+            UserName = "Admin@adm.com",  
+            EmailConfirmed = true,
+            PhoneNumber = null,
+            PhoneNumberConfirmed = false
+        };
+
+        await userManager.CreateAsync(admin);
+        await userManager.AddPasswordAsync(admin, "123456");
+
+
+    }
 }

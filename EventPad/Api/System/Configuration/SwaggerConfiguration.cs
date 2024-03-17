@@ -62,11 +62,11 @@ public static class SwaggerConfiguration
                     Password = new OpenApiOAuthFlow
                     {
                         TokenUrl = new Uri($"{mainSettings.PublicUrl}/connect/token"),
-                        //Scopes = new Dictionary<string, string>
-                        //{
-                        //    { "Admin", "Admin scope" },
-                        //    { "User", "User scope" }
-                        //}
+                        Scopes = new Dictionary<string, string>
+                        {
+                            { "Admin", "Admin scope" },
+                            { "User", "User scope" }
+                        }
                     }
                 }
             });

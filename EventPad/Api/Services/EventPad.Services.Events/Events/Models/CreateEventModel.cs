@@ -47,7 +47,7 @@ public class CreateModelActions : IMappingAction<CreateEventModel, Event>
     {
         using var db = dbContextFactory.CreateDbContext();
         //var account = eventAccountService.Create().GetAwaiter().GetResult();
-        var admin = db.Users.FirstOrDefault(x => x.Uid == source.AdminId);
+        var admin = db.Users.FirstOrDefault(x => x.Id == source.AdminId);
 
         dest.AdminId = admin.Id;
         //dest.EventAccount = account;
@@ -68,7 +68,7 @@ public class CreateEventModelValidator : AbstractValidator<CreateEventModel>
             .Must((id) =>
             {
                 using var context = contextFactory.CreateDbContext();
-                var found = context.Users.Any(a => a.Uid == id);
+                var found = context.Users.Any(a => a.Id == id);
                 return found;
             }).WithMessage("Admin not found");
 
