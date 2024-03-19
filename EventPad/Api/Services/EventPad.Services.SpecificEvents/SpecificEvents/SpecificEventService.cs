@@ -103,6 +103,17 @@ public class SpecificEventService : ISpecificEventService
         return result;
     }
 
+    public async Task<SpecificEventModel> GetByCode(string code)
+    {
+        using var context = await dbContextFactory.CreateDbContextAsync();
+
+        var _event = await context.SpecificEvents.FirstOrDefaultAsync(x => x.Code == code);
+
+        var result = mapper.Map<SpecificEventModel>(_event);
+
+        return result;
+    }
+
     public async Task<SpecificEventModel> Create(CreateSpecificModel model)
     {
         await createModelValidator.CheckAsync(model);

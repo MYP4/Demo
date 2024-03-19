@@ -41,7 +41,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPad.Api.Context.Migrat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPad.Api.Services.Events", "Api\Services\EventPad.Services.Events\EventPad.Api.Services.Events.csproj", "{4D55AF14-0E87-4368-AC41-17E7F1037615}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPad.Api.Services.SpecificEvent", "Api\Services\EventPad.Services.SpecificEvents\EventPad.Api.Services.SpecificEvent.csproj", "{706CF825-CCB6-4161-B659-C09C893D92B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPad.Api.Services.SpecificEvents", "Api\Services\EventPad.Services.SpecificEvents\EventPad.Api.Services.SpecificEvents.csproj", "{706CF825-CCB6-4161-B659-C09C893D92B5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Systems", "Systems", "{B32F8DBA-E08B-4B78-8C5E-BB6316CF0161}"
 EndProject
@@ -68,6 +68,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPad.Actions", "Shared\EventPad.Actions\EventPad.Actions.csproj", "{5FE972E6-11B5-46EF-A4C2-812771A9EEDF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPad.Pay.Services.Transactions", "Pay\Services\EventPad.Pay.Services.Transactions\EventPad.Pay.Services.Transactions.csproj", "{FFE07AFE-7B40-4BEC-81DF-2F739F20241B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventPad.Api.Service.Users", "Api\Services\EventPad.Api.Service.User\EventPad.Api.Service.Users.csproj", "{2C9A03FE-3312-4C94-8C80-0AE1A45CCF96}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -163,6 +165,10 @@ Global
 		{FFE07AFE-7B40-4BEC-81DF-2F739F20241B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFE07AFE-7B40-4BEC-81DF-2F739F20241B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFE07AFE-7B40-4BEC-81DF-2F739F20241B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C9A03FE-3312-4C94-8C80-0AE1A45CCF96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C9A03FE-3312-4C94-8C80-0AE1A45CCF96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C9A03FE-3312-4C94-8C80-0AE1A45CCF96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C9A03FE-3312-4C94-8C80-0AE1A45CCF96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -198,6 +204,7 @@ Global
 		{48D626E0-24C6-4CEE-A251-7C9B1D516FE9} = {7EB24221-9E77-4114-A9AC-9F7BB2ACC3C0}
 		{5FE972E6-11B5-46EF-A4C2-812771A9EEDF} = {7EB24221-9E77-4114-A9AC-9F7BB2ACC3C0}
 		{FFE07AFE-7B40-4BEC-81DF-2F739F20241B} = {70CB18CD-CBA9-4D02-B2FE-E92371F71087}
+		{2C9A03FE-3312-4C94-8C80-0AE1A45CCF96} = {D18A68DA-8570-41C9-A32D-62633256D8DF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AA88F5F6-BF6B-4735-B04A-FDF8C7ED7572}

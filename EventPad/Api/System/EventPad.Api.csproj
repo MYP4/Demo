@@ -43,8 +43,9 @@
     <ProjectReference Include="..\Data\EventPad.Api.Context.Migrations\EventPad.Api.Context.Migrations.PgSql\EventPad.Api.Context.Migrations.PgSql.csproj" />
     <ProjectReference Include="..\Data\EventPad.Api.Context.Seeder\EventPad.Api.Context.Seeder.csproj" />
     <ProjectReference Include="..\Data\EventPad.Api.Context\EventPad.Api.Context.csproj" />
+    <ProjectReference Include="..\Services\EventPad.Api.Service.User\EventPad.Api.Service.Users.csproj" />
     <ProjectReference Include="..\Services\EventPad.Services.Events\EventPad.Api.Services.Events.csproj" />
-    <ProjectReference Include="..\Services\EventPad.Services.SpecificEvents\EventPad.Api.Services.SpecificEvent.csproj" />
+    <ProjectReference Include="..\Services\EventPad.Services.SpecificEvents\EventPad.Api.Services.SpecificEvents.csproj" />
     <ProjectReference Include="..\Services\EventPad.Services.Tickets\EventPad.Api.Services.Tickets.csproj" />
   </ItemGroup>
 

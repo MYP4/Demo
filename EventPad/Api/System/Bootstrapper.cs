@@ -5,6 +5,7 @@ using EventPad.Api.Context.Seeder;
 using EventPad.Api.Services.Events;
 using EventPad.Api.Services.Specific;
 using EventPad.Api.Services.Tickets;
+using EventPad.Api.Services.Users;
 using EventPad.Logger;
 using EventPad.RabbitMq;
 using EventPad.Services.Actions;
@@ -23,6 +24,7 @@ public static class Bootstrapper
             .AddEventService()
             .AddSpecificEventService()
             .AddTicketService()
+            .AddUserService()
             .AddActions()
             .AddRabbitMq()
             ;

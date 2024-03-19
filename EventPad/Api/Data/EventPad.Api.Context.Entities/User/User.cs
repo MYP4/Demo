@@ -7,7 +7,7 @@ public class User : IdentityUser<Guid>
     public string FirstName { get; set; }
     public string SecondName { get; set; }
     public UserRole Role { get; set; }
-    public double Ratings { get; set; }
+    public float Rating { get; set; }
 
     public Guid Account { get; set; }
 

@@ -75,7 +75,7 @@ public static class DbSeeder
             FirstName = "Admin",
             SecondName = "Admin",
             Role = UserRole.Administrator,
-            Ratings = 0.0,
+            Rating = 0,
             Account = adminId,
 
             UserName = "Admin@adm.com",  
