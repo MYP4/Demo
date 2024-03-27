@@ -4,7 +4,7 @@ using EventPad.Api.Services.Users;
 
 namespace EventPad.Api.Controllers.Users;
 
-public class UserResponce
+public class UserResponse
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; }
@@ -19,6 +19,6 @@ public class UserResponceProfile : Profile
 {
     public UserResponceProfile()
     {
-        CreateMap<UserModel, UserResponce>();
+        CreateMap<UserModel, UserResponse>();
     }
 }

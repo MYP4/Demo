@@ -69,7 +69,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPad.Actions", "Shared\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPad.Pay.Services.Transactions", "Pay\Services\EventPad.Pay.Services.Transactions\EventPad.Pay.Services.Transactions.csproj", "{FFE07AFE-7B40-4BEC-81DF-2F739F20241B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventPad.Api.Service.Users", "Api\Services\EventPad.Api.Service.User\EventPad.Api.Service.Users.csproj", "{2C9A03FE-3312-4C94-8C80-0AE1A45CCF96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPad.Api.Service.Users", "Api\Services\EventPad.Api.Service.User\EventPad.Api.Service.Users.csproj", "{2C9A03FE-3312-4C94-8C80-0AE1A45CCF96}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{4BE938EF-1DBA-4C74-8356-2BE9896EA2F1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventPad.Web", "Web\EventPad.Web\EventPad.Web.csproj", "{9A971C5A-9897-43ED-8DE3-7D7564A94F86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -169,6 +173,10 @@ Global
 		{2C9A03FE-3312-4C94-8C80-0AE1A45CCF96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C9A03FE-3312-4C94-8C80-0AE1A45CCF96}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C9A03FE-3312-4C94-8C80-0AE1A45CCF96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A971C5A-9897-43ED-8DE3-7D7564A94F86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A971C5A-9897-43ED-8DE3-7D7564A94F86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A971C5A-9897-43ED-8DE3-7D7564A94F86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A971C5A-9897-43ED-8DE3-7D7564A94F86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -205,6 +213,7 @@ Global
 		{5FE972E6-11B5-46EF-A4C2-812771A9EEDF} = {7EB24221-9E77-4114-A9AC-9F7BB2ACC3C0}
 		{FFE07AFE-7B40-4BEC-81DF-2F739F20241B} = {70CB18CD-CBA9-4D02-B2FE-E92371F71087}
 		{2C9A03FE-3312-4C94-8C80-0AE1A45CCF96} = {D18A68DA-8570-41C9-A32D-62633256D8DF}
+		{9A971C5A-9897-43ED-8DE3-7D7564A94F86} = {4BE938EF-1DBA-4C74-8356-2BE9896EA2F1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AA88F5F6-BF6B-4735-B04A-FDF8C7ED7572}

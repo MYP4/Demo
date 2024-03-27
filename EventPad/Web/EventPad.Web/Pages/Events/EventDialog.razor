@@ -1,0 +1,110 @@
+﻿@using EventPad.Web.Pages.Events.Models
+@using EventPad.Web.Pages.Events.Services
+
+@inherits MudComponentBase
+
+@inject IEventService EventService
+
+<MudDialog>
+    <DialogContent>
+        <MudForm Model="Model" @ref="form">
+            <MudGrid>
+                <MudItem xs="12" sm="6">
+                    <MudTextField Label="Name" @bind-Value="Model.Name"
+                                  For="@(() => Model.Name)"
+                                  Required="true"
+                                  RequiredError="Name is required!">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudSelect @ref="selectOwner" T="Guid" Label="Admin" @bind-Value="Model.AdminId" For="@(() => Model.AdminId)">
+                        <MudSelectItem T="Guid" Value="Guid.Empty">&nbsp;</MudSelectItem>
+                        @foreach (var owner in Owners)
+                        {
+                            <MudSelectItem T="Guid" Value="@owner.Id">@owner.FirstName @owner.SecondName</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="Description"
+                                  Lines="5"
+                                  For="@(() => Model.Description)"
+                                  @bind-Value="Model.Description">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField Label="Price"
+                                  Type="number"
+                                  Step="0.01"
+                                  For="@(() => Model.Price)"
+                                  @bind-Value="Model.Price">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField Label="Address"
+                                  For="@(() => Model.Address)"
+                                  @bind-Value="Model.Address">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField Label="Rating"
+                                  Type="number"
+                                  Step="0.1"
+                                  For="@(() => Model.Rating)"
+                                  @bind-Value="Model.Rating">
+                    </MudTextField>
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter] public Guid? EventId { get; set; }
+
+    [Parameter] public EventModel Model { get; set; } = new();
+
+    private MudForm form = default!;
+
+    MudSelect<Guid> selectOwner = default!;
+    private List<OwnerModel> Owners { get; set; } = new List<OwnerModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var owners = await EventService.GetOwnerList();
+        Owners.AddRange(owners);
+
+        if (EventId != null)
+        {
+            var model = await EventService.GetEvent(EventId.Value);
+
+            Model.Id = model.Id;
+            Model.Name = model.Name;
+            Model.Description = model.Description;
+            Model.Price = model.Price;
+            Model.Address = model.Address;
+            Model.Type = model.Type;
+            Model.Rating = model.Rating;
+            Model.AdminId = model.AdminId;
+            Model.AdminName = model.AdminName;
+        }
+    }
+
+    async Task Submit()
+    {
+        await form.Validate();
+        if (form.IsValid)
+        {
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+    }
+
+    void Cancel() => MudDialog.Cancel();
+}

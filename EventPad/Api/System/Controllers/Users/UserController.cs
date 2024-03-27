@@ -26,11 +26,11 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("")]
-    public async Task<IEnumerable<UserResponce>> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] UserFilterRequest filter = null)
+    public async Task<IEnumerable<UserResponse>> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] UserFilterRequest filter = null)
     {
         var result = await UserService.GetAllUsers(page, pageSize, mapper.Map<UserModelFilter>(filter));
 
-        return mapper.Map<IEnumerable<UserResponce>>(result);
+        return mapper.Map<IEnumerable<UserResponse>>(result);
     }
 
     [HttpGet("{id:Guid}")]
@@ -43,25 +43,25 @@ public class UserController : ControllerBase
             return NotFound();
         }
 
-        return Ok(mapper.Map<UserResponce>(result));
+        return Ok(mapper.Map<UserResponse>(result));
     }
 
     [HttpPost("")]
-    public async Task<UserResponce> Create(RegisterUserRequest request)
+    public async Task<UserResponse> Create(RegisterUserRequest request)
     {
         var result = await UserService.Create(mapper.Map<RegiserUserModel>(request));
 
-        return mapper.Map<UserResponce>(result);
+        return mapper.Map<UserResponse>(result);
     }
 
 
     [HttpPut("{id:Guid}")]
-    public async Task<UserResponce> Update([FromRoute] Guid id, UpdateUserRequest request)
+    public async Task<UserResponse> Update([FromRoute] Guid id, UpdateUserRequest request)
     {
         //var model = mapper.Map<UpdateEventModel>(request);
         var result = await UserService.Update(id, mapper.Map<UpdateUserModel>(request));
 
-        return mapper.Map<UserResponce>(result);
+        return mapper.Map<UserResponse>(result);
     }
 
 
