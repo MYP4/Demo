@@ -9,5 +9,4 @@ public interface IEventService
     Task AddEvent(CreateModel model);
     Task EditEvent(Guid eventId, UpdateModel model);
     Task DeleteEvent(Guid eventId);
-    Task<IEnumerable<OwnerModel>> GetOwnerList();
 }

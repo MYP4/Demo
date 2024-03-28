@@ -31,7 +31,6 @@ public class EventService(HttpClient httpClient) : IEventService
 
     public async Task AddEvent(CreateModel model)
     {
-
         var requestContent = JsonContent.Create(model);
         var response = await httpClient.PostAsync("v1/event", requestContent);
 
@@ -66,18 +65,5 @@ public class EventService(HttpClient httpClient) : IEventService
         {
             throw new Exception(content);
         }
-    }
-
-    public async Task<IEnumerable<OwnerModel>> GetOwnerList()
-    {
-        var response = await httpClient.GetAsync("/v1/owner");
-        var content = await response.Content.ReadAsStringAsync();
-
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new Exception(content);
-        }
-
-        return await response.Content.ReadFromJsonAsync<IEnumerable<OwnerModel>>() ?? new List<OwnerModel>();
     }
 }

@@ -1,3 +1,59 @@
-﻿﻿<MudMenu Color="Color.Inherit" Icon="@Icons.Material.Filled.Face" AnchorOrigin="Origin.BottomRight" >
-    <MudMenuItem Link="/logout">Logout</MudMenuItem>
-</MudMenu>
+﻿@using EventPad.Web.Pages.Users.Models
+@using EventPad.Web.Pages.Users.Services
+
+@inject IUserService userService
+
+
+<MudText @bind-Value="Model.FirstName"></MudText>
+﻿<MudNavMenu Color="Color.Inherit" Icon="@Icons.Material.Filled.Face" AnchorOrigin="Origin.BottomRight">
+
+    <MudNavLink Href="/account" Match="NavLinkMatch.All">Account</MudNavLink>
+    <MudNavLink Href="/events" Match="NavLinkMatch.Prefix">Events</MudNavLink>
+    <MudNavLink Href="/tickets" Match="NavLinkMatch.Prefix">Tickets</MudNavLink>
+
+    <MudNavLink Href="/logout">Logout</MudNavLink>
+</MudNavMenu>
+
+
+
+@code {
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter] public Guid? UserId { get; set; }
+
+    [Parameter] public UserModel Model { get; set; } = new();
+
+    private MudForm form = default!;
+
+    private List<UserModel> Users { get; set; } = new List<UserModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var owners = await userService.GetUsers();
+        Users.AddRange(owners);
+
+
+        if (UserId != null)
+        {
+            var model = await userService.GetUser(UserId.Value);
+
+            Model.Id = model.Id;
+            Model.FirstName = model.FirstName;
+            Model.SecondName = model.SecondName;
+            Model.Email = model.Email;
+            Model.Rating = model.Rating;
+        }
+    }
+
+    async Task Submit()
+    {
+        await form.Validate();
+        if (form.IsValid)
+        {
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+    }
+
+    void Cancel() => MudDialog.Cancel();
+}

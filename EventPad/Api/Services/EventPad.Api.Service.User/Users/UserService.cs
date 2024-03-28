@@ -2,6 +2,7 @@
 using AutoMapper;
 using EventPad.Api.Context.Entities;
 using EventPad.Common;
+using EventPad.Services.Actions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,16 +13,18 @@ public class UserService : IUserService
     private readonly IMapper mapper;
     private readonly UserManager<User> userManager;
     private readonly IModelValidator<RegiserUserModel> registerUserModelValidator;
+    private readonly IAction action;
 
     public UserService(
         IMapper mapper,
         UserManager<User> userManager,
-        IModelValidator<RegiserUserModel> registerUserModelValidator
-    )
+        IModelValidator<RegiserUserModel> registerUserModelValidator,
+        IAction action)
     {
         this.mapper = mapper;
         this.userManager = userManager;
         this.registerUserModelValidator = registerUserModelValidator;
+        this.action = action;
     }
 
     public async Task<bool> IsEmpty()
@@ -68,9 +71,15 @@ public class UserService : IUserService
             PhoneNumberConfirmed = false
         };
 
+
         var result = await userManager.CreateAsync(user, model.Password);
         if (!result.Succeeded)
             throw new ProcessException($"Creating user account is wrong. {string.Join(", ", result.Errors.Select(s => s.Description))}");
+
+        await action.CreateUserAccount(new CreateUserAccount()
+        {
+            Id = user.Id,
+        });
 
         return mapper.Map<UserModel>(user);
     }

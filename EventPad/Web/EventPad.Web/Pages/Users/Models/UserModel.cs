@@ -1,8 +1,8 @@
-﻿using EventPad.Api.Context.Entities;
+﻿namespace EventPad.Web.Pages.Users.Models;
 
-namespace EventPad.Web.Pages.Events.Models;
+using EventPad.Api.Context.Entities;
 
-public class OwnerModel
+public class UserModel
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; }
@@ -11,3 +11,4 @@ public class OwnerModel
     public float Rating { get; set; }
     public string Email { get; set; }
 }
+

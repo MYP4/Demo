@@ -1,7 +1,9 @@
 ﻿using Asp.Versioning;
 using AutoMapper;
 using EventPad.Api.Services.Specific;
+using EventPad.Common.Extensions;
 using EventPad.Logger;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventPad.Api.Controllers.Specific;
@@ -57,9 +59,16 @@ public class SpecificEventController : ControllerBase
 
 
     [HttpPost("")]
+    [Authorize]
     public async Task<SpecificResponse> Create(CreateSpecificRequest request)
     {
-        var result = await specificEventService.Create(mapper.Map<CreateSpecificModel>(request));
+        var userId = User.GetUserGuid();
+
+        var model = mapper.Map<CreateSpecificModel>(request);
+
+        
+
+        var result = await specificEventService.Create(model);
 
         return mapper.Map<SpecificResponse>(result);
     }
