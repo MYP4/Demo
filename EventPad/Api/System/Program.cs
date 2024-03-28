@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 var mainSettings = Settings.Load<MainSettings>("Main");
 var logSettings = Settings.Load<LogSettings>("Log");
 var swaggerSettings = Settings.Load<SwaggerSettings>("Swagger");
+var identitySettings = Settings.Load<IdentitySettings>("Identity");
 
 
 builder.AddAppLogger(mainSettings, logSettings);
@@ -23,6 +24,8 @@ services.AddHttpContextAccessor();
 services.AddAppDbContext(builder.Configuration);
 
 services.AddAppCors();
+
+services.AddAppAuth(identitySettings);
 
 services.AddAppControllerAndViews();
 
@@ -49,7 +52,11 @@ var Logger = app.Services.GetRequiredService<IAppLogger>();
 app.UseAppSwagger();
 
 app.UseAppHealthChecks();
+
 app.UseAppCors();
+
+app.UseAppAuth();
+
 app.UseAppControllerAndViews();
 
 app.UseAppMiddlewares();

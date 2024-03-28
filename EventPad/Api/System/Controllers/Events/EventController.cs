@@ -1,10 +1,13 @@
 ﻿using Asp.Versioning;
 using AutoMapper;
 using EventPad.Api.Services.Events;
+using EventPad.Common.Extensions;
 using EventPad.Logger;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventPad.Api.Controllers.Events;
+
 
 [ApiController]
 [ApiVersion("1.0")]
@@ -48,9 +51,16 @@ public class EventController : ControllerBase
 
 
     [HttpPost("")]
+    [Authorize]
     public async Task<EventResponse> Create(CreateEventRequest request)
     {
-        var result = await eventService.Create(mapper.Map<CreateEventModel>(request));
+        var userId = User.GetUserGuid();
+
+        var model = mapper.Map<CreateEventModel>(request);
+
+        model.AdminId = userId;
+
+        var result = await eventService.Create(model);
 
         return mapper.Map<EventResponse>(result);
     }

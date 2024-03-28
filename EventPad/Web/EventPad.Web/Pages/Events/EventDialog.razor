@@ -17,11 +17,11 @@
                     </MudTextField>
                 </MudItem>
                 <MudItem xs="12" sm="6">
-                    <MudSelect @ref="selectOwner" T="Guid" Label="Admin" @bind-Value="Model.AdminId" For="@(() => Model.AdminId)">
+                    <MudSelect @ref="selectOwner" T="Guid" Label="Owner" @bind-Value="Model.AdminId" For="@(() => Model.AdminId)">
                         <MudSelectItem T="Guid" Value="Guid.Empty">&nbsp;</MudSelectItem>
                         @foreach (var owner in Owners)
                         {
-                            <MudSelectItem T="Guid" Value="@owner.Id">@owner.FirstName @owner.SecondName</MudSelectItem>
+                            <MudSelectItem T="Guid" Value="@owner.Id">@owner.FirstName + @owner.SecondName</MudSelectItem>
                         }
                     </MudSelect>
                 </MudItem>
@@ -30,28 +30,6 @@
                                   Lines="5"
                                   For="@(() => Model.Description)"
                                   @bind-Value="Model.Description">
-                    </MudTextField>
-                </MudItem>
-                <MudItem xs="12" sm="6">
-                    <MudTextField Label="Price"
-                                  Type="number"
-                                  Step="0.01"
-                                  For="@(() => Model.Price)"
-                                  @bind-Value="Model.Price">
-                    </MudTextField>
-                </MudItem>
-                <MudItem xs="12" sm="6">
-                    <MudTextField Label="Address"
-                                  For="@(() => Model.Address)"
-                                  @bind-Value="Model.Address">
-                    </MudTextField>
-                </MudItem>
-                <MudItem xs="12" sm="6">
-                    <MudTextField Label="Rating"
-                                  Type="number"
-                                  Step="0.1"
-                                  For="@(() => Model.Rating)"
-                                  @bind-Value="Model.Rating">
                     </MudTextField>
                 </MudItem>
             </MudGrid>

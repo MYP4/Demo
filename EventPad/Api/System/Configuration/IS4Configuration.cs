@@ -8,19 +8,6 @@ public static class IS4Configuration
 {
     public static IServiceCollection AddIS4(this IServiceCollection services)
     {
-        services
-            .AddIdentity<User, IdentityRole<Guid>>(opt =>
-            {
-                opt.Password.RequiredLength = 0;
-                opt.Password.RequireDigit = false;
-                opt.Password.RequireLowercase = false;
-                opt.Password.RequireUppercase = false;
-                opt.Password.RequireNonAlphanumeric = false;
-            })
-            .AddEntityFrameworkStores<ApiDbContext>()
-            .AddUserManager<UserManager<User>>()
-            .AddDefaultTokenProviders()
-            ;
 
         services
             .AddIdentityServer()

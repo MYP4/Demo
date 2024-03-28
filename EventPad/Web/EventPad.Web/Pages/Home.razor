@@ -1,6 +1,10 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.Authorization
+@layout MainLayout
+@attribute [Authorize]
 
 <PageTitle>Home</PageTitle>
 
-<h1>EventPad started!</h1>
+<h1>EventPad started</h1>
+
 
