@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using EventPad.Actions;
 using EventPad.Api.Context.Entities;
 using EventPad.Common;
 using EventPad.Services.Actions;
@@ -64,6 +65,7 @@ public class UserService : IUserService
             Role = model.Role,
             Rating = 0,
 
+
             UserName = model.Email,  
             Email = model.Email,
             EmailConfirmed = true, 
@@ -76,9 +78,22 @@ public class UserService : IUserService
         if (!result.Succeeded)
             throw new ProcessException($"Creating user account is wrong. {string.Join(", ", result.Errors.Select(s => s.Description))}");
 
+        user.Account = user.Id;
+
+        result = await userManager.UpdateAsync(user);
+        if (!result.Succeeded)
+            throw new ProcessException($"Creating user account is wrong. {string.Join(", ", result.Errors.Select(s => s.Description))}");
+
         await action.CreateUserAccount(new CreateUserAccount()
         {
             Id = user.Id,
+        });
+
+        await action.SendEmail(new SendEmailModel()
+        {
+            Email = model.Email,
+            Subject = "EventPad message",
+            Message = $"Thank you, {user.FirstName}, for registering on our portal.\n\rBest regards, EventPad administration."
         });
 
         return mapper.Map<UserModel>(user);

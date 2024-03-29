@@ -1,16 +1,14 @@
 using EventPad.Common;
 using EventPad.Logger;
 using EventPad.Settings;
-using EventPad.Pay;
-using EventPad.Pay.Configuration;
-using EventPad.Pay.Context;
-
+using EventPad.Worker;
+using EventPad.Worker.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var mainSettings = Settings.Load<MainSettings>("Main");
 var logSettings = Settings.Load<LogSettings>("Log");
-//var swaggerSettings = Settings.Load<SwaggerSettings>("Swagger");
+//var emailSettings = Settings.Load<EmailSettings>("Email");
 
 
 builder.AddAppLogger(mainSettings, logSettings);
@@ -19,33 +17,24 @@ var services = builder.Services;
 
 services.AddHttpContextAccessor();
 
-services.AddAppDbContext(builder.Configuration);
-
 services.AddAppHealthChecks();
 
 services.RegisterServices(builder.Configuration);
 
-services.AddAppAutoMappers();
-
-services.AddAppValidator();
 
 
 var app = builder.Build();
 
 var logger = app.Services.GetRequiredService<IAppLogger>();
 
-
-
 app.UseAppHealthChecks();
 
-app.UseAppMiddlewares();
 
 
-DbInitializer.Execute(app.Services);
 
 //DbSeeder.Execute(app.Services);
 
-logger.Information("The PayMS API was started");
+logger.Information("The Worker API was started");
 
 
 logger.Information("Try to connect to RabbitMq");
@@ -56,4 +45,4 @@ logger.Information("RabbitMq connected");
 
 app.Run();
 
-logger.Information("The PayMS API was stopped");
+logger.Information("The Worker API was stopped");

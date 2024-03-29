@@ -11,4 +11,7 @@ public interface IAction
 
     Task BuyTicket(BuyTicket model);
     Task RefundTicket(RefundTicket model);
+
+
+    Task SendEmail(SendEmailModel model);
 }

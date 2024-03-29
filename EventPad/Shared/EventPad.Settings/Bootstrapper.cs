@@ -38,4 +38,12 @@ public static class Bootstrapper
 
         return services;
     }
+
+    public static IServiceCollection AddEmailSettings(this IServiceCollection services, IConfiguration configuration = null)
+    {
+        var settings = Settings.Load<EmailSettings>("Email", configuration);
+        services.AddSingleton(settings);
+
+        return services;
+    }
 }

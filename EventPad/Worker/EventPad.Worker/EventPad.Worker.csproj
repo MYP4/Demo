@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\EventPad.SMTP\EventPad.SMTP.csproj" />
+    <ProjectReference Include="..\..\Shared\EventPad.Actions\EventPad.Actions.csproj" />
+    <ProjectReference Include="..\..\Shared\EventPad.Logger\EventPad.Logger.csproj" />
+    <ProjectReference Include="..\..\Shared\EventPad.RabbitMq\EventPad.RabbitMq.csproj" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Serilog" Version="3.1.1" />
+		<PackageReference Include="Serilog.Enrichers.CorrelationId" Version="3.0.1" />
+	</ItemGroup>
+	
+</Project>

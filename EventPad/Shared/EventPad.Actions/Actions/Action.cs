@@ -41,5 +41,10 @@ public class Action : IAction
     {
         await rabbitMq.PushAsync(QueueNames.REFUND_TICKET, model);
     }
+
+    public async Task SendEmail(SendEmailModel model)
+    {
+        await rabbitMq.PushAsync(QueueNames.SEND_EMAIL, model);
+    }
 }
 
