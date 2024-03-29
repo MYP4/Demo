@@ -1,24 +1,20 @@
 ﻿using AutoMapper;
-using EventPad.Api.Context.Entities;
 using EventPad.Api.Service.Users;
 
-namespace EventPad.Api.Controllers.Users;
-
-public class UserResponse
+namespace EventPad.Api.Controllers.UserProfile;
+public class UserProfileResponse
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; }
     public string SecondName { get; set; }
-    public UserRole Role { get; set; }
     public float Rating { get; set; }
     public string Email { get; set; }
 }
 
-
-public class UserResponceProfile : Profile
+public class UserProfileResponseProfile : Profile
 {
-    public UserResponceProfile()
+    public UserProfileResponseProfile()
     {
-        CreateMap<UserModel, UserResponse>();
+        CreateMap<UserProfileModel, UserProfileResponse>();
     }
 }

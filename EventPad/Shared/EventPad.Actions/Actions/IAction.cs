@@ -1,4 +1,5 @@
 ﻿using EventPad.Actions;
+using EventPad.Actions.Actions.Models;
 
 namespace EventPad.Services.Actions;
 
@@ -11,7 +12,6 @@ public interface IAction
 
     Task BuyTicket(BuyTicket model);
     Task RefundTicket(RefundTicket model);
-
 
     Task SendEmail(SendEmailModel model);
 }

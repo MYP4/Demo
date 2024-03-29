@@ -1,6 +1,6 @@
 ﻿using EventPad.Api.Context.Entities;
 
-namespace EventPad.Api.Services.Users;
+namespace EventPad.Api.Service.Users;
 
 public class UserModelFilter
 {

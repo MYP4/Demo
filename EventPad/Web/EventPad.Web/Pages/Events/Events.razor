@@ -16,7 +16,34 @@
 
 <MudText Typo="Typo.h4" Class="ma-8">Events</MudText>
 
-<MudTable Items="@EventList" Class="ma-8">
+<MudContainer>
+    <MudText Typo="Typo.h4" Class="ma-8">Events</MudText>
+
+    <MudGrid>
+        @foreach (var eventItem in EventList)
+        {
+            <MudItem xs="12" sm="6" md="3">
+                <MudCard>
+                    <MudCardMedia Image="images/door.jpg" Height="200" /> <!-- Replace with actual event image or a default image -->
+                    <MudCardContent>
+                        <MudText Typo="Typo.h5">@eventItem.Name</MudText>
+                            <MudText Typo="Typo.body2">@eventItem.Description</MudText>
+                            <MudText Typo="Typo.body2">Price: @eventItem.Price</MudText>
+                            <MudText Typo="Typo.body2">Address: @eventItem.Address</MudText>
+                            <MudText Typo="Typo.body2">Type: @eventItem.Type</MudText>
+                            <MudText Typo="Typo.body2">Rating: @eventItem.Rating</MudText>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="() => EditEvent(eventItem.Id)">Edit</MudButton>
+                            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="() => DeleteEvent(eventItem.Id)">Delete</MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+        }
+    </MudGrid>
+</MudContainer>
+
+@* <MudTable Items="@EventList" Class="ma-8">
     <ColGroup>
         <col style="width:50px;" />
         <col />
@@ -55,7 +82,7 @@
         <PagerContent>
             <MudTablePager />
         </PagerContent>
-    </MudTable>
+    </MudTable> *@
 
     @code {
     private IEnumerable<EventModel> EventList = new List<EventModel>();

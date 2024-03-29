@@ -7,7 +7,7 @@ using EventPad.Services.Actions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace EventPad.Api.Services.Users;
+namespace EventPad.Api.Service.Users;
 
 public class UserService : IUserService
 {
@@ -30,7 +30,7 @@ public class UserService : IUserService
 
     public async Task<bool> IsEmpty()
     {
-        return !(await userManager.Users.AnyAsync());
+        return !await userManager.Users.AnyAsync();
     }
 
     public async Task<IEnumerable<UserModel>> GetAllUsers(int page = 1, int pageSize = 10, UserModelFilter filter = null)
@@ -66,9 +66,9 @@ public class UserService : IUserService
             Rating = 0,
 
 
-            UserName = model.Email,  
+            UserName = model.Email,
             Email = model.Email,
-            EmailConfirmed = true, 
+            EmailConfirmed = true,
             PhoneNumber = null,
             PhoneNumberConfirmed = false
         };

@@ -1,10 +1,8 @@
 ﻿using Asp.Versioning;
 using AutoMapper;
-using EventPad.Api.Configuration;
 using EventPad.Api.Controllers.Tickets;
 using EventPad.Api.Services.Tickets;
 using EventPad.Logger;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventPad.Api.Controllers;

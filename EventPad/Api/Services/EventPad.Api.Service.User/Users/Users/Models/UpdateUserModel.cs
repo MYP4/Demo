@@ -2,7 +2,7 @@
 using EventPad.Api.Context.Entities;
 using FluentValidation;
 
-namespace EventPad.Api.Services.Users;
+namespace EventPad.Api.Service.Users;
 
 public class UpdateUserModel
 {

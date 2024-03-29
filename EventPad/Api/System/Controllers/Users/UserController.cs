@@ -1,7 +1,7 @@
 ﻿using Asp.Versioning;
 using AutoMapper;
 using EventPad.Api.Controllers.Users;
-using EventPad.Api.Services.Users;
+using EventPad.Api.Service.Users;
 using EventPad.Logger;
 using Microsoft.AspNetCore.Mvc;
 

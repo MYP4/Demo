@@ -1,4 +1,5 @@
 ﻿using EventPad.Actions;
+using EventPad.Actions.Actions.Models;
 using EventPad.Logger;
 using EventPad.Pay.Context.Entities;
 using EventPad.Pay.Services.EventAccounts;
@@ -48,7 +49,7 @@ public class TaskExecutor : ITaskExecutor
     {
         rabbitMq.Subscribe<CreateEventAccount>(QueueNames.CREATE_EVENT_ACCOUNT, async data =>
         {
-            logger.Information($"Starting creating of the event_account::: {data.Id}");
+            logger.Information($"Start creating of the event_account::: {data.Id}");
 
             await eventAccountService.Create(new CreateEventAccountModel() { EventId = data.Id });
 
@@ -60,7 +61,7 @@ public class TaskExecutor : ITaskExecutor
     {
         rabbitMq.Subscribe<CreateUserAccount>(QueueNames.CREATE_USER_ACCOUNT, async data =>
         {
-            logger.Information($"Starting creating of the user_account::: {data.Id}");
+            logger.Information($"Start creating of the user_account::: {data.Id}");
 
             await userAccountService.Create(new CreateUserAccountModel() { UserId = data.Id });
 
@@ -85,7 +86,7 @@ public class TaskExecutor : ITaskExecutor
     {
         rabbitMq.Subscribe<Guid>(QueueNames.DELETE_USER_ACCOUNT, async data =>
         {
-            logger.Information($"Starting removing of the user_account::: {data}");
+            logger.Information($"Start removing of the user_account::: {data}");
 
             await userAccountService.Delete(data);
 
@@ -98,7 +99,7 @@ public class TaskExecutor : ITaskExecutor
     {
         rabbitMq.Subscribe<BuyTicket>(QueueNames.BUY_TICKET, async data =>
         {
-            logger.Information($"Starting purchase creating of the transaction::: {data}");
+            logger.Information($"Start purchase creating of the transaction::: {data}");
 
             await transactionService.Create(new CreateTransactionModel()
             {
@@ -117,7 +118,7 @@ public class TaskExecutor : ITaskExecutor
     {
         rabbitMq.Subscribe<RefundTicket>(QueueNames.REFUND_TICKET, async data =>
         {
-            logger.Information($"Starting creating of the refund transaction::: {data}");
+            logger.Information($"Start creating of the refund transaction::: {data}");
 
             await transactionService.Create(new CreateTransactionModel()
             {

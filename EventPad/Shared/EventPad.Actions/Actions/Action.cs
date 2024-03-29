@@ -1,4 +1,5 @@
 ﻿using EventPad.Actions;
+using EventPad.Actions.Actions.Models;
 using EventPad.RabbitMq;
 
 namespace EventPad.Services.Actions;

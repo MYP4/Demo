@@ -1,4 +1,6 @@
-﻿namespace EventPad.Api.Services.Users;
+﻿using EventPad.Api.Service.Users;
+
+namespace EventPad.Api.Service.Users;
 
 public interface IUserService
 {
@@ -6,7 +8,7 @@ public interface IUserService
 
     Task<IEnumerable<UserModel>> GetAllUsers(int page = 1, int pageSize = 10, UserModelFilter filter = null);
     Task<UserModel> GetById(Guid id);
-    Task<UserModel> Create (RegiserUserModel model);
+    Task<UserModel> Create(RegiserUserModel model);
     Task<UserModel> Update(Guid id, UpdateUserModel model);
     Task Delete(Guid id);
 }
