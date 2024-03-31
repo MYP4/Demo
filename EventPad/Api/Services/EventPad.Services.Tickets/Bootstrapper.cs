@@ -7,6 +7,6 @@ public static class Bootstrapper
     public static IServiceCollection AddTicketService(this IServiceCollection services)
     {
         return services
-            .AddSingleton<ITicketService, TicketService>();
+            .AddScoped<ITicketService, TicketService>();
     }
 }

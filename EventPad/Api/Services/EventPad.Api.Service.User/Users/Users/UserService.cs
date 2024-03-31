@@ -6,13 +6,16 @@ using EventPad.Common;
 using EventPad.Services.Actions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace EventPad.Api.Service.Users;
 
 public class UserService : IUserService
 {
+    private readonly ILogger logger;
     private readonly IMapper mapper;
     private readonly UserManager<User> userManager;
+    private readonly IRightsService rightsService;
     private readonly IModelValidator<RegiserUserModel> registerUserModelValidator;
     private readonly IAction action;
 
@@ -20,12 +23,16 @@ public class UserService : IUserService
         IMapper mapper,
         UserManager<User> userManager,
         IModelValidator<RegiserUserModel> registerUserModelValidator,
-        IAction action)
+        IAction action,
+        ILogger logger,
+        IRightsService rightsService)
     {
         this.mapper = mapper;
         this.userManager = userManager;
         this.registerUserModelValidator = registerUserModelValidator;
         this.action = action;
+        this.logger = logger;
+        this.rightsService = rightsService;
     }
 
     public async Task<bool> IsEmpty()
@@ -62,7 +69,7 @@ public class UserService : IUserService
         {
             FirstName = model.FirstName,
             SecondName = model.SecondName,
-            Role = model.Role,
+            Role = UserRole.Regular,
             Rating = 0,
 
 
@@ -99,8 +106,14 @@ public class UserService : IUserService
         return mapper.Map<UserModel>(user);
     }
 
-    public async Task<UserModel> Update(Guid id, UpdateUserModel model)
+    public async Task<UserModel> Update(Guid id, UpdateUserModel model, Guid userId)
     {
+        if (!await rightsService.IsAdmin(userId))
+        {
+            if (userId != id)
+                throw new ProcessException($"You don't have access to this feature");
+        }
+
         var user = await userManager.FindByIdAsync(id.ToString());
         if (user == null)
             throw new ProcessException($"User {id} not found");
@@ -114,8 +127,14 @@ public class UserService : IUserService
         return mapper.Map<UserModel>(user);
     }
 
-    public async Task Delete(Guid id)
+    public async Task Delete(Guid id, Guid userId)
     {
+        if (!await rightsService.IsAdmin(userId))
+        {
+            if (userId != id)
+                throw new ProcessException($"You don't have access to this feature");
+        }
+
         var user = await userManager.FindByIdAsync(id.ToString());
         if (user == null)
             throw new ProcessException($"User {id} not found");
@@ -123,5 +142,13 @@ public class UserService : IUserService
         var result = await userManager.DeleteAsync(user);
         if (!result.Succeeded)
             throw new ProcessException($"Deleting user account is wrong. {string.Join(", ", result.Errors.Select(s => s.Description))}");
+    }
+
+    public async Task SetRights(Guid id, UserRole role, Guid userId)
+    {
+        if (!await rightsService.IsAdmin(userId))
+            throw new ProcessException($"You don't have access to this feature");
+
+        rightsService.SetRights(id, role);
     }
 }

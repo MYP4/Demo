@@ -2,7 +2,9 @@
 using AutoMapper;
 using EventPad.Api.Controllers.Tickets;
 using EventPad.Api.Services.Tickets;
+using EventPad.Common.Extensions;
 using EventPad.Logger;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventPad.Api.Controllers;
@@ -10,7 +12,6 @@ namespace EventPad.Api.Controllers;
 [ApiController]
 [ApiVersion("1.0")]
 [ApiExplorerSettings(GroupName = "Product")]
-//[Authorize(policy: AppScopes.Admin)]
 [Route("v{version:apiVersion}/[controller]")]
 public class TicketController : ControllerBase
 {
@@ -26,6 +27,7 @@ public class TicketController : ControllerBase
     }
 
     [HttpGet("")]
+    [Authorize]
     public async Task<IEnumerable<TicketResponce>> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] TicketFilterRequest filter = null)
     {
         var result = await ticketService.GetAllTickets(page, pageSize, mapper.Map<TicketModelFilter>(filter));
@@ -34,9 +36,12 @@ public class TicketController : ControllerBase
     }
 
     [HttpGet("{id:Guid}")]
+    [Authorize]
     public async Task<IActionResult> Get([FromRoute] Guid id)
     {
-        var result = await ticketService.GetById(id);
+        var userId = User.GetUserGuid();
+
+        var result = await ticketService.GetById(id, userId);
 
         if (result == null)
         {
@@ -47,6 +52,7 @@ public class TicketController : ControllerBase
     }
 
     [HttpPost("")]
+    [Authorize]
     public async Task<TicketResponce> Create(CreateTicketRequest request)
     {
         var result = await ticketService.Create(mapper.Map<CreateTicketModel>(request));
@@ -56,18 +62,23 @@ public class TicketController : ControllerBase
 
 
     [HttpPut("{id:Guid}")]
+    [Authorize]
     public async Task<TicketResponce> Update([FromRoute] Guid id, UpdateTicketModel request)
     {
-        //var model = mapper.Map<UpdateEventModel>(request);
-        var result = await ticketService.Update(id, mapper.Map<UpdateTicketModel>(request));
+        var userId = User.GetUserGuid();
+
+        var result = await ticketService.Update(id, mapper.Map<UpdateTicketModel>(request), userId);
 
         return mapper.Map<TicketResponce>(result);
     }
 
 
     [HttpDelete("{id:Guid}")]
+    [Authorize]
     public async Task Delete([FromRoute] Guid id)
     {
-        await ticketService.Delete(id);
+        var userId = User.GetUserGuid();
+
+        await ticketService.Delete(id, userId);
     }
 }

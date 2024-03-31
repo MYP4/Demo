@@ -9,8 +9,6 @@ public class Event : BaseEntity
     public EventType Type {  get; set; }
     public float Rating { get; set; }
 
-    public Guid Account {  get; set; }
-
     public Guid AdminId { get; set; }
     public virtual User Admin { get; set; }
 

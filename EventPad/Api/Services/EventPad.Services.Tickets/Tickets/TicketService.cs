@@ -1,12 +1,11 @@
 ﻿
 using AutoMapper;
-using EventPad.Common;
+using EventPad.Actions;
 using EventPad.Api.Context;
 using EventPad.Api.Context.Entities;
-using Microsoft.EntityFrameworkCore;
+using EventPad.Common;
 using EventPad.Services.Actions;
-using EventPad.Actions;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventPad.Api.Services.Tickets;
 
@@ -31,7 +30,7 @@ public class TicketService : ITicketService
         this.action = action;
     }
 
-    public async Task<IEnumerable<TicketModel>> GetAllTickets(int page = 1, int pageSize = 10, TicketModelFilter filter = null)
+    public async Task<IEnumerable<TicketModel>> GetAllTickets(int page = 1, int pageSize = 10, TicketModelFilter filter = null, string eventId = null, string userId = null)
     {
         var _event = filter?.EventId;
         var user = filter?.UserId;
@@ -63,7 +62,7 @@ public class TicketService : ITicketService
         return result;
     }
 
-    public async Task<TicketModel> GetById(Guid id)
+    public async Task<TicketModel> GetById(Guid id, Guid userId)
     {
         using var context = await dbContextFactory.CreateDbContextAsync();
 
@@ -110,7 +109,7 @@ public class TicketService : ITicketService
         return mapper.Map<TicketModel>(ticket);
     }
 
-    public async Task<TicketModel> Update(Guid id, UpdateTicketModel model)
+    public async Task<TicketModel> Update(Guid id, UpdateTicketModel model, Guid userId)
     {
         await updateModelValidator.CheckAsync(model);
 
@@ -128,7 +127,7 @@ public class TicketService : ITicketService
     }
 
     // работа с UID
-    public async Task Delete(Guid id)
+    public async Task Delete(Guid id, Guid userId)
     {
         using var context = await dbContextFactory.CreateDbContextAsync();
 

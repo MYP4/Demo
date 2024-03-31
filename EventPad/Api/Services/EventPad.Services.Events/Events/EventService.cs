@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EventPad.Api.Context;
 using EventPad.Api.Context.Entities;
+using EventPad.Api.Service.Users;
 using EventPad.Common;
 using EventPad.Services.Actions;
 using Microsoft.EntityFrameworkCore;
@@ -14,18 +15,21 @@ public class EventService : IEventService
     private readonly IAction action;
     private readonly IModelValidator<CreateEventModel> createModelValidator;
     private readonly IModelValidator<UpdateEventModel> updateModelValidator;
+    private readonly IRightsService rightsService;
 
     public EventService(IDbContextFactory<ApiDbContext> dbContextFactory,
         IMapper mapper,
         IAction action,
         IModelValidator<CreateEventModel> createModelValidator,
-        IModelValidator<UpdateEventModel> updateModelValidator)
+        IModelValidator<UpdateEventModel> updateModelValidator,
+        IRightsService rightsService)
     {
         this.dbContextFactory = dbContextFactory;
         this.action = action;
         this.mapper = mapper;
         this.createModelValidator = createModelValidator;
         this.updateModelValidator = updateModelValidator;
+        this.rightsService = rightsService;
     }
 
 
@@ -108,7 +112,6 @@ public class EventService : IEventService
         var _event = mapper.Map<Event>(model);
 
         _event.Uid = Guid.NewGuid();
-        _event.Account = _event.Uid;
 
         await context.Events.AddAsync(_event);
 
@@ -117,13 +120,22 @@ public class EventService : IEventService
         return mapper.Map<EventModel>(_event);
     }
 
-    public async Task<EventModel> Update(Guid id, UpdateEventModel model)
+    public async Task<EventModel> Update(Guid id, UpdateEventModel model, Guid userId)
     {
         await updateModelValidator.CheckAsync(model);
 
         using var context = await dbContextFactory.CreateDbContextAsync();
 
         var _event = await context.Events.FirstOrDefaultAsync(x => x.Uid == id);
+
+        if (_event == null)
+            throw new ProcessException($"Event (ID = {id}) not found.");
+
+        if (!await rightsService.IsAdmin(userId))
+        {
+            if (_event.Admin.Id != userId)
+                throw new ProcessException($"You don't have access to this feature");
+        }
 
         _event = mapper.Map(model, _event);
 
@@ -134,7 +146,7 @@ public class EventService : IEventService
         return mapper.Map<EventModel>(_event);
     }
 
-    public async Task Delete(Guid id)
+    public async Task Delete(Guid id, Guid userId)
     {
         using var context = await dbContextFactory.CreateDbContextAsync();
 
@@ -142,6 +154,12 @@ public class EventService : IEventService
 
         if (_event == null)
             throw new ProcessException($"Event (ID = {id}) not found.");
+
+        if (!await rightsService.IsAdmin(userId))
+        {
+            if (_event.Admin.Id != userId)
+                throw new ProcessException($"You don't have access to this feature");
+        }
 
         context.Events.Remove(_event);
 

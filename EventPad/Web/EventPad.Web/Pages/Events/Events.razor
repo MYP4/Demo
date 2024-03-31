@@ -14,7 +14,6 @@
 
 <PageTitle>Events</PageTitle>
 
-<MudText Typo="Typo.h4" Class="ma-8">Events</MudText>
 
 <MudContainer>
     <MudText Typo="Typo.h4" Class="ma-8">Events</MudText>
@@ -24,7 +23,7 @@
         {
             <MudItem xs="12" sm="6" md="3">
                 <MudCard>
-                    <MudCardMedia Image="images/door.jpg" Height="200" /> <!-- Replace with actual event image or a default image -->
+                    <MudCardMedia Image="images/door.jpg" Height="200" />
                     <MudCardContent>
                         <MudText Typo="Typo.h5">@eventItem.Name</MudText>
                             <MudText Typo="Typo.body2">@eventItem.Description</MudText>
@@ -41,50 +40,13 @@
                 </MudItem>
         }
     </MudGrid>
+
+    <MudButton Color="Color.Primary" Variant="Variant.Outlined" Class="ma-4" OnClick="AddEvent">Add Event</MudButton>
 </MudContainer>
 
-@* <MudTable Items="@EventList" Class="ma-8">
-    <ColGroup>
-        <col style="width:50px;" />
-        <col />
-        <col />
-        <col />
-        <col style="width:100px;" />
-    </ColGroup>
-    <ToolBarContent>
-        <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" OnClick="AddEvent">Add</MudButton>
-        <MudSpacer />
-        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
-    </ToolBarContent>
-    <HeaderContent>
-        <MudTh>Name</MudTh>
-        <MudTh>Admin</MudTh>
-        <MudTh>Description</MudTh>
-        <MudTh>Price</MudTh>
-        <MudTh>Address</MudTh>
-        <MudTh>Type</MudTh>
-        <MudTh>Rating</MudTh>
-        <MudTh></MudTh>
-    </HeaderContent>
-    <RowTemplate>
-            <MudTd DataLabel="Name">@context.Name</MudTd>
-            <MudTd DataLabel="Admin">@context.AdminName</MudTd>
-            <MudTd DataLabel="Description">@context.Description</MudTd>
-            <MudTd DataLabel="Price">@context.Price</MudTd>
-            <MudTd DataLabel="Address">@context.Address</MudTd>
-            <MudTd DataLabel="Type">@context.Type</MudTd>
-            <MudTd DataLabel="Rating">@context.Rating</MudTd>
-            <MudTd>
-                <MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="() => EditEvent(context.Id)" />
-                <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="() => DeleteEvent(context.Id)" />
-            </MudTd>
-        </RowTemplate>
-        <PagerContent>
-            <MudTablePager />
-        </PagerContent>
-    </MudTable> *@
 
-    @code {
+
+@code {
     private IEnumerable<EventModel> EventList = new List<EventModel>();
     private string searchString = string.Empty;
 
@@ -184,3 +146,103 @@
         await ReloadData();
     }
 }
+ 
+
+
+
+@* <MudContainer>
+    <MudText Typo="Typo.h4" Class="ma-8">Events</MudText>
+
+    <MudGrid>
+        <MudItem xs="12" sm="6" md="3">
+            <MudTextField Label="Search" @bind-Value="searchString" FullWidth="true" OnInput="ReloadData" />
+        </MudItem>
+    </MudGrid>
+
+    <MudGrid>
+        @foreach (var eventItem in EventList.Where(e => e.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)))
+        {
+            <MudItem xs="12" sm="6" md="3">
+                <MudCard>
+                    <MudCardMedia Image="images/door.jpg" Height="200" />
+                    <MudCardContent>
+                        <MudText Typo="Typo.h5">@eventItem.Name</MudText>
+                            <MudText Typo="Typo.body2">@eventItem.Description</MudText>
+                            <MudText Typo="Typo.body2">Price: @eventItem.Price</MudText>
+                            <MudText Typo="Typo.body2">Address: @eventItem.Address</MudText>
+                            <MudText Typo="Typo.body2">Type: @eventItem.Type</MudText>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="() => EditEvent(eventItem.Id)">Edit</MudButton>
+                            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="() => DeleteEvent(eventItem.Id)">Delete</MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+        }
+    </MudGrid>
+
+    <MudButton Color="Color.Primary" Variant="Variant.Outlined" Class="ma-4" OnClick="AddEvent">Add Event</MudButton>
+</MudContainer>
+
+@code {
+    private IEnumerable<EventModel> EventList = new List<EventModel>();
+    private string searchString = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReloadData();
+    }
+
+    private async Task AddEvent()
+    {
+        var parameters = new DialogParameters();
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true };
+
+        var dialog = await DialogService.ShowAsync<EventDialog>("Add Event", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            await ReloadData();
+        }
+    }
+
+    private async Task EditEvent(Guid eventId)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("EventId", eventId);
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true };
+        var dialog = await DialogService.ShowAsync<EventDialog>("Edit Event", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            await ReloadData();
+        }
+    }
+
+    private async Task DeleteEvent(Guid eventId)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Do you really want to delete this Event? This process cannot be undone.");
+        parameters.Add("ButtonText", "Delete");
+        parameters.Add("Color", Color.Error);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = await DialogService.ShowAsync<ConfirmationDialog>("Delete Event", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            await EventService.DeleteEvent(eventId);
+            await ReloadData();
+        }
+    }
+
+    private async Task ReloadData()
+    {
+        EventList = await EventService.GetEvents();
+    }
+} *@

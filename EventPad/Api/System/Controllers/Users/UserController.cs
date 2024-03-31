@@ -1,8 +1,11 @@
 ﻿using Asp.Versioning;
 using AutoMapper;
+using EventPad.Api.Configuration;
 using EventPad.Api.Controllers.Users;
 using EventPad.Api.Service.Users;
+using EventPad.Common.Extensions;
 using EventPad.Logger;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventPad.Api.Controllers;
@@ -10,7 +13,6 @@ namespace EventPad.Api.Controllers;
 [ApiController]
 [ApiVersion("1.0")]
 [ApiExplorerSettings(GroupName = "Product")]
-//[Authorize(policy: AppScopes.Admin)]
 [Route("v{version:apiVersion}/[controller]")]
 public class UserController : ControllerBase
 {
@@ -26,6 +28,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("")]
+    [Authorize(policy: AppScopes.Admin)]
     public async Task<IEnumerable<UserResponse>> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] UserFilterRequest filter = null)
     {
         var result = await UserService.GetAllUsers(page, pageSize, mapper.Map<UserModelFilter>(filter));
@@ -34,6 +37,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{id:Guid}")]
+    [Authorize(policy: AppScopes.Admin)]
     public async Task<IActionResult> Get([FromRoute] Guid id)
     {
         var result = await UserService.GetById(id);
@@ -56,18 +60,23 @@ public class UserController : ControllerBase
 
 
     [HttpPut("{id:Guid}")]
+    [Authorize]
     public async Task<UserResponse> Update([FromRoute] Guid id, UpdateUserRequest request)
     {
-        //var model = mapper.Map<UpdateEventModel>(request);
-        var result = await UserService.Update(id, mapper.Map<UpdateUserModel>(request));
+        var userId = User.GetUserGuid();
+
+        var result = await UserService.Update(id, mapper.Map<UpdateUserModel>(request), userId);
 
         return mapper.Map<UserResponse>(result);
     }
 
 
     [HttpDelete("{id:Guid}")]
+    [Authorize]
     public async Task Delete([FromRoute] Guid id)
     {
-        await UserService.Delete(id);
+        var userId = User.GetUserGuid();
+
+        await UserService.Delete(id, userId);
     }
 }

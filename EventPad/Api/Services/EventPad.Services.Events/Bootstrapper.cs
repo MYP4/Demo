@@ -7,6 +7,6 @@ public static class Bootstrapper
     public static IServiceCollection AddEventService(this IServiceCollection services)
     {
         return services
-            .AddSingleton<IEventService, EventService>();
+            .AddScoped<IEventService, EventService>();
     }
 }

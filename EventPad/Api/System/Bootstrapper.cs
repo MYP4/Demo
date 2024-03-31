@@ -22,10 +22,10 @@ public static class Bootstrapper
             .AddIdentitySettings()
             .AddAppLogger()
             .AddDbSeeder()
+            .AddUserService()
             .AddEventService()
             .AddSpecificEventService()
             .AddTicketService()
-            .AddUserService()
             .AddActions()
             .AddRabbitMq()
             ;

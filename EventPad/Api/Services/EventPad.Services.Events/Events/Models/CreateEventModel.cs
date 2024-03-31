@@ -27,7 +27,6 @@ public class CreateModelProfile : Profile
             .ForMember(dest => dest.AdminId, opt => opt.Ignore())
             .ForMember(dest => dest.Photos, opt => opt.Ignore())
             .ForMember(dest => dest.SpecificEvents, opt => opt.Ignore())
-            .ForMember(dest => dest.Account, opt => opt.Ignore())
             .ForMember(dest => dest.Rating, opt => opt.Ignore())
             .AfterMap<CreateModelActions>()
             ;

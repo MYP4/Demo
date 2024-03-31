@@ -28,26 +28,37 @@ public class SpecificEventController : ControllerBase
 
 
     [HttpGet("")]
+    [Authorize]
     public async Task<IEnumerable<SpecificResponse>> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] SpecificEventModelFilter filter = null)
     {
-        var result = await specificEventService.GetAllSpecificEvents(page, pageSize, mapper.Map<SpecificEventModelFilter>(filter));
+        var userId = User.GetUserGuid();
+
+        var result = await specificEventService.GetAllSpecificEvents(userId, page, pageSize, mapper.Map<SpecificEventModelFilter>(filter));
 
         return mapper.Map<IEnumerable<SpecificResponse>>(result);
     }
 
-    //[HttpGet("")]
-    //public async Task<IEnumerable<EventResponse>> GetUsersEvents([FromQuery] Guid id, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
-    //{
-    //    var result = await specificEventService.GetCurrentSpecificEvents(id, page, pageSize);
-
-    //    return mapper.Map<IEnumerable<EventResponse>>(result);
-    //}
-
 
     [HttpGet("{id:Guid}")]
+    [Authorize]
     public async Task<IActionResult> Get([FromRoute] Guid id)
     {
         var result = await specificEventService.GetById(id);
+
+        if (result == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(mapper.Map<SpecificResponse>(result));
+    }
+
+
+    [HttpGet("{code}")]
+    [Authorize]
+    public async Task<IActionResult> GetByCode([FromRoute] string code)
+    {
+        var result = await specificEventService.GetByCode(code);
 
         if (result == null)
         {
@@ -64,29 +75,30 @@ public class SpecificEventController : ControllerBase
     {
         var userId = User.GetUserGuid();
 
-        var model = mapper.Map<CreateSpecificModel>(request);
-
-        
-
-        var result = await specificEventService.Create(model);
+        var result = await specificEventService.Create(mapper.Map<CreateSpecificModel>(request), userId);
 
         return mapper.Map<SpecificResponse>(result);
     }
 
 
     [HttpPut("{id:Guid}")]
+    [Authorize]
     public async Task<SpecificResponse> Update([FromRoute] Guid id, UpdateSpecificRequest request)
     {
-        //var model = mapper.Map<UpdateEventModel>(request);
-        var result = await specificEventService.Update(id, mapper.Map<UpdateSpecificEventModel>(request));
+        var userId = User.GetUserGuid();
+
+        var result = await specificEventService.Update(id, mapper.Map<UpdateSpecificEventModel>(request), userId);
 
         return mapper.Map<SpecificResponse>(result);
     }
 
 
     [HttpDelete("{id:Guid}")]
+    [Authorize]
     public async Task Delete([FromRoute] Guid id)
     {
-        await specificEventService.Delete(id);
+        var userId = User.GetUserGuid();
+
+        await specificEventService.Delete(id, userId);
     }
 }

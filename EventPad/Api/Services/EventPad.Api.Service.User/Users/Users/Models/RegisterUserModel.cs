@@ -8,7 +8,6 @@ public class RegiserUserModel
 {
     public string FirstName { get; set; }
     public string SecondName { get; set; }
-    public UserRole Role { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
 
@@ -33,9 +32,6 @@ public class RegisterUserModelValidator : AbstractValidator<RegiserUserModel>
 
         RuleFor(x => x.SecondName)
             .NotEmpty().WithMessage("User second name is required");
-
-        RuleFor(x => x.Role)
-            .NotEmpty().WithMessage("User role is required");
 
         RuleFor(x => x.Email)
             .EmailAddress().WithMessage("Email is required");

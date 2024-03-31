@@ -67,19 +67,24 @@ public class EventController : ControllerBase
 
 
     [HttpPut("{id:Guid}")]
+    [Authorize]
     public async Task<EventResponse> Update([FromRoute] Guid id, UpdateEventRequest request)
     {
-        //var model = mapper.Map<UpdateEventModel>(request);
-        var result = await eventService.Update(id, mapper.Map<UpdateEventModel>(request));
+        var userId = User.GetUserGuid();
+
+        var result = await eventService.Update(id, mapper.Map<UpdateEventModel>(request), userId);
 
         return mapper.Map<EventResponse>(result);
     }
 
 
     [HttpDelete("{id:Guid}")]
+    [Authorize]
     public async Task Delete([FromRoute] Guid id)
     {
-        await eventService.Delete(id);
+        var userId = User.GetUserGuid();
+
+        await eventService.Delete(id, userId);
     }
 }
 

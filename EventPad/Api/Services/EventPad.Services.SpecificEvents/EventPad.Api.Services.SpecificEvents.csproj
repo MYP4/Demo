@@ -10,6 +10,8 @@
     <ProjectReference Include="..\..\..\Shared\EventPad.Actions\EventPad.Actions.csproj" />
     <ProjectReference Include="..\..\Data\EventPad.Api.Context.Entities\EventPad.Api.Context.Entities.csproj" />
     <ProjectReference Include="..\..\Data\EventPad.Api.Context\EventPad.Api.Context.csproj" />
+    <ProjectReference Include="..\EventPad.Api.Service.User\EventPad.Api.Service.Users.csproj" />
+    <ProjectReference Include="..\EventPad.Services.Events\EventPad.Api.Services.Events.csproj" />
   </ItemGroup>
 
 </Project>
