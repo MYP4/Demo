@@ -8,10 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\EventPad.SMTP\EventPad.SMTP.csproj" />
     <ProjectReference Include="..\..\Shared\EventPad.Actions\EventPad.Actions.csproj" />
     <ProjectReference Include="..\..\Shared\EventPad.Logger\EventPad.Logger.csproj" />
     <ProjectReference Include="..\..\Shared\EventPad.RabbitMq\EventPad.RabbitMq.csproj" />
+    <ProjectReference Include="..\..\Shared\EventPad.SMTP\EventPad.SMTP.csproj" />
   </ItemGroup>
 
 	<ItemGroup>

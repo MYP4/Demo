@@ -10,6 +10,7 @@ using EventPad.Logger;
 using EventPad.RabbitMq;
 using EventPad.Services.Actions;
 using EventPad.Settings;
+using EventPad.Redis;
 
 public static class Bootstrapper
 {
@@ -28,6 +29,7 @@ public static class Bootstrapper
             .AddTicketService()
             .AddActions()
             .AddRabbitMq()
+            .AddRedis()
             ;
 
         return services;

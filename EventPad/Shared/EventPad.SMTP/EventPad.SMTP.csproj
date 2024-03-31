@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shared\EventPad.Actions\EventPad.Actions.csproj" />
-    <ProjectReference Include="..\Shared\EventPad.Settings\EventPad.Settings.csproj" />
+    <ProjectReference Include="..\EventPad.Actions\EventPad.Actions.csproj" />
+    <ProjectReference Include="..\EventPad.Settings\EventPad.Settings.csproj" />
   </ItemGroup>
 
 </Project>
