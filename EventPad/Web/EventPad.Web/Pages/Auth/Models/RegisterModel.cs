@@ -17,7 +17,7 @@ public class RegisterModel
     public string Email { get; set; }
 
     [Required(ErrorMessage = "Password is required.")]
-    [MinLength(8, ErrorMessage = "Password must be at least 8 characters long.")]
+    [MinLength(8, ErrorMessage = "Password must be at least 10 characters long.")]
     [MaxLength(50, ErrorMessage = "Password can not be more than 50 characters long.")]
     public string Password { get; set; }
 }

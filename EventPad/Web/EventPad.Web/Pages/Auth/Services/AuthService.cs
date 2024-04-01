@@ -29,18 +29,21 @@ public class AuthService : IAuthService
     }
 
 
-    //public async Task<AuthResult> Register(RegisterModel registerModel)
-    //{
-    //    var requestContent = JsonContent.Create(registerModel);
-    //    var response = await httpClient.PostAsync($"{Settings.ApiRoot}v1/User", requestContent);
+    public async Task Register(RegisterModel registerModel)
+    {
+        var requestContent = JsonContent.Create(registerModel);
+        var response = await httpClient.PostAsync($"{Settings.ApiRoot}/v1/user", requestContent);
 
-    //    var content = await response.Content.ReadAsStringAsync();
+        var content = await response.Content.ReadAsStringAsync();
 
-    //    var result = JsonSerializer.Deserialize<ProfileResult>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new ProfileResult();
-    //    result.IsSuccessful = response.IsSuccessStatusCode;
+        var result = JsonSerializer.Deserialize<ProfileResult>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new ProfileResult();
+        result.IsSuccessful = response.IsSuccessStatusCode;
 
-    //    return result;
-    //}
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception(String.Join(", ", result.Errors.Select(x => x.Message).ToList()));
+        }
+    }
 
 
     public async Task<AuthResult> Login(LoginModel loginModel)

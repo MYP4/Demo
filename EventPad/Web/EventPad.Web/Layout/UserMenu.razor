@@ -1,18 +1,25 @@
 ﻿@using EventPad.Web.Pages.Users.Models
 @using EventPad.Web.Pages.Users.Services
+@using Microsoft.AspNetCore.Components.Authorization
 
 @inject IUserService userService
+@inject NavigationManager navigationManager
+@inject AuthenticationStateProvider authenticationStateProvider
 
-
-<MudText @bind-Value="Model.FirstName"></MudText>
-﻿<MudNavMenu Color="Color.Inherit" Icon="@Icons.Material.Filled.Face" AnchorOrigin="Origin.BottomRight">
-
-    <MudNavLink Href="/account" Match="NavLinkMatch.All">Account</MudNavLink>
-    <MudNavLink Href="/events" Match="NavLinkMatch.Prefix">Events</MudNavLink>
-    <MudNavLink Href="/tickets" Match="NavLinkMatch.Prefix">Tickets</MudNavLink>
-
-    <MudNavLink Href="/logout">Logout</MudNavLink>
-</MudNavMenu>
+@if (IsAuthenticated)
+{
+    <MudNavMenu Color="Color.Inherit" Icon="@Icons.Material.Filled.Face" AnchorOrigin="Origin.BottomRight">
+        <MudNavLink Href="/account" Match="NavLinkMatch.All">Profile</MudNavLink>
+        <MudNavLink Href="/events" Match="NavLinkMatch.Prefix">Events</MudNavLink>
+        <MudNavLink Href="/tickets" Match="NavLinkMatch.Prefix">Tickets</MudNavLink>
+        <MudNavLink Href="/logout">Logout</MudNavLink>
+    </MudNavMenu>
+}
+else
+{
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" OnClick="NavigateToLogin">Sign In</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" OnClick="NavigateToRegister">Sign Up</MudButton>
+}
 
 
 
@@ -28,8 +35,15 @@
 
     private List<UserModel> Users { get; set; } = new List<UserModel>();
 
+    private bool IsAuthenticated { get; set; }
+
+
     protected override async Task OnInitializedAsync()
     {
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        IsAuthenticated = user.Identity.IsAuthenticated;
+
         var owners = await userService.GetUsers();
         Users.AddRange(owners);
 
@@ -53,6 +67,16 @@
         {
             MudDialog.Close(DialogResult.Ok(true));
         }
+    }
+
+    private void NavigateToLogin()
+    {
+        navigationManager.NavigateTo("/login");
+    }
+
+    private void NavigateToRegister()
+    {
+        navigationManager.NavigateTo("/register");
     }
 
     void Cancel() => MudDialog.Cancel();

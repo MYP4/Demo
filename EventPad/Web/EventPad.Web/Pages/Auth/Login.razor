@@ -6,7 +6,7 @@
 @layout SimpleLayout
 
 @inject IAuthService AuthService
-@inject NavigationManager NavigationManager
+@inject NavigationManager navigationManager
 
 <MudGrid Justify="Justify.Center" Class="pa-10">
     <MudItem xs="7" sm="4">
@@ -51,7 +51,7 @@
                 <MudButton Variant="Variant.Filled"
                            Color="Color.Primary"
                            Size="Size.Large"
-                           ButtonType="ButtonType.Submit">Sign Up</MudButton>
+                           OnClick="NavigateToRegister">Sign Up</MudButton>
             </EditForm>
         </MudPaper>
     </MudItem>
@@ -91,6 +91,11 @@
         }
     }
 
+    private async Task NavigateToRegister()
+    {
+        navigationManager.NavigateTo("/register");
+    }
+
     private async Task OnValidSubmit()
     {
         ShowErrors = false;
@@ -101,7 +106,7 @@
 
         if (result.Successful)
         {
-            NavigationManager.NavigateTo("/");
+            navigationManager.NavigateTo("/");
         }
         else
         {

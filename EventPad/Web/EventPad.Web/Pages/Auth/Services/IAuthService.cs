@@ -6,6 +6,6 @@ namespace EventPad.Web.Pages.Auth.Services;
 public interface IAuthService
 {
     Task<AuthResult> Login(LoginModel loginModel);
-    //Task<AuthResult> Register(RegisterModel registerModel);
+    Task Register(RegisterModel registerModel);
     Task Logout();
 }

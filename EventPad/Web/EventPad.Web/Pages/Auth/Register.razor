@@ -1,5 +1,6 @@
 ﻿@page "/register"
 
+@using EventPad.Web.Pages.Auth.Services
 @using EventPad.Web.Pages.Events
 @using EventPad.Web.Pages.Profiles.Services
 @using EventPad.Web.Pages.Profiles.Models
@@ -11,7 +12,10 @@
 @layout SimpleLayout
 
 @inject IProfileService profileService;
-@inject NavigationManager NavigationManager
+@inject IAuthService authService;
+@inject NavigationManager navigationManager
+
+
 
 
 <MudGrid Justify="Justify.Center" Class="pa-10">
@@ -23,15 +27,15 @@
                     <MudItem xs="12" sm="7">
                         <MudCard>
                             <MudCardContent>
-                                <MudTextField Label="First name" HelperText="Max. 8 characters"
+                                <MudTextField Label="First name" 
                                               @bind-Value="model.FirstName" For="@(() => model.FirstName)" />
-                                <MudTextField Label="First name" HelperText="Max. 8 characters"
+                                <MudTextField Label="Last name" 
                                               @bind-Value="model.SecondName" For="@(() => model.SecondName)" />
                                 <MudTextField Label="Email" Class="mt-3"
                                               @bind-Value="model.Email" For="@(() => model.Email)" />
                                 <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
-                                              @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password" />
-
+                                              @bind-Value="model.Password" For="@(() => model.Password)" InputType="passwordInput" />
+                                <MudIconButton Icon="@passwordInputIcon" OnClick="TogglePasswordVisibility" Class="ml-auto" />
                             </MudCardContent>
                             <MudCardActions>
                                 <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
@@ -41,15 +45,18 @@
                     <MudItem xs="12" sm="5">
                         <MudPaper Class="pa-4 mud-height-full">
                             <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
-                            @if (success)
+                            @if (showErrors)
+                            {
+                                <MudText Color="Color.Error">
+                                    @foreach (var error in errors)
+                                    {
+                                        <p>@error</p>
+                                    }
+                                </MudText>
+                            }
+                            else if (success)
                             {
                                 <MudText Color="Color.Success">Success</MudText>
-                            }
-                            else
-                            {
-                                <MudText Color="@Color.Error">
-                                    <ValidationSummary />
-                                </MudText>
                             }
                         </MudPaper>
                     </MudItem>
@@ -75,7 +82,6 @@
     private List<string> errors = new();
     private bool showErrors;
 
-
     void TogglePasswordVisibility()
     {
         if (passwordVisibility)
@@ -96,19 +102,21 @@
     {
         showErrors = false;
         success = true;
+        errors.Clear();
 
-        // var result = await AuthService.Register(model);
-
-        // if (result.IsSuccessful) NavigationManager.NavigateTo("/login");
-        // else
-        // {
-        //     errors = result.Errors.Select(error => error.Message).ToList();
-        //     showErrors = true;
-        // }
+        try
+        {
+            await authService.Register(model);
+            navigationManager.NavigateTo("/login");
+        }
+        catch (Exception ex)
+        {
+            errors = ex.Message.Split(", ").ToList();
+            showErrors = true;
+            success = false;
+        }
     }
 }
-
-
 
 
 
