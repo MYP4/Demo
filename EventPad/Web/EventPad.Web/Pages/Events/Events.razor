@@ -3,13 +3,17 @@
 @using EventPad.Web.Pages.Events.Services
 @using EventPad.Web.Pages.Events.Models
 @using EventPad.Web.Components
+@using EventPad.Web.Pages.Profiles.Services
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
 
 @inject IEventService EventService
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
+@inject IProfileService ProfileService
 
 @attribute [Authorize]
+
 @layout MainLayout
 
 <PageTitle>Events</PageTitle>
@@ -26,22 +30,16 @@
                     <MudCardMedia Image="images/door.jpg" Height="200" />
                     <MudCardContent>
                         <MudText Typo="Typo.h5">@eventItem.Name</MudText>
-                            <MudText Typo="Typo.body2">@eventItem.Description</MudText>
-                            <MudText Typo="Typo.body2">Price: @eventItem.Price</MudText>
-                            <MudText Typo="Typo.body2">Address: @eventItem.Address</MudText>
-                            <MudText Typo="Typo.body2">Type: @eventItem.Type</MudText>
-                            <MudText Typo="Typo.body2">Rating: @eventItem.Rating</MudText>
-                        </MudCardContent>
-                        <MudCardActions>
-                            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="() => EditEvent(eventItem.Id)">Edit</MudButton>
-                            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="() => DeleteEvent(eventItem.Id)">Delete</MudButton>
-                        </MudCardActions>
-                    </MudCard>
-                </MudItem>
+                        <MudText Typo="Typo.body2">@eventItem.Description</MudText>
+                        <MudText Typo="Typo.body2">Price: @eventItem.Price</MudText>
+                        <MudText Typo="Typo.body2">Address: @eventItem.Address</MudText>
+                        <MudText Typo="Typo.body2">Type: @eventItem.Type</MudText>
+                        <MudText Typo="Typo.body2">Rating: @eventItem.Rating</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
         }
     </MudGrid>
-
-    <MudButton Color="Color.Primary" Variant="Variant.Outlined" Class="ma-4" OnClick="AddEvent">Add Event</MudButton>
 </MudContainer>
 
 

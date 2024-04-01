@@ -1,4 +1,5 @@
 ﻿using EventPad.Web.Pages.Events.Models;
+using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
 
 namespace EventPad.Web.Pages.Events.Services;
@@ -20,6 +21,18 @@ public class EventService(HttpClient httpClient) : IEventService
     public async Task<EventModel> GetEvent(Guid eventId)
     {
         var response = await httpClient.GetAsync($"v1/event/{eventId}");
+        if (!response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            throw new Exception(content);
+        }
+
+        return await response.Content.ReadFromJsonAsync<EventModel>() ?? new();
+    }
+
+    public async Task<EventModel> GetEventByCode(string code)
+    {
+        var response = await httpClient.GetAsync($"v1/event/{code}");
         if (!response.IsSuccessStatusCode)
         {
             var content = await response.Content.ReadAsStringAsync();

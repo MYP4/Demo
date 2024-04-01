@@ -17,10 +17,6 @@ public class UserProfileModelProfile : Profile
     public UserProfileModelProfile()
     {
         CreateMap<User, UserProfileModel>();
-        //.ForMember(d => d.Id, o => o.MapFrom(s => s.Id))
-        //.ForMember(d => d.FirstName, o => o.MapFrom(s => s.FirstName))
-        //.ForMember(d => d.SecondName, o => o.MapFrom(s => s.SecondName))
-        //.ForMember(d => d.Email, o => o.MapFrom(s => s.Email))
-        //;
     }
 }
+

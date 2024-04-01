@@ -2,7 +2,7 @@
 
 namespace EventPad.Web.Pages.Auth.Models;
 
-public class LoginResult
+public class AuthResult
 {
     public bool Successful { get; set; }
 

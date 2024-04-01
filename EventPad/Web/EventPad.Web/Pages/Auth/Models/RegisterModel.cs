@@ -2,7 +2,7 @@
 
 namespace EventPad.Web.Pages.Profiles.Models;
 
-public class SignUpModel
+public class RegisterModel
 {
     [Required(ErrorMessage = "FirstName is required.")]
     [MinLength(3, ErrorMessage = "Name must be at least 3 characters long.")]
@@ -20,7 +20,4 @@ public class SignUpModel
     [MinLength(8, ErrorMessage = "Password must be at least 8 characters long.")]
     [MaxLength(50, ErrorMessage = "Password can not be more than 50 characters long.")]
     public string Password { get; set; }
-
-    [Required(ErrorMessage = "Url is required.")]
-    public string FrontendUrl { get; set; }
 }

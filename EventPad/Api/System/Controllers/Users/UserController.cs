@@ -28,7 +28,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("")]
-    [Authorize(policy: AppScopes.Admin)]
+    [Authorize]
     public async Task<IEnumerable<UserResponse>> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] UserFilterRequest filter = null)
     {
         var result = await UserService.GetAllUsers(page, pageSize, mapper.Map<UserModelFilter>(filter));
@@ -37,7 +37,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{id:Guid}")]
-    [Authorize(policy: AppScopes.Admin)]
+    [Authorize]
     public async Task<IActionResult> Get([FromRoute] Guid id)
     {
         var result = await UserService.GetById(id);

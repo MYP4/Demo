@@ -4,6 +4,9 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using EventPad.Web.Pages.Auth.Models;
 using EventPad.Web.Providers;
+using EventPad.Web.Pages.Profiles.Models;
+using System.Net.Http.Json;
+using System.Net.Http;
 
 namespace EventPad.Web.Pages.Auth.Services;
 
@@ -12,20 +15,35 @@ public class AuthService : IAuthService
     private const string LocalStorageAuthTokenKey = "authToken";
     private const string LocalStorageRefreshTokenKey = "refreshToken";
 
-    private readonly HttpClient _httpClient;
-    private readonly AuthenticationStateProvider _authenticationStateProvider;
-    private readonly ILocalStorageService _localStorage;
+    private readonly HttpClient httpClient;
+    private readonly AuthenticationStateProvider authenticationStateProvider;
+    private readonly ILocalStorageService localStorage;
 
     public AuthService(HttpClient httpClient,
                        AuthenticationStateProvider authenticationStateProvider,
                        ILocalStorageService localStorage)
     {
-        _httpClient = httpClient;
-        _authenticationStateProvider = authenticationStateProvider;
-        _localStorage = localStorage;
+        this.httpClient = httpClient;
+        this.authenticationStateProvider = authenticationStateProvider;
+        this.localStorage = localStorage;
     }
 
-    public async Task<LoginResult> Login(LoginModel loginModel)
+
+    //public async Task<AuthResult> Register(RegisterModel registerModel)
+    //{
+    //    var requestContent = JsonContent.Create(registerModel);
+    //    var response = await httpClient.PostAsync($"{Settings.ApiRoot}v1/User", requestContent);
+
+    //    var content = await response.Content.ReadAsStringAsync();
+
+    //    var result = JsonSerializer.Deserialize<ProfileResult>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new ProfileResult();
+    //    result.IsSuccessful = response.IsSuccessStatusCode;
+
+    //    return result;
+    //}
+
+
+    public async Task<AuthResult> Login(LoginModel loginModel)
     {
         var url = $"{Settings.ApiRoot}/connect/token";
 
@@ -40,11 +58,11 @@ public class AuthService : IAuthService
 
         var requestContent = new FormUrlEncodedContent(request_body);
 
-        var response = await _httpClient.PostAsync(url, requestContent);
+        var response = await httpClient.PostAsync(url, requestContent);
 
         var content = await response.Content.ReadAsStringAsync();
 
-        var loginResult = JsonSerializer.Deserialize<LoginResult>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new LoginResult();
+        var loginResult = JsonSerializer.Deserialize<AuthResult>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new AuthResult();
         loginResult.Successful = response.IsSuccessStatusCode;
 
         if (!response.IsSuccessStatusCode)
@@ -52,12 +70,12 @@ public class AuthService : IAuthService
             return loginResult;
         }
 
-        await _localStorage.SetItemAsync(LocalStorageAuthTokenKey, loginResult.AccessToken);
-        await _localStorage.SetItemAsync(LocalStorageRefreshTokenKey, loginResult.RefreshToken);
+        await localStorage.SetItemAsync(LocalStorageAuthTokenKey, loginResult.AccessToken);
+        await localStorage.SetItemAsync(LocalStorageRefreshTokenKey, loginResult.RefreshToken);
 
-        ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(loginModel.Email!);
+        ((ApiAuthenticationStateProvider)authenticationStateProvider).MarkUserAsAuthenticated(loginModel.Email!);
 
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", loginResult.AccessToken);
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", loginResult.AccessToken);
 
         return loginResult;
     }
@@ -65,11 +83,11 @@ public class AuthService : IAuthService
 
     public async Task Logout()
     {
-        await _localStorage.RemoveItemAsync(LocalStorageAuthTokenKey);
-        await _localStorage.RemoveItemAsync(LocalStorageRefreshTokenKey);
+        await localStorage.RemoveItemAsync(LocalStorageAuthTokenKey);
+        await localStorage.RemoveItemAsync(LocalStorageRefreshTokenKey);
 
-        ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
+        ((ApiAuthenticationStateProvider)authenticationStateProvider).MarkUserAsLoggedOut();
 
-        _httpClient.DefaultRequestHeaders.Authorization = null;
+        httpClient.DefaultRequestHeaders.Authorization = null;
     }
 }

@@ -20,5 +20,7 @@ public class UserResponceProfile : Profile
     public UserResponceProfile()
     {
         CreateMap<UserModel, UserResponse>();
+        CreateMap<UserProfileModel, UserResponse>()
+            .ForMember(dest => dest.Role, opt => opt.Ignore());
     }
 }
