@@ -7,6 +7,7 @@ using EventPad.Services.Actions;
 using EventPad.Pay.Services.EventAccounts;
 using EventPad.Pay.Services.UserAccounts;
 using EventPad.Pay.Services.Transactions;
+using EventPad.Redis;
 
 public static class Bootstrapper
 {
@@ -22,6 +23,7 @@ public static class Bootstrapper
             .AddUserAccountService()
             .AddEventAccountService()
             .AddTransactionService()
+            .AddRedis()
             ;
 
         services.AddSingleton<ITaskExecutor, TaskExecutor>();

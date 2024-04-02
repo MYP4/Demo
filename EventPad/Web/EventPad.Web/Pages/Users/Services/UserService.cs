@@ -5,19 +5,6 @@ namespace EventPad.Web.Pages.Users.Services;
 
 public class UserService(HttpClient httpClient) : IUserService
 {
-    public async Task AddUser(CreateModel model)
-    {
-        var requestContent = JsonContent.Create(model);
-        var response = await httpClient.PostAsync("v1/user", requestContent);
-
-        var content = await response.Content.ReadAsStringAsync();
-
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new Exception(content);
-        }
-    }
-
     public async Task DeleteUser(Guid userId)
     {
         var response = await httpClient.DeleteAsync($"v1/user/{userId}");

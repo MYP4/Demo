@@ -14,7 +14,10 @@ public interface IRedisService
     /// <param name="key">Cache key</param>
     /// <param name="data">Data for put</param>
     /// <param name="storeTime">Time for store data</param>
-    Task<bool> Put<T>(string key, T data, TimeSpan? storeTime = null);
+    //Task<bool> Put<T>(string key, T data, TimeSpan? storeTime = null);
+
+    bool Put<T>(string key, T data, int storeTime = 60 * 60);
+
 
     /// <summary>
     /// Set store time for data from DateTime.UtcNow

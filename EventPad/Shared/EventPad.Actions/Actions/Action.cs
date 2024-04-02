@@ -47,5 +47,10 @@ public class Action : IAction
     {
         await rabbitMq.PushAsync(QueueNames.SEND_EMAIL, model);
     }
+
+    public async Task GetUserAccount(GetUserAccountModel model)
+    {
+        await rabbitMq.PushAsync(QueueNames.GET_USER_ACCOUNT, model);
+    }
 }
 

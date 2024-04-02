@@ -6,6 +6,7 @@ using EventPad.Pay.Services.EventAccounts;
 using EventPad.Pay.Services.Transactions;
 using EventPad.Pay.Services.UserAccounts;
 using EventPad.RabbitMq;
+using EventPad.Redis;
 using EventPad.Services.Actions;
 
 namespace EventPad.Pay;
@@ -17,6 +18,7 @@ public class TaskExecutor : ITaskExecutor
     private readonly IEventAccountService eventAccountService;
     private readonly IUserAccountService userAccountService;
     private readonly ITransactionService transactionService;
+    private readonly IRedisService redisService;
 
     public TaskExecutor(
         IAppLogger logger,
@@ -24,13 +26,15 @@ public class TaskExecutor : ITaskExecutor
 ,
         IUserAccountService userAccountService,
         IEventAccountService eventAccountService,
-        ITransactionService transactionService)
+        ITransactionService transactionService,
+        IRedisService redisService)
     {
         this.logger = logger;
         this.rabbitMq = rabbitMq;
         this.userAccountService = userAccountService;
         this.eventAccountService = eventAccountService;
         this.transactionService = transactionService;
+        this.redisService = redisService;
     }
 
 
@@ -43,6 +47,8 @@ public class TaskExecutor : ITaskExecutor
 
         SubscribeOnPayTransaction();
         SubscribeOnRefundTransaction();
+
+        SubscribeOnGetUserAccount();
     }
 
     private void SubscribeOnCreateEventAccount()
@@ -130,6 +136,20 @@ public class TaskExecutor : ITaskExecutor
             });
 
             logger.Information($"The refund transaction created::: {data}");
+        });
+    }
+
+    private void SubscribeOnGetUserAccount()
+    {
+        rabbitMq.Subscribe<GetUserAccountModel>(QueueNames.GET_USER_ACCOUNT, async data =>
+        {
+            logger.Information($"Starting get user account balance::: {data}");
+
+            var result = await userAccountService.GetUserAccountById(data.UserId);
+
+            redisService.Put<AccountModel>(data.RequestId.ToString(), new AccountModel() { AccountNumber = result.AccountNumber, Balance = result.Balance});
+
+            logger.Information($"The user account balance got::: {data}");
         });
     }
 }

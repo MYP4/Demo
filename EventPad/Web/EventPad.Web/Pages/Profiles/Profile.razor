@@ -1,9 +1,148 @@
 ﻿@page "/profile"
+
+@using EventPad.Web.Components
 @using EventPad.Web.Pages.Events
+@using EventPad.Web.Pages.Events.Models
+@using EventPad.Web.Pages.Events.Services
+@using EventPad.Web.Pages.Profiles.Models
+@using EventPad.Web.Pages.Profiles.Services
 @using Microsoft.AspNetCore.Authorization
+
+
+@inject IEventService eventService
+@inject IProfileService profileService
+@inject IEventService EventService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+
+@attribute [Authorize]
 @layout MainLayout
 
+<PageTitle>Profile</PageTitle>
+
+<MudContainer>
+    <MudGrid>
+        <MudItem xs="12" sm="6" md="4">
+            <MudCard>
+                <MudCardContent>
+                    <MudText Typo="Typo.h5">@profileModel.FirstName @profileModel.SecondName</MudText>
+                        <MudText Typo="Typo.body2">Email: @profileModel.Email</MudText>
+                        <MudText Typo="Typo.body2">Account Number: @profileModel.AccountNumber</MudText>
+                        <MudText Typo="Typo.body2">Balance: @profileModel.Balance</MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="EditProfile">Edit Profile</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+
+<Events></Events>
 
 
 
+@code {
+    private ProfileModel profileModel;
 
+    private async Task ReloadData()
+    {
+        profileModel = await profileService.Me();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await ReloadData();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+    }
+
+    private void EditProfile()
+    {
+
+    }
+
+    private async Task AddEvent()
+    {
+        var parameters = new DialogParameters { };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true };
+
+        var dialog = await DialogService.ShowAsync<EventDialog>("Add Event", parameters, options);
+        var result = await dialog.Result;
+
+        if (result.Canceled)
+            return;
+
+        try
+        {
+            var model = ((EventDialog)dialog.Dialog).Model;
+
+            var createModel = new CreateModel()
+                {
+                    Name = model.Name,
+                    Description = model.Description,
+                    Price = model.Price,
+                    Address = model.Address,
+                    Type = model.Type,
+                    AdminId = model.AdminId
+                };
+
+            await EventService.AddEvent(createModel);
+            await ReloadData();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+    }
+
+    private async Task EditEvent(Guid eventId)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("EventId", eventId);
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true };
+        var dialog = DialogService.Show<EventDialog>("Edit Event", parameters, options);
+        var result = await dialog.Result;
+
+        if (result.Canceled)
+            return;
+
+        var model = ((EventDialog)dialog.Dialog).Model;
+        var updateModel = new UpdateModel()
+            {
+                Name = model.Name,
+                Description = model.Description,
+                Price = model.Price,
+                Address = model.Address,
+                Type = model.Type
+            };
+
+        await EventService.EditEvent(eventId, updateModel);
+        await ReloadData();
+    }
+
+    private async Task DeleteEvent(Guid eventId)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Do you really want to delete this Event? This process cannot be undone.");
+        parameters.Add("ButtonText", "Delete");
+        parameters.Add("Color", Color.Error);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = await DialogService.ShowAsync<ConfirmationDialog>("Delete Event", parameters, options);
+        var result = await dialog.Result;
+
+        if (result.Canceled)
+            return;
+
+        await EventService.DeleteEvent(eventId);
+        await ReloadData();
+    }
+}

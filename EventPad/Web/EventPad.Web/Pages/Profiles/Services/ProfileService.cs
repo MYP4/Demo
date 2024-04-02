@@ -7,8 +7,6 @@ namespace EventPad.Web.Pages.Profiles.Services;
 
 public class ProfileService(HttpClient httpClient) : IProfileService
 {
-    private readonly HttpClient httpClient;
-
     public async Task<string> GetPasswordRecoveryToken()
     {
         var url = $"{Settings.ApiRoot}/v1/User/password-recovery-token";
@@ -115,15 +113,16 @@ public class ProfileService(HttpClient httpClient) : IProfileService
         return result;
     }
 
-    public async Task<ProfileResult> Me()
+    public async Task<ProfileModel> Me()
     {
-        var response = await httpClient.GetAsync($"v1/Profile");
+        var response = await httpClient.GetAsync($"v1/profile");
+
         if (!response.IsSuccessStatusCode)
         {
             var content = await response.Content.ReadAsStringAsync();
             throw new Exception(content);
         }
 
-        return await response.Content.ReadFromJsonAsync<ProfileResult>() ?? new();
+        return await response.Content.ReadFromJsonAsync<ProfileModel>() ?? new();
     }
 }

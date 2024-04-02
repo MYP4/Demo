@@ -1,0 +1,66 @@
+﻿@* 
+@using EventPad.Web.Components
+@using EventPad.Web.Pages.Events
+@using EventPad.Web.Pages.Events.Models
+@using EventPad.Web.Pages.Events.Services
+@using EventPad.Web.Pages.Profiles.Models
+@using EventPad.Web.Pages.Profiles.Services
+@using EventPad.Web.Pages.Users.Services
+@using Microsoft.AspNetCore.Authorization
+
+
+@inject IEventService eventService
+@inject IProfileService profileService
+@inject IEventService EventService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@inject IUserService UserService
+
+@attribute [Authorize]
+@layout MainLayout
+
+<MudDialog>
+    <DialogContent>
+        <MudCard>
+            <MudCardContent>
+                <MudText Typo="Typo.h5">@userModel.FirstName @userModel.SecondName</MudText>
+                    <MudTextField @bind-Value="userModel.Role" Label="Role" />
+                    <MudTextField @bind-Value="userModel.Rating" Label="Rating" />
+                    <MudTextField @bind-Value="userModel.Email" Label="Email" />
+                    <MudTextField @bind-Value="userModel.AccountNumber" Label="Account Number" />
+                    <MudTextField @bind-Value="userModel.Balance" Label="Balance" />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="SaveChanges">Save</MudButton>
+                    <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="CloseDialog">Cancel</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </DialogContent>
+    </MudDialog>
+
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private UserModel userModel;
+
+    protected override async Task OnInitializedAsync()
+    {
+        userModel = await UserService.GetUser(Id);
+    }
+
+    private void SaveChanges()
+    {
+        // Здесь можно добавить логику для сохранения изменений
+        Console.WriteLine("Changes saved");
+        CloseDialog();
+    }
+
+    private void CloseDialog()
+    {
+        // Закрытие диалогового окна
+        Dialog.Close(DialogResult.Ok(true));
+    }
+}
+ *@

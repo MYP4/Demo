@@ -12,7 +12,7 @@ namespace EventPad.Api.Controllers.Specific;
 [ApiController]
 [ApiVersion("1.0")]
 [ApiExplorerSettings(GroupName = "Product")]
-[Route("v{version:apiVersion}/[controller]")]
+[Route("v{version:apiVersion}/specific-event")]
 public class SpecificEventController : ControllerBase
 {
     private readonly IAppLogger logger;

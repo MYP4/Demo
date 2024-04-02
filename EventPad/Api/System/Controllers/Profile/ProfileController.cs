@@ -13,7 +13,7 @@ namespace EventPad.Api.Controllers.UserProfile;
 [ApiVersion("1.0")]
 [ApiExplorerSettings(GroupName = "Product")]
 //[Authorize(policy: AppScopes.Admin)]
-[Route("v{version:apiVersion}/[controller]")]
+[Route("v{version:apiVersion}/profile")]
 public class ProfileController : ControllerBase
 {
     private readonly IAppLogger logger;

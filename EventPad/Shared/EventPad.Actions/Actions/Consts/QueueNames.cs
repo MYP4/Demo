@@ -10,4 +10,7 @@ public class QueueNames
     public const string REFUND_TICKET = "EVENTPAD_REFUND_TICKET";
     public const string CASHOUT = "EVENTPAD_CASHOUT";
     public const string SEND_EMAIL = "EVENTPAD_SEND_EMAIL";
+
+    public const string GET_USER_ACCOUNT = "EVENTPAD_GET_USER_ACCOUNT";
+    public const string RETURN_USER_ACCOUNT = "EVENTPAD_RETURN_USER_ACCOUNT";
 }

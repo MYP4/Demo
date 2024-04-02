@@ -13,15 +13,12 @@
 @inject IProfileService ProfileService
 
 @attribute [Authorize]
-
 @layout MainLayout
 
 <PageTitle>Events</PageTitle>
 
-
 <MudContainer>
     <MudText Typo="Typo.h4" Class="ma-8">Events</MudText>
-
     <MudGrid>
         @foreach (var eventItem in EventList)
         {

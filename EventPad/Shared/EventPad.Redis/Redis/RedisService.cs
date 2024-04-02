@@ -55,9 +55,21 @@ public class RedisService : IRedisService
         }
     }
 
-    public async Task<bool> Put<T>(string key, T data, TimeSpan? storeTime = null)
+    //public async Task<bool> Put<T>(string key, T data, TimeSpan? storeTime = null)
+    //{
+    //    try
+    //    {
+    //        return await cacheDb.StringSetAsync(key, data.ToJsonString(), storeTime ?? defaultLifetime);
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        throw ex;
+    //    }
+    //}
+
+    public bool Put<T>(string key, T data, int storeTime = 60 * 60)
     {
-        return await cacheDb.StringSetAsync(key, data.ToJsonString(), storeTime ?? defaultLifetime);
+        return cacheDb.StringSet(key, System.Text.Json.JsonSerializer.Serialize(data), TimeSpan.FromSeconds(storeTime));
     }
 
     public async Task SetStoreTime(string key, TimeSpan? storeTime = null)

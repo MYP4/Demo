@@ -14,4 +14,6 @@ public interface IAction
     Task RefundTicket(RefundTicket model);
 
     Task SendEmail(SendEmailModel model);
+
+    Task GetUserAccount(GetUserAccountModel model);
 }

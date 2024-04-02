@@ -14,5 +14,5 @@ public interface IProfileService
     
     Task<ProfileResult> SendConfirmationEmail(SendEmailModel model);
 
-    Task<ProfileResult> Me();
+    Task<ProfileModel> Me();
 }

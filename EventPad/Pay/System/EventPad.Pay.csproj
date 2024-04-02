@@ -32,6 +32,7 @@
 	  <ProjectReference Include="..\..\Shared\EventPad.Common\EventPad.Common.csproj" />
 	  <ProjectReference Include="..\..\Shared\EventPad.Logger\EventPad.Logger.csproj" />
 	  <ProjectReference Include="..\..\Shared\EventPad.RabbitMq\EventPad.RabbitMq.csproj" />
+	  <ProjectReference Include="..\..\Shared\EventPad.Redis\EventPad.Redis.csproj" />
 	  <ProjectReference Include="..\..\Shared\EventPad.Settings\EventPad.Settings.csproj" />
 	  <ProjectReference Include="..\Data\EventPad.Pay.Context.Migrations\EventPad.Pay.Context.Migrations.PgSql\EventPad.Pay.Context.Migrations.PgSql.csproj" />
 	  <ProjectReference Include="..\Data\EventPad.Pay.Context.Seeder\EventPad.Pay.Context.Seeder.csproj" />

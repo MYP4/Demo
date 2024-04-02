@@ -3,6 +3,7 @@ using AutoMapper;
 using EventPad.Actions;
 using EventPad.Api.Context.Entities;
 using EventPad.Common;
+using EventPad.Redis;
 using EventPad.Services.Actions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -18,14 +19,16 @@ public class UserService : IUserService
     private readonly IRightsService rightsService;
     private readonly IModelValidator<RegiserUserModel> registerUserModelValidator;
     private readonly IAction action;
-
+    private readonly IRedisService redisService;
+     
     public UserService(
         IMapper mapper,
         UserManager<User> userManager,
         IModelValidator<RegiserUserModel> registerUserModelValidator,
         IAction action,
         ILogger logger,
-        IRightsService rightsService)
+        IRightsService rightsService,
+        IRedisService redisService)
     {
         this.mapper = mapper;
         this.userManager = userManager;
@@ -33,6 +36,7 @@ public class UserService : IUserService
         this.action = action;
         this.logger = logger;
         this.rightsService = rightsService;
+        this.redisService = redisService;
     }
 
     public async Task<bool> IsEmpty()
