@@ -42,15 +42,16 @@ public class ProfileService : IProfileService
         AccountModel result = new AccountModel();
         for (var i = 0; i < 10; i++)
         {
+            await Task.Delay(500);
             try
             {
-                result = await redisService.Get<AccountModel>(requestId.ToString());
-                await redisService.Delete(requestId.ToString());
+                result = await redisService.Get<AccountModel>(requestId);
+
                 break;
             }
             catch (Exception ex)
             {
-                await Task.Delay(100);
+                
             }
         }
 

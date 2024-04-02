@@ -12,5 +12,5 @@ public class ProfileModel
     public string Email { get; set; }
 
     public string AccountNumber { get; set; }
-    public string Balance { get; set; }
+    public float Balance { get; set; }
 }
