@@ -147,7 +147,7 @@ public class TaskExecutor : ITaskExecutor
 
             var result = await userAccountService.GetUserAccountById(data.UserId);
 
-            redisService.Put<AccountModel>(data.RequestId.ToString(), new AccountModel() { AccountNumber = result.AccountNumber, Balance = result.Balance});
+            redisService.Put<AccountModel>(data.RequestId, new AccountModel() { AccountNumber = result.AccountNumber, Balance = result.Balance});
 
             logger.Information($"The user account balance got::: {data}");
         });

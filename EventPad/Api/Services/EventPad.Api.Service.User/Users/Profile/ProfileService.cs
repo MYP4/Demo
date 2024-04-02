@@ -31,7 +31,7 @@ public class ProfileService : IProfileService
     {
         var user = await userManager.FindByIdAsync(id.ToString());
 
-        var requestId = Guid.NewGuid();
+        var requestId = redisService.KeyGenerate();
 
         await action.GetUserAccount(new GetUserAccountModel()
         {
