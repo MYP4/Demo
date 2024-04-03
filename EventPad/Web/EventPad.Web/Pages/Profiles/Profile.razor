@@ -22,21 +22,32 @@
 
 <MudContainer>
     <MudGrid>
-        <MudItem xs="12" sm="6" md="4">
-            <MudCard>
+        <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
+            <MudCard Elevation="2" Outlined="true">
                 <MudCardContent>
-                    <MudText Typo="Typo.h5">@profileModel.FirstName @profileModel.SecondName</MudText>
-                        <MudText Typo="Typo.body2">Email: @profileModel.Email</MudText>
-                        <MudText Typo="Typo.body2">Account Number: @profileModel.AccountNumber</MudText>
-                        <MudText Typo="Typo.body2">Balance: @profileModel.Balance</MudText>
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="EditProfile">Edit Profile</MudButton>
-                    </MudCardActions>
-                </MudCard>
-            </MudItem>
-        </MudGrid>
-    </MudContainer>
+                    <MudGrid>
+                        <!-- Аватар слева и больше -->
+                        <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
+                            <MudAvatar Src="path_to_your_avatar_image" Size="Size.Large" />
+                        </MudItem>
+                        <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
+                            <!-- Информация о пользователе -->
+                            <MudText Typo="Typo.h5" Class="mb-2">@profileModel.FirstName @profileModel.SecondName</MudText>
+                            <MudText Typo="Typo.body2" Class="mb-2">Email: @profileModel.Email</MudText>
+                            <MudText Typo="Typo.body2" Class="mb-2">Account Number: @profileModel.AccountNumber</MudText>
+                            <MudText Typo="Typo.body2" Class="mb-2">Balance: @profileModel.Balance</MudText>
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+                <MudCardActions>
+                    <!-- Кнопки действий -->
+                    <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="EditProfile">Edit Profile</MudButton>
+                    <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="DeleteProfile">Delete Profile</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
 
 <Events></Events>
 
@@ -63,6 +74,11 @@
     }
 
     private void EditProfile()
+    {
+
+    }
+
+    private void DeleteProfile()
     {
 
     }

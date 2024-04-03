@@ -1,18 +1,40 @@
-﻿@using EventPad.Web.Pages.Users.Models
+﻿@using EventPad.Web.Pages.Profiles.Models
+@using EventPad.Web.Pages.Profiles.Services
+@using EventPad.Web.Pages.Users.Models
 @using EventPad.Web.Pages.Users.Services
 @using Microsoft.AspNetCore.Components.Authorization
 
 @inject IUserService userService
 @inject NavigationManager navigationManager
+@inject IProfileService profileService
 @inject AuthenticationStateProvider authenticationStateProvider
+@inject ISnackbar Snackbar
 
 @if (IsAuthenticated)
 {
     <MudNavMenu Color="Color.Inherit" Icon="@Icons.Material.Filled.Face" AnchorOrigin="Origin.BottomRight">
-        <MudNavLink Href="/profile" Match="NavLinkMatch.All">Profile</MudNavLink>
+        @* <MudNavLink Href="/profile" Match="NavLinkMatch.All">Profile</MudNavLink> *@
+
+        <MudNavLink Href="/profile">
+            <MudCard>
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudAvatar Src="path_to_your_avatar_image" Size="Size.Large" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="8">
+                            <MudText Typo="Typo.h6">@profileModel.FirstName @profileModel.SecondName</MudText>
+                            <MudText Typo="Typo.body2">Balance: @profileModel.Balance</MudText>
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+            </MudCard>
+        </MudNavLink>
+
         <MudNavLink Href="/events" Match="NavLinkMatch.Prefix">Events</MudNavLink>
         <MudNavLink Href="/tickets" Match="NavLinkMatch.Prefix">Tickets</MudNavLink>
         <MudNavLink Href="/logout">Logout</MudNavLink>
+
     </MudNavMenu>
 }
 else
@@ -37,29 +59,65 @@ else
 
     private bool IsAuthenticated { get; set; }
 
+    private ProfileModel profileModel;
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+    //     var user = authState.User;
+    //     IsAuthenticated = user.Identity.IsAuthenticated;
+
+    //     var owners = await userService.GetUsers();
+    //     Users.AddRange(owners);
+
+
+    //     if (UserId != null)
+    //     {
+    //         var model = await userService.GetUser(UserId.Value);
+
+    //         Model.Id = model.Id;
+    //         Model.FirstName = model.FirstName;
+    //         Model.SecondName = model.SecondName;
+    //         Model.Email = model.Email;
+    //         Model.Rating = model.Rating;
+    //     }
+    // }
+
+    private async Task ReloadData()
+    {
+        profileModel = await profileService.Me();
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-        IsAuthenticated = user.Identity.IsAuthenticated;
-
-        var owners = await userService.GetUsers();
-        Users.AddRange(owners);
-
-
-        if (UserId != null)
+        try
         {
-            var model = await userService.GetUser(UserId.Value);
+            var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            IsAuthenticated = user.Identity.IsAuthenticated;
 
-            Model.Id = model.Id;
-            Model.FirstName = model.FirstName;
-            Model.SecondName = model.SecondName;
-            Model.Email = model.Email;
-            Model.Rating = model.Rating;
+            var owners = await userService.GetUsers();
+            Users.AddRange(owners);
+
+
+            if (UserId != null)
+            {
+                var model = await userService.GetUser(UserId.Value);
+
+                Model.Id = model.Id;
+                Model.FirstName = model.FirstName;
+                Model.SecondName = model.SecondName;
+                Model.Email = model.Email;
+                Model.Rating = model.Rating;
+            }
+
+            await ReloadData();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
         }
     }
-
     async Task Submit()
     {
         await form.Validate();

@@ -47,6 +47,9 @@ public class ProfileService : IProfileService
             {
                 result = await redisService.Get<AccountModel>(requestId);
 
+                if (result == null)
+                    continue;
+
                 break;
             }
             catch (Exception ex)
