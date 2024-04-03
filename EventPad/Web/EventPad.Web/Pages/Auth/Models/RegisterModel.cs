@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EventPad.Web.Pages.Profiles.Models;
+namespace EventPad.Web.Pages.Profiles;
 
 public class RegisterModel
 {

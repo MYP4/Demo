@@ -1,6 +1,6 @@
 ﻿using EventPad.Api.Context.Entities;
 
-namespace EventPad.Web.Pages.Profiles.Models;
+namespace EventPad.Web.Pages.Profiles;
 
 public class ProfileModel
 {

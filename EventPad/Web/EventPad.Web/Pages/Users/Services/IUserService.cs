@@ -1,6 +1,4 @@
-﻿using EventPad.Web.Pages.Users.Models;
-
-namespace EventPad.Web.Pages.Users.Services;
+﻿namespace EventPad.Web.Pages.Users;
 
 public interface IUserService
 {

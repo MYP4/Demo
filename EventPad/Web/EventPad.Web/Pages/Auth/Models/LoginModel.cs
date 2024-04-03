@@ -1,4 +1,4 @@
-﻿namespace EventPad.Web.Pages.Auth.Models;
+﻿namespace EventPad.Web.Pages.Auth;
 
 public class LoginModel
 {

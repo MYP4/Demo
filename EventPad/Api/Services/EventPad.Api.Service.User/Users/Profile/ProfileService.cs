@@ -42,7 +42,7 @@ public class ProfileService : IProfileService
         AccountModel result = new AccountModel();
         for (var i = 0; i < 10; i++)
         {
-            await Task.Delay(500);
+            await Task.Delay(1000);
             try
             {
                 result = await redisService.Get<AccountModel>(requestId);

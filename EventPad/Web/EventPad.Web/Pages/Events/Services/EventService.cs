@@ -1,8 +1,6 @@
-﻿using EventPad.Web.Pages.Events.Models;
-using Microsoft.Extensions.Logging;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 
-namespace EventPad.Web.Pages.Events.Services;
+namespace EventPad.Web.Pages.Events;
 
 public class EventService(HttpClient httpClient) : IEventService
 {

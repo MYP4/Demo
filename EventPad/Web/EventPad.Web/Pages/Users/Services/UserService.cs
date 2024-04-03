@@ -1,7 +1,6 @@
-﻿using EventPad.Web.Pages.Users.Models;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 
-namespace EventPad.Web.Pages.Users.Services;
+namespace EventPad.Web.Pages.Users;
 
 public class UserService(HttpClient httpClient) : IUserService
 {

@@ -1,14 +1,12 @@
-﻿using System.Net.Http.Headers;
-using System.Text.Json;
-using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components.Authorization;
-using EventPad.Web.Pages.Auth.Models;
+﻿using Blazored.LocalStorage;
+using EventPad.Web.Pages.Profiles;
 using EventPad.Web.Providers;
-using EventPad.Web.Pages.Profiles.Models;
+using Microsoft.AspNetCore.Components.Authorization;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Net.Http;
+using System.Text.Json;
 
-namespace EventPad.Web.Pages.Auth.Services;
+namespace EventPad.Web.Pages.Auth;
 
 public class AuthService : IAuthService
 {

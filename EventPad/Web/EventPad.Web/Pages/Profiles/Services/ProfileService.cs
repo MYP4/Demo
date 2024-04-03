@@ -1,9 +1,8 @@
-﻿using EventPad.Web.Pages.Profiles.Models;
-using System.Text.Json;
+﻿using System.Net.Http.Json;
 using System.Text;
-using System.Net.Http.Json;
+using System.Text.Json;
 
-namespace EventPad.Web.Pages.Profiles.Services;
+namespace EventPad.Web.Pages.Profiles;
 
 public class ProfileService(HttpClient httpClient) : IProfileService
 {

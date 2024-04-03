@@ -1,4 +1,4 @@
-﻿@page "/events"
+﻿@page "/specific-events"
 
 @using EventPad.Web.Pages.Events
 @using EventPad.Web.Components
@@ -6,7 +6,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 
-@inject IEventService EventService
+@inject ISpecificService SpecificService
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 @inject IProfileService ProfileService
@@ -14,7 +14,7 @@
 @attribute [Authorize]
 @layout MainLayout
 
-<PageTitle>Events</PageTitle>
+<PageTitle>SpecificEvents</PageTitle>
 
 <MudContainer>
     <MudText Typo="Typo.h4" Class="ma-8">Events</MudText>
@@ -27,28 +27,31 @@
                         <MudIcon Icon="Icons.Material.Filled.Door" Size="Size.Large" />
                     </MudCardMedia>
                     <MudCardContent>
-                        <MudText Typo="Typo.h5">@eventItem.Name</MudText>
-                        <MudText Typo="Typo.body2">@eventItem.Description</MudText>
-                        <MudText Typo="Typo.body2">Price: @eventItem.Price</MudText>
-                        <MudText Typo="Typo.body2">Address: @eventItem.Address</MudText>
-                        <MudText Typo="Typo.body2">Type: @eventItem.Type</MudText>
-                        <MudText Typo="Typo.body2">Rating: @eventItem.Rating</MudText>
-                    </MudCardContent>
-                </MudCard>
-            </MudItem>
+                        <MudText Typo="Typo.h5">@eventItem.Description</MudText>
+                            <MudText Typo="Typo.body2">Ticket Count: @eventItem.TicketCount</MudText>
+                            <MudText Typo="Typo.body2">Price: @eventItem.Price</MudText>
+                            <MudText Typo="Typo.body2">Address: @eventItem.Address</MudText>
+                            <MudText Typo="Typo.body2">Date: @eventItem.Date?.ToString("d")</MudText>
+                            <MudText Typo="Typo.body2">Day of Week: @eventItem.DayOfWeek?.ToString()</MudText>
+                            <MudText Typo="Typo.body2">Time: @eventItem.Time?.ToString("t")</MudText>
+                            <MudText Typo="Typo.body2">Private: @eventItem.Private</MudText>
+                            <MudText Typo="Typo.body2">Code: @eventItem.Code</MudText>
+                            <MudText Typo="Typo.body2">Rating: @eventItem.Rating</MudText>
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
         }
     </MudGrid>
 </MudContainer>
 
 
-
 @code {
-    private IEnumerable<EventModel> EventList = new List<EventModel>();
+    private IEnumerable<SpecificModel> EventList = new List<SpecificModel>();
     private string searchString = string.Empty;
 
     private async Task ReloadData()
     {
-        EventList = await EventService.GetEvents();
+        EventList = await SpecificService.GetSpecifics();
     }
 
     protected override async Task OnInitializedAsync()
@@ -63,84 +66,84 @@
         }
     }
 
-    private async Task AddEvent()
-    {
-        var parameters = new DialogParameters { };
-        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true };
+    // private async Task AddEvent()
+    // {
+    //     var parameters = new DialogParameters { };
+    //     var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true };
 
-        var dialog = await DialogService.ShowAsync<EventDialog>("Add Event", parameters, options);
-        var result = await dialog.Result;
+    //     var dialog = await DialogService.ShowAsync<CreateSpecificDialog>("Add SpecificEvent", parameters, options);
+    //     var result = await dialog.Result;
 
-        if (result.Canceled)
-            return;
+    //     if (result.Canceled)
+    //         return;
 
-        try
-        {
-            var model = ((EventDialog)dialog.Dialog).Model;
+    //     try
+    //     {
+    //         var model = ((CreateSpecificDialog)dialog.Dialog).Model;
 
-            var createModel = new CreateModel()
-            {
-                    Name = model.Name,
-                    Description = model.Description,
-                    Price = model.Price,
-                    Address = model.Address,
-                    Type = model.Type,
-                    AdminId = model.AdminId
-            };
+    //         var createModel = new CreateModel()
+    //         {
+    //                 Name = model.Name,
+    //                 Description = model.Description,
+    //                 Price = model.Price,
+    //                 Address = model.Address,
+    //                 Type = model.Type,
+    //                 AdminId = model.AdminId
+    //         };
 
-            await EventService.AddEvent(createModel);
-            await ReloadData();
-        }
-        catch (Exception ex)
-        {
-            Snackbar.Add(ex.Message, Severity.Error);
-        }
-    }
+    //         await SpecificService.AddSpecific(createModel);
+    //         await ReloadData();
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Snackbar.Add(ex.Message, Severity.Error);
+    //     }
+    // }
 
-    private async Task EditEvent(Guid eventId)
-    {
-        var parameters = new DialogParameters();
-        parameters.Add("EventId", eventId);
+    // private async Task EditEvent(Guid eventId)
+    // {
+    //     var parameters = new DialogParameters();
+    //     parameters.Add("EventId", eventId);
 
-        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true };
-        var dialog = DialogService.Show<EventDialog>("Edit Event", parameters, options);
-        var result = await dialog.Result;
+    //     var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true };
+    //     var dialog = DialogService.Show<EventDialog>("Edit Event", parameters, options);
+    //     var result = await dialog.Result;
 
-        if (result.Canceled)
-            return;
+    //     if (result.Canceled)
+    //         return;
 
-        var model = ((EventDialog)dialog.Dialog).Model;
-        var updateModel = new UpdateModel()
-        {
-            Name = model.Name,
-            Description = model.Description,
-            Price = model.Price,
-            Address = model.Address,
-            Type = model.Type
-        };
+    //     var model = ((EventDialog)dialog.Dialog).Model;
+    //     var updateModel = new UpdateModel()
+    //     {
+    //         Name = model.Name,
+    //         Description = model.Description,
+    //         Price = model.Price,
+    //         Address = model.Address,
+    //         Type = model.Type
+    //     };
 
-        await EventService.EditEvent(eventId, updateModel);
-        await ReloadData();
-    }
+    //     await EventService.EditEvent(eventId, updateModel);
+    //     await ReloadData();
+    // }
 
-    private async Task DeleteEvent(Guid eventId)
-    {
-        var parameters = new DialogParameters();
-        parameters.Add("ContentText", "Do you really want to delete this Event? This process cannot be undone.");
-        parameters.Add("ButtonText", "Delete");
-        parameters.Add("Color", Color.Error);
+    // private async Task DeleteEvent(Guid eventId)
+    // {
+    //     var parameters = new DialogParameters();
+    //     parameters.Add("ContentText", "Do you really want to delete this Event? This process cannot be undone.");
+    //     parameters.Add("ButtonText", "Delete");
+    //     parameters.Add("Color", Color.Error);
 
-        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+    //     var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
-        var dialog = await DialogService.ShowAsync<ConfirmationDialog>("Delete Event", parameters, options);
-        var result = await dialog.Result;
+    //     var dialog = await DialogService.ShowAsync<ConfirmationDialog>("Delete Event", parameters, options);
+    //     var result = await dialog.Result;
 
-        if (result.Canceled)
-            return;
+    //     if (result.Canceled)
+    //         return;
 
-        await EventService.DeleteEvent(eventId);
-        await ReloadData();
-    }
+    //     await EventService.DeleteEvent(eventId);
+    //     await ReloadData();
+    // }
 }
  
 

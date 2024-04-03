@@ -1,4 +1,4 @@
-﻿namespace EventPad.Web.Pages.Users.Models;
+﻿namespace EventPad.Web.Pages.Users;
 
 public class UpdateModel
 {

@@ -1,6 +1,6 @@
 ﻿using EventPad.Api.Context.Entities;
 
-namespace EventPad.Web.Pages.Events.Models;
+namespace EventPad.Web.Pages.Events;
 
 public class EventModel
 {

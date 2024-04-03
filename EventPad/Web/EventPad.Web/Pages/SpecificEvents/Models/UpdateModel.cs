@@ -1,6 +1,6 @@
 ﻿using EventPad.Api.Context.Entities;
 
-namespace EventPad.Web.Pages.Events;
+namespace EventPad.Web.Pages.SpecificEvents;
 
 public class UpdateModel
 {

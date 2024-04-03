@@ -1,7 +1,5 @@
-﻿@using EventPad.Web.Pages.Events.Models
-@using EventPad.Web.Pages.Events.Services
-@using EventPad.Web.Pages.Users.Models
-@using EventPad.Web.Pages.Users.Services
+﻿@using EventPad.Web.Pages.Events
+@using EventPad.Web.Pages.Users
 
 
 @inherits MudComponentBase
@@ -59,9 +57,7 @@
 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
-
     [Parameter] public Guid? EventId { get; set; }
-
     [Parameter] public EventModel Model { get; set; } = new();
 
     private MudForm form = default!;
