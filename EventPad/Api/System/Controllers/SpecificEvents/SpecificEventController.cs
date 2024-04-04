@@ -1,5 +1,7 @@
 ﻿using Asp.Versioning;
 using AutoMapper;
+using EventPad.Api.Controllers.Events;
+using EventPad.Api.Services.Events;
 using EventPad.Api.Services.Specific;
 using EventPad.Common.Extensions;
 using EventPad.Logger;
@@ -34,6 +36,18 @@ public class SpecificEventController : ControllerBase
         var userId = User.GetUserGuid();
 
         var result = await specificEventService.GetAllSpecificEvents(userId, page, pageSize, mapper.Map<SpecificEventModelFilter>(filter));
+
+        return mapper.Map<IEnumerable<SpecificResponse>>(result);
+    }
+
+
+    [HttpGet("event")]
+    [Authorize]
+    public async Task<IEnumerable<SpecificResponse>> GetCurrentSpecificEventsUserEvents([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    {
+        var userId = User.GetUserGuid();
+
+        var result = await specificEventService.GetCurrentSpecificEvents(userId, page, pageSize);
 
         return mapper.Map<IEnumerable<SpecificResponse>>(result);
     }

@@ -94,7 +94,7 @@ public class SpecificEventService : ISpecificEventService
     {
         using var context = await dbContextFactory.CreateDbContextAsync();
 
-        var events = context.SpecificEvents.AsQueryable();
+        var events = context.SpecificEvents.AsQueryable().Where(e => e.Event.Uid == id);
 
         events = events.Skip((page - 1) * pageSize).Take(pageSize);
 

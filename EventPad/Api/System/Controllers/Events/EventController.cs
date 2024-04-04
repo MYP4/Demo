@@ -35,6 +35,16 @@ public class EventController : ControllerBase
         return mapper.Map<IEnumerable<EventResponse>>(result);
     }
 
+    [HttpGet("user")]
+    [Authorize]
+    public async Task<IEnumerable<EventResponse>> GetUserEvents([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    {
+        var userId = User.GetUserGuid();
+
+        var result = await eventService.GetUserEvents(userId, page, pageSize);
+
+        return mapper.Map<IEnumerable<EventResponse>>(result);
+    }
 
     [HttpGet("{id:Guid}")]
     public async Task<IActionResult> Get([FromRoute] Guid id)

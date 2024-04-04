@@ -78,7 +78,7 @@ public class EventService : IEventService
     {
         using var context = await dbContextFactory.CreateDbContextAsync();
 
-        var events = context.Events.AsQueryable();
+        var events = context.Events.AsQueryable().Where(e => e.Admin.Id == id);
 
         events = events.Skip((page - 1) * pageSize).Take(pageSize);
 

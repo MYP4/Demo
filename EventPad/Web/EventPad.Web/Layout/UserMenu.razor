@@ -59,28 +59,6 @@ else
 
     private ProfileModel profileModel;
 
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
-    //     var user = authState.User;
-    //     IsAuthenticated = user.Identity.IsAuthenticated;
-
-    //     var owners = await userService.GetUsers();
-    //     Users.AddRange(owners);
-
-
-    //     if (UserId != null)
-    //     {
-    //         var model = await userService.GetUser(UserId.Value);
-
-    //         Model.Id = model.Id;
-    //         Model.FirstName = model.FirstName;
-    //         Model.SecondName = model.SecondName;
-    //         Model.Email = model.Email;
-    //         Model.Rating = model.Rating;
-    //     }
-    // }
-
     private async Task ReloadData()
     {
         profileModel = await profileService.Me();

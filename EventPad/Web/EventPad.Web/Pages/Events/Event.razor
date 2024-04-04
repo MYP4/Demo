@@ -1,0 +1,81 @@
+﻿@page "/event/{id}"
+
+@using EventPad.Web.Components
+@using EventPad.Web.Pages.Events
+@using EventPad.Web.Pages.Profiles
+@using EventPad.Web.Pages.SpecificEvents
+@using Microsoft.AspNetCore.Authorization
+
+@inject IEventService eventService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+
+@attribute [Authorize]
+@layout MainLayout
+
+<PageTitle>Event</PageTitle>
+
+<MudContainer>
+    <MudGrid>
+        <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
+            <MudCard Elevation="2" Outlined="true">
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
+                            <MudText Typo="Typo.h5" Class="mb-2">@eventModel.Name</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Description: @eventModel.Description</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Price: @eventModel.Price</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Address: @eventModel.Address</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Type: @eventModel.Type</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Rating: @eventModel.Rating</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Admin: @eventModel.AdminName</MudText>
+                            </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="EditEvent">Edit Event</MudButton>
+                    <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="DeleteEvent">Delete Event</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+<EventSpecifics></EventSpecifics>
+
+    @code {
+    private EventModel eventModel;
+
+    [Parameter]
+    public string id { get; set; }
+
+
+
+    private async Task ReloadData()
+    {
+        var eventId = Guid.Parse(id);
+        eventModel = await eventService.GetEvent(eventId);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await ReloadData();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+    }
+
+    private void EditEvent()
+    {
+        // Implementation for editing the event
+    }
+
+    private void DeleteEvent()
+    {
+        // Implementation for deleting the event
+    }
+}

@@ -16,6 +16,18 @@ public class EventService(HttpClient httpClient) : IEventService
         return await response.Content.ReadFromJsonAsync<IEnumerable<EventModel>>() ?? new List<EventModel>();
     }
 
+    public async Task<IEnumerable<EventModel>> GetUserEvents()
+    {
+        var response = await httpClient.GetAsync("v1/event/user");
+        if (!response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            throw new Exception(content);
+        }
+
+        return await response.Content.ReadFromJsonAsync<IEnumerable<EventModel>>() ?? new List<EventModel>();
+    }
+
     public async Task<EventModel> GetEvent(Guid eventId)
     {
         var response = await httpClient.GetAsync($"v1/event/{eventId}");

@@ -1,0 +1,105 @@
+﻿@using EventPad.Web.Pages.Events
+@using EventPad.Web.Components
+@using EventPad.Web.Pages.Profiles
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inject ISpecificService SpecificService
+@inject IEventService EventService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@inject IProfileService ProfileService
+
+@attribute [Authorize]
+@layout MainLayout
+
+<PageTitle>SpecificEvents</PageTitle>
+
+<MudContainer>
+    <MudText Typo="Typo.h4" Class="ma-8">UserEvents</MudText>
+    <MudGrid>
+        @foreach (var eventItem in SpecificList)
+        {
+            <MudItem xs="12" sm="6" md="3">
+                <MudNavLink Href="@($"/event/{eventItem.EventId}")">
+                    <MudCard>
+                        <MudCardMedia>
+                            <MudIcon Icon="Icons.Material.Filled.Door" Size="Size.Large" />
+                        </MudCardMedia>
+                        <MudCardContent>
+                            <MudText Typo="Typo.h5">@eventItem.Description</MudText>
+                                <MudText Typo="Typo.body2">Ticket Count: @eventItem.TicketCount</MudText>
+                                <MudText Typo="Typo.body2">Price: @eventItem.Price</MudText>
+                                <MudText Typo="Typo.body2">Address: @eventItem.Address</MudText>
+                                <MudText Typo="Typo.body2">Date: @eventItem.Date?.ToString("d")</MudText>
+                                <MudText Typo="Typo.body2">Day of Week: @eventItem.DayOfWeek?.ToString()</MudText>
+                                <MudText Typo="Typo.body2">Time: @eventItem.Time?.ToString("t")</MudText>
+                                <MudText Typo="Typo.body2">Private: @eventItem.Private</MudText>
+                                <MudText Typo="Typo.body2">Code: @eventItem.Code</MudText>
+                                <MudText Typo="Typo.body2">Rating: @eventItem.Rating</MudText>
+                        </MudCardContent>
+                        @if (isOwner)
+                        {
+                            <MudCardActions>
+                                <MudButton Color="Color.Primary" OnClick="@(() => EditEvent(eventItem.Id))">Edit</MudButton>
+                                <MudButton Color="Color.Secondary" OnClick="@(() => DeleteEvent(eventItem.Id))">Delete</MudButton>
+                            </MudCardActions>
+                        }
+                    </MudCard>
+                </MudNavLink>
+            </MudItem>
+        }
+    </MudGrid>
+</MudContainer>
+
+@code {
+    private IEnumerable<SpecificModel> SpecificList = new List<SpecificModel>();
+    private string searchString = string.Empty;
+    private bool isOwner = false;
+
+    private async Task ReloadData()
+    {
+        SpecificList = await SpecificService.GetEventSpecifics();
+
+        var currentEvent = await EventService.GetEvent(SpecificList.First().EventId);
+
+        isOwner = await IsOwner(currentEvent.Id);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await ReloadData();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+    }
+
+    private async Task<bool> IsOwner(Guid adminId)
+    {
+        var user = await ProfileService.Me();
+
+        if (user.Id == adminId)
+            return true;
+
+        return false;
+    }
+
+    private async Task AddEvent()
+    {
+
+    }
+
+    private async Task EditEvent(Guid eventId)
+    {
+
+    }
+
+    private async Task DeleteEvent(Guid eventId)
+    {
+
+    }
+}

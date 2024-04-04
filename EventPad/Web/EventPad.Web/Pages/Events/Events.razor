@@ -22,6 +22,7 @@
         @foreach (var eventItem in EventList)
         {
             <MudItem xs="12" sm="6" md="3">
+                <MudNavLink Href="@($"/event/{eventItem.Id}")">
                 <MudCard>
                     <MudCardMedia>
                         <MudIcon Icon="Icons.Material.Filled.Door" Size="Size.Large" />
@@ -31,10 +32,12 @@
                         <MudText Typo="Typo.body2">@eventItem.Description</MudText>
                         <MudText Typo="Typo.body2">Price: @eventItem.Price</MudText>
                         <MudText Typo="Typo.body2">Address: @eventItem.Address</MudText>
+                        <MudText Typo="Typo.body2">Owner: @eventItem.AdminName</MudText>
                         <MudText Typo="Typo.body2">Type: @eventItem.Type</MudText>
                         <MudText Typo="Typo.body2">Rating: @eventItem.Rating</MudText>
                     </MudCardContent>
                 </MudCard>
+                </MudNavLink>
             </MudItem>
         }
     </MudGrid>
@@ -95,51 +98,6 @@
         {
             Snackbar.Add(ex.Message, Severity.Error);
         }
-    }
-
-    private async Task EditEvent(Guid eventId)
-    {
-        var parameters = new DialogParameters();
-        parameters.Add("EventId", eventId);
-
-        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true };
-        var dialog = DialogService.Show<EventDialog>("Edit Event", parameters, options);
-        var result = await dialog.Result;
-
-        if (result.Canceled)
-            return;
-
-        var model = ((EventDialog)dialog.Dialog).Model;
-        var updateModel = new UpdateModel()
-        {
-            Name = model.Name,
-            Description = model.Description,
-            Price = model.Price,
-            Address = model.Address,
-            Type = model.Type
-        };
-
-        await EventService.EditEvent(eventId, updateModel);
-        await ReloadData();
-    }
-
-    private async Task DeleteEvent(Guid eventId)
-    {
-        var parameters = new DialogParameters();
-        parameters.Add("ContentText", "Do you really want to delete this Event? This process cannot be undone.");
-        parameters.Add("ButtonText", "Delete");
-        parameters.Add("Color", Color.Error);
-
-        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
-
-        var dialog = await DialogService.ShowAsync<ConfirmationDialog>("Delete Event", parameters, options);
-        var result = await dialog.Result;
-
-        if (result.Canceled)
-            return;
-
-        await EventService.DeleteEvent(eventId);
-        await ReloadData();
     }
 }
  

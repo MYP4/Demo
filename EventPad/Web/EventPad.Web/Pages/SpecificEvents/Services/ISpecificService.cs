@@ -3,6 +3,7 @@
 public interface ISpecificService
 {
     Task<IEnumerable<SpecificModel>> GetSpecifics();
+    Task<IEnumerable<SpecificModel>> GetEventSpecifics();
     Task<SpecificModel> GetSpecific(Guid specificId);
     Task<SpecificModel> GetSpecificByCode(string code);
     Task AddSpecific(CreateModel model);
