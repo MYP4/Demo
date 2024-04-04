@@ -56,9 +56,14 @@
 
 
 @code {
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
-    [Parameter] public Guid? EventId { get; set; }
-    [Parameter] public EventModel Model { get; set; } = new();
+    [CascadingParameter] 
+    MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter]
+    public Guid? EventId { get; set; }
+
+    [Parameter] 
+    public EventModel Model { get; set; } = new();
 
     private MudForm form = default!;
 

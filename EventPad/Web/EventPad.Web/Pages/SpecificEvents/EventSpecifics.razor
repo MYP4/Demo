@@ -57,9 +57,12 @@
     private string searchString = string.Empty;
     private bool isOwner = false;
 
+    [Parameter]
+    public Guid EventId { get; set; }
+
     private async Task ReloadData()
     {
-        SpecificList = await SpecificService.GetEventSpecifics();
+        SpecificList = await SpecificService.GetEventSpecifics(EventId);
 
         var currentEvent = await EventService.GetEvent(SpecificList.First().EventId);
 

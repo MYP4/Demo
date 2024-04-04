@@ -1,6 +1,4 @@
-﻿using EventPad.Web.Pages.Events;
-
-namespace EventPad.Web.Pages.Events;
+﻿namespace EventPad.Web.Pages.Events;
 
 public interface IEventService
 {

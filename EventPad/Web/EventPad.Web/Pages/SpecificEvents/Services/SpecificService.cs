@@ -18,9 +18,9 @@ public class SpecificService(HttpClient httpClient) : ISpecificService
     }
 
 
-    public async Task<IEnumerable<SpecificModel>> GetEventSpecifics()
+    public async Task<IEnumerable<SpecificModel>> GetEventSpecifics(Guid id)
     {
-        var response = await httpClient.GetAsync("v1/specific-event/event");
+        var response = await httpClient.GetAsync($"v1/specific-event/event/{id}");
         if (!response.IsSuccessStatusCode)
         {
             var content = await response.Content.ReadAsStringAsync();

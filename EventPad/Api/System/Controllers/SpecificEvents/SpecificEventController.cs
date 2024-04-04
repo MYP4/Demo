@@ -41,13 +41,11 @@ public class SpecificEventController : ControllerBase
     }
 
 
-    [HttpGet("event")]
+    [HttpGet("event/{id:Guid}")]
     [Authorize]
-    public async Task<IEnumerable<SpecificResponse>> GetCurrentSpecificEventsUserEvents([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    public async Task<IEnumerable<SpecificResponse>> GetCurrentSpecificEventsUserEvents(Guid id, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        var userId = User.GetUserGuid();
-
-        var result = await specificEventService.GetCurrentSpecificEvents(userId, page, pageSize);
+        var result = await specificEventService.GetCurrentSpecificEvents(id, page, pageSize);
 
         return mapper.Map<IEnumerable<SpecificResponse>>(result);
     }
