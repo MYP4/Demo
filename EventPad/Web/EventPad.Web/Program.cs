@@ -4,6 +4,7 @@ using EventPad.Web.Pages.Auth;
 using EventPad.Web.Pages.Events;
 using EventPad.Web.Pages.Profiles;
 using EventPad.Web.Pages.SpecificEvents;
+using EventPad.Web.Pages.Tickets;
 using EventPad.Web.Pages.Users;
 using EventPad.Web.Providers;
 using EventPad.Web.Services;
@@ -27,6 +28,7 @@ builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<ISpecificService, SpecificService>();
+builder.Services.AddScoped<ITicketService, TicketService>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
 builder.Services.AddScoped<IAuthService, AuthService>();

@@ -1,0 +1,86 @@
+﻿@page "/specific/{id}"
+
+@using EventPad.Web.Components
+@using EventPad.Web.Pages.Events
+@using EventPad.Web.Pages.Profiles
+@using EventPad.Web.Pages.SpecificEvents
+@using EventPad.Web.Pages.Tickets
+@using Microsoft.AspNetCore.Authorization
+
+@inject IEventService eventService
+@inject ISpecificService specificService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+
+@attribute [Authorize]
+@layout MainLayout
+
+<PageTitle>Event</PageTitle>
+
+<MudContainer>
+    <MudGrid>
+        <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
+            <MudCard Elevation="2" Outlined="true">
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
+                            <MudText Typo="Typo.h5" Class="mb-2">@specificModel.Description</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Ticket Count: @specificModel.TicketCount</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Price: @specificModel.Price</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Address: @specificModel.Address</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Date: @specificModel.Date?.ToString("d")</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Day of Week: @specificModel.DayOfWeek?.ToString()</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Time: @specificModel.Time?.ToString("t")</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Private: @specificModel.Private</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Code: @specificModel.Code</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Rating: @specificModel.Rating</MudText>
+                            </MudItem>
+                        </MudGrid>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="EditSpecificModel">Edit Specific Model</MudButton>
+                        <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="DeleteSpecificModel">Delete Specific Model</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+
+    <SpecificTickets id="eventModel.Id"></SpecificTickets>
+
+    @code {
+    private SpecificModel specificModel;
+
+    [Parameter]
+    public string id { get; set; }
+
+
+
+    private async Task ReloadData()
+    {
+        var specificId = Guid.Parse(id);
+        specificModel = await specificService.GetSpecific(specificId);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await ReloadData();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+    }
+
+    private void EditSpecificModel()
+    {
+        // Implementation for editing the event
+    }
+
+    private void DeleteSpecificModel()
+    {
+        // Implementation for deleting the event
+    }
+}

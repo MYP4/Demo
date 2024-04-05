@@ -1,0 +1,242 @@
+﻿@using EventPad.Web.Pages.Events
+@using EventPad.Web.Components
+@using EventPad.Web.Pages.Profiles
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inject ITicketService TicketService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@inject IProfileService ProfileService
+
+@attribute [Authorize]
+@layout MainLayout
+
+<PageTitle>SpecificTickets</PageTitle>
+<MudContainer>
+    <MudText Typo="Typo.h4" Class="ma-8">Tickets</MudText>
+    <MudTable Items="@TicketList" Hover="true" Breakpoint="Breakpoint.Sm">
+        <HeaderContent>
+            <MudTh>ID</MudTh>
+            <MudTh>User ID</MudTh>
+            <MudTh>Specific ID</MudTh>
+            <MudTh>Status</MudTh>
+            <MudTh>Feedback</MudTh>
+            <MudTh>Rating</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>@context.Id.ToString()</MudTd>
+                <MudTd>@context.UserId.ToString()</MudTd>
+                <MudTd>@context.SpecificId.ToString()</MudTd>
+                <MudTd>@context.Status</MudTd>
+                <MudTd>@context.Feedback</MudTd>
+                <MudTd>@context.Rating</MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudContainer>
+
+
+    @code {
+    private IEnumerable<TicketModel> TicketList = new List<TicketModel>();
+    private string searchString = string.Empty;
+
+    [Parameter]
+    public string id { get; set; }
+
+    private async Task ReloadData()
+    {
+        var specificId = Guid.Parse(id);
+        TicketList = await TicketService.GetSpecificTickets(specificId);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await ReloadData();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+    }
+
+    // private async Task AddEvent()
+    // {
+    //     var parameters = new DialogParameters { };
+    //     var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true };
+
+    //     var dialog = await DialogService.ShowAsync<CreateSpecificDialog>("Add SpecificEvent", parameters, options);
+    //     var result = await dialog.Result;
+
+    //     if (result.Canceled)
+    //         return;
+
+    //     try
+    //     {
+    //         var model = ((CreateSpecificDialog)dialog.Dialog).Model;
+
+    //         var createModel = new CreateModel()
+    //         {
+    //                 Name = model.Name,
+    //                 Description = model.Description,
+    //                 Price = model.Price,
+    //                 Address = model.Address,
+    //                 Type = model.Type,
+    //                 AdminId = model.AdminId
+    //         };
+
+    //         await SpecificService.AddSpecific(createModel);
+    //         await ReloadData();
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Snackbar.Add(ex.Message, Severity.Error);
+    //     }
+    // }
+
+    // private async Task EditEvent(Guid eventId)
+    // {
+    //     var parameters = new DialogParameters();
+    //     parameters.Add("EventId", eventId);
+
+    //     var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true };
+    //     var dialog = DialogService.Show<EventDialog>("Edit Event", parameters, options);
+    //     var result = await dialog.Result;
+
+    //     if (result.Canceled)
+    //         return;
+
+    //     var model = ((EventDialog)dialog.Dialog).Model;
+    //     var updateModel = new UpdateModel()
+    //     {
+    //         Name = model.Name,
+    //         Description = model.Description,
+    //         Price = model.Price,
+    //         Address = model.Address,
+    //         Type = model.Type
+    //     };
+
+    //     await EventService.EditEvent(eventId, updateModel);
+    //     await ReloadData();
+    // }
+
+    // private async Task DeleteEvent(Guid eventId)
+    // {
+    //     var parameters = new DialogParameters();
+    //     parameters.Add("ContentText", "Do you really want to delete this Event? This process cannot be undone.");
+    //     parameters.Add("ButtonText", "Delete");
+    //     parameters.Add("Color", Color.Error);
+
+    //     var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+    //     var dialog = await DialogService.ShowAsync<ConfirmationDialog>("Delete Event", parameters, options);
+    //     var result = await dialog.Result;
+
+    //     if (result.Canceled)
+    //         return;
+
+    //     await EventService.DeleteEvent(eventId);
+    //     await ReloadData();
+    // }
+}
+
+
+
+
+@* <MudContainer>
+    <MudText Typo="Typo.h4" Class="ma-8">Events</MudText>
+
+    <MudGrid>
+        <MudItem xs="12" sm="6" md="3">
+            <MudTextField Label="Search" @bind-Value="searchString" FullWidth="true" OnInput="ReloadData" />
+        </MudItem>
+    </MudGrid>
+
+    <MudGrid>
+        @foreach (var eventItem in EventList.Where(e => e.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)))
+        {
+            <MudItem xs="12" sm="6" md="3">
+                <MudCard>
+                    <MudCardMedia Image="images/door.jpg" Height="200" />
+                    <MudCardContent>
+                        <MudText Typo="Typo.h5">@eventItem.Name</MudText>
+                            <MudText Typo="Typo.body2">@eventItem.Description</MudText>
+                            <MudText Typo="Typo.body2">Price: @eventItem.Price</MudText>
+                            <MudText Typo="Typo.body2">Address: @eventItem.Address</MudText>
+                            <MudText Typo="Typo.body2">Type: @eventItem.Type</MudText>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="() => EditEvent(eventItem.Id)">Edit</MudButton>
+                            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="() => DeleteEvent(eventItem.Id)">Delete</MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+        }
+    </MudGrid>
+
+    <MudButton Color="Color.Primary" Variant="Variant.Outlined" Class="ma-4" OnClick="AddEvent">Add Event</MudButton>
+</MudContainer>
+
+@code {
+    private IEnumerable<EventModel> EventList = new List<EventModel>();
+    private string searchString = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ReloadData();
+    }
+
+    private async Task AddEvent()
+    {
+        var parameters = new DialogParameters();
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true };
+
+        var dialog = await DialogService.ShowAsync<EventDialog>("Add Event", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            await ReloadData();
+        }
+    }
+
+    private async Task EditEvent(Guid eventId)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("EventId", eventId);
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true };
+        var dialog = await DialogService.ShowAsync<EventDialog>("Edit Event", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            await ReloadData();
+        }
+    }
+
+    private async Task DeleteEvent(Guid eventId)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Do you really want to delete this Event? This process cannot be undone.");
+        parameters.Add("ButtonText", "Delete");
+        parameters.Add("Color", Color.Error);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = await DialogService.ShowAsync<ConfirmationDialog>("Delete Event", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            await EventService.DeleteEvent(eventId);
+            await ReloadData();
+        }
+    }
+
+    private async Task ReloadData()
+    {
+        EventList = await EventService.GetEvents();
+    }
+} *@

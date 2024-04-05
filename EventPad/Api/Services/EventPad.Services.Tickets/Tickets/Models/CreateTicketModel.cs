@@ -61,14 +61,5 @@ public class CreateModelValidator : AbstractValidator<CreateTicketModel>
                 var found = context.SpecificEvents.Any(a => a.Uid == id);
                 return found;
             }).WithMessage("SpecificEvent not fount");
-
-        RuleFor(x => x.UserId)
-            .NotEmpty().WithMessage("Event is required")
-            .Must((id) =>
-            {
-                using var context = contextFactory.CreateDbContext();
-                var found = context.Users.Any(a => a.Id == id);
-                return found;
-            }).WithMessage("Event not fount");
     }
 }

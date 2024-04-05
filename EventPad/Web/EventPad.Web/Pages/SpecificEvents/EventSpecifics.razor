@@ -11,7 +11,7 @@
 @inject IProfileService ProfileService
 
 @attribute [Authorize]
-@layout MainLayout
+@* @layout MainLayout *@
 
 <PageTitle>SpecificEvents</PageTitle>
 
@@ -21,7 +21,7 @@
         @foreach (var eventItem in SpecificList)
         {
             <MudItem xs="12" sm="6" md="3">
-                <MudNavLink Href="@($"/event/{eventItem.EventId}")">
+                <MudNavLink Href="@($"/specific/{eventItem.Id}")">
                     <MudCard>
                         <MudCardMedia>
                             <MudIcon Icon="Icons.Material.Filled.Door" Size="Size.Large" />

@@ -95,6 +95,11 @@ public class TransactionService : ITransactionService
 
         if (type == TransactionType.Purchase)
         {
+            //var userAcc = await userAccountService.GetUserAccountById(userAccount.Uid);
+            //if (userAcc.Balance < transaction.Amount)
+            //    throw new ProcessException("Top up your balance. Insufficient funds");
+
+
             await userAccountService.Update(userAccount.Uid, new UpdateUserAccountModel() { Amount = -transaction.Amount }, context);
             await eventAccountService.Update(eventAccount.Uid, new UpdateEventAccountModel() { Amount = transaction.Amount }, context);
         }

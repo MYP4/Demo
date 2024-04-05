@@ -9,7 +9,7 @@ public class TicketModel
 {
     public Guid Id { get; set; }
     public Guid SpecificId { get; set; }
-
+    public Guid UserId { get; set; }
     public TicketStatus Status { get; set; }
     public string FeedBack {  get; set; }
     public float Rating { get; set; }

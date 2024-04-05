@@ -30,7 +30,7 @@ public class TicketService : ITicketService
         this.action = action;
     }
 
-    public async Task<IEnumerable<TicketModel>> GetAllTickets(int page = 1, int pageSize = 10, TicketModelFilter filter = null, string eventId = null, string userId = null)
+    public async Task<IEnumerable<TicketModel>> GetAllTickets(int page = 1, int pageSize = 10, TicketModelFilter filter = null)
     {
         var _event = filter?.EventId;
         var user = filter?.UserId;
@@ -58,6 +58,36 @@ public class TicketService : ITicketService
         var eventList = await tickets.ToListAsync();
 
         var result = mapper.Map<IEnumerable<TicketModel>>(eventList);
+
+        return result;
+    }
+
+    public async Task<IEnumerable<TicketModel>> GetUserTickets(Guid userId, int page = 1, int pageSize = 10)
+    {
+        using var context = await dbContextFactory.CreateDbContextAsync();
+
+        var tickets = context.Tickets.AsQueryable().Where(e => e.UserId == userId);
+
+        tickets = tickets.Skip((page - 1) * pageSize).Take(pageSize);
+
+        var ticketList = await tickets.ToListAsync();
+
+        var result = mapper.Map<IEnumerable<TicketModel>>(ticketList);
+
+        return result;
+    }
+
+    public async Task<IEnumerable<TicketModel>> GetSpecificTickets(Guid specificId, int page = 1, int pageSize = 10)
+    {
+        using var context = await dbContextFactory.CreateDbContextAsync();
+
+        var tickets = context.Tickets.AsQueryable().Where(e => e.SpecificEvent.Uid == specificId);
+
+        tickets = tickets.Skip((page - 1) * pageSize).Take(pageSize);
+
+        var ticketList = await tickets.ToListAsync();
+
+        var result = mapper.Map<IEnumerable<TicketModel>>(ticketList);
 
         return result;
     }

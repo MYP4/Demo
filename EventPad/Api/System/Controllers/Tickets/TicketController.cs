@@ -12,7 +12,7 @@ namespace EventPad.Api.Controllers;
 [ApiController]
 [ApiVersion("1.0")]
 [ApiExplorerSettings(GroupName = "Product")]
-[Route("v{version:apiVersion}/[controller]")]
+[Route("v{version:apiVersion}/ticket")]
 public class TicketController : ControllerBase
 {
     private readonly IAppLogger logger;
@@ -31,6 +31,26 @@ public class TicketController : ControllerBase
     public async Task<IEnumerable<TicketResponce>> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] TicketFilterRequest filter = null)
     {
         var result = await ticketService.GetAllTickets(page, pageSize, mapper.Map<TicketModelFilter>(filter));
+
+        return mapper.Map<IEnumerable<TicketResponce>>(result);
+    }
+
+    [HttpGet("user")]
+    [Authorize]
+    public async Task<IEnumerable<TicketResponce>> GetUserTickets([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    {
+        var userId = User.GetUserGuid();
+
+        var result = await ticketService.GetUserTickets(userId, page, pageSize);
+
+        return mapper.Map<IEnumerable<TicketResponce>>(result);
+    }
+
+    [HttpGet("specific")]
+    [Authorize]
+    public async Task<IEnumerable<TicketResponce>> GetSpecificTickets(Guid specificEvent, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    {
+        var result = await ticketService.GetSpecificTickets(specificEvent, page, pageSize);
 
         return mapper.Map<IEnumerable<TicketResponce>>(result);
     }
@@ -55,6 +75,10 @@ public class TicketController : ControllerBase
     [Authorize]
     public async Task<TicketResponce> Create(CreateTicketRequest request)
     {
+        var userId = User.GetUserGuid();
+
+        request.UserId = userId;
+
         var result = await ticketService.Create(mapper.Map<CreateTicketModel>(request));
 
         return mapper.Map<TicketResponce>(result);
