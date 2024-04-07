@@ -46,14 +46,13 @@
         </MudGrid>
     </MudContainer>
 
-    <SpecificTickets id="eventModel.Id"></SpecificTickets>
+    <SpecificTickets specificId="specificModel.Id"></SpecificTickets>
 
     @code {
     private SpecificModel specificModel;
 
     [Parameter]
     public string id { get; set; }
-
 
 
     private async Task ReloadData()

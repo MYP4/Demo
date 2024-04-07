@@ -46,7 +46,7 @@ public class TicketController : ControllerBase
         return mapper.Map<IEnumerable<TicketResponce>>(result);
     }
 
-    [HttpGet("specific")]
+    [HttpGet("specific/{specificEvent:Guid}")]
     [Authorize]
     public async Task<IEnumerable<TicketResponce>> GetSpecificTickets(Guid specificEvent, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {

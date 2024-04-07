@@ -30,7 +30,12 @@ public class TicketService(HttpClient httpClient) : ITicketService
 
     public async Task<IEnumerable<TicketModel>> GetSpecificTickets(Guid specificId, int page = 1, int pageSize = 10)
     {
-        var response = await httpClient.GetAsync("v1/ticket/specific");
+        var response = await httpClient.GetAsync($"v1/ticket/specific/{specificId}");
+
+        //http://localhost:5069/v1/ticket/specific?specificEvent=specific/61a6f8ed-d0aa-478b-a68b-065c6bb49e51&page=1&pageSize=10
+        //http://localhost:5069/v1/ticket/specific/61a6f8ed-d0aa-478b-a68b-065c6bb49e51
+        //http://localhost:5069/v1/ticket/61a6f8ed-d0aa-478b-a68b-065c6bb49e51?page=1&pageSize=10
+
         if (!response.IsSuccessStatusCode)
         {
             var content = await response.Content.ReadAsStringAsync();
