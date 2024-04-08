@@ -3,6 +3,7 @@
 @using EventPad.Web.Components
 @using EventPad.Web.Pages.Events
 @using EventPad.Web.Pages.Profiles
+@using EventPad.Web.Pages.Tickets
 @using Microsoft.AspNetCore.Authorization
 
 
@@ -23,12 +24,10 @@
             <MudCard Elevation="2" Outlined="true">
                 <MudCardContent>
                     <MudGrid>
-                        <!-- Аватар слева и больше -->
                         <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
                             <MudAvatar Src="path_to_your_avatar_image" Size="Size.Large" />
                         </MudItem>
                         <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
-                            <!-- Информация о пользователе -->
                             <MudText Typo="Typo.h5" Class="mb-2">@profileModel.FirstName @profileModel.SecondName</MudText>
                             <MudText Typo="Typo.body2" Class="mb-2">Email: @profileModel.Email</MudText>
                             <MudText Typo="Typo.body2" Class="mb-2">Account Number: @profileModel.AccountNumber</MudText>
@@ -37,7 +36,6 @@
                     </MudGrid>
                 </MudCardContent>
                 <MudCardActions>
-                    <!-- Кнопки действий -->
                     <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="EditProfile">Edit Profile</MudButton>
                     <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="DeleteProfile">Delete Profile</MudButton>
                 </MudCardActions>
@@ -47,6 +45,7 @@
 </MudContainer>
 
 <UserEvents></UserEvents>
+<UserTickets></UserTickets>
 
 
 

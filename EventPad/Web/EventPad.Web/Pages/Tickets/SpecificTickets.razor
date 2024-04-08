@@ -1,6 +1,8 @@
 ﻿@using EventPad.Web.Pages.Events
 @using EventPad.Web.Components
 @using EventPad.Web.Pages.Profiles
+@using EventPad.Web.Pages.SpecificEvents
+@using EventPad.Web.Pages.Users
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 
@@ -8,35 +10,109 @@
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 @inject IProfileService ProfileService
+@inject IUserService userService
+@inject IEventService eventService
+@inject ISpecificService specificService
 
 @attribute [Authorize]
 @layout MainLayout
 
+
 <PageTitle>SpecificTickets</PageTitle>
 <MudContainer>
     <MudText Typo="Typo.h4" Class="ma-8">Tickets</MudText>
-    <MudTable Items="@TicketList" Hover="true" Breakpoint="Breakpoint.Sm">
+    <MudTable Items="@TicketList" Hover="true" Breakpoint="Breakpoint.Sm" Class="custom-table">
         <HeaderContent>
-            <MudTh>ID</MudTh>
-            <MudTh>User ID</MudTh>
-            <MudTh>Specific ID</MudTh>
+            <MudTh>User</MudTh>
+            <MudTh>Specific</MudTh>
             <MudTh>Status</MudTh>
             <MudTh>Feedback</MudTh>
             <MudTh>Rating</MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd>@context.Id.ToString()</MudTd>
-                <MudTd>@context.UserId.ToString()</MudTd>
-                <MudTd>@context.SpecificId.ToString()</MudTd>
-                <MudTd>@context.Status</MudTd>
-                <MudTd>@context.Feedback</MudTd>
-                <MudTd>@context.Rating</MudTd>
+            <MudTd>@userNames[context.UserId]</MudTd>
+            <MudTd>@eventNames[context.SpecificId]</MudTd>
+            <MudTd>@context.Status</MudTd>
+            <MudTd>@context.Feedback</MudTd>
+            <MudTd>@context.Rating</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
+</MudContainer>
+
+@code {
+    [Parameter]
+    public Guid specificId { get; set; }
+
+    private IEnumerable<TicketModel> TicketList = new List<TicketModel>();
+    private Dictionary<Guid, string> userNames = new Dictionary<Guid, string>();
+    private Dictionary<Guid, string> eventNames = new Dictionary<Guid, string>();
+
+    private async Task ReloadData()
+    {
+        TicketList = await TicketService.GetSpecificTickets(specificId);
+    }
+
+    private async Task<string> GetUserName(Guid id)
+    {
+        var user = await userService.GetUser(id);
+        return $"{user.FirstName} {user.SecondName}";
+    }
+
+    private async Task<string> GetEventName(Guid id)
+    {
+        var specificModel = await specificService.GetSpecific(id);
+        var eventModel = await eventService.GetEvent(specificModel.EventId);
+        return $"{eventModel.Name}";
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await ReloadData();
+            foreach (var ticket in TicketList)
+            {
+                userNames[ticket.UserId] = await GetUserName(ticket.UserId);
+                eventNames[ticket.SpecificId] = await GetEventName(ticket.SpecificId);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+    }
+}
+
+
+@* <PageTitle>SpecificTickets</PageTitle>
+<MudContainer>
+    <MudText Typo="Typo.h4" Class="ma-8">Tickets</MudText>
+    <MudTable Items="@TicketList" Hover="true" Breakpoint="Breakpoint.Sm">
+        <HeaderContent>
+            <MudTh>User</MudTh>
+            <MudTh>Specific</MudTh>
+            <MudTh>Status</MudTh>
+            <MudTh>Feedback</MudTh>
+            <MudTh>Rating</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>@GetUserName(context.UserId)</MudTd>
+            <MudTd>@GetEventName(context.SpecificId)</MudTd>
+            <MudTd>@context.Status</MudTd>
+            <MudTd>@context.Feedback</MudTd>
+            <MudTd>@context.Rating</MudTd>
         </RowTemplate>
     </MudTable>
 </MudContainer>
 
 
     @code {
+
+    private string userName;
+    private string eventName;
 
     [Parameter]
     public Guid specificId { get; set; }
@@ -46,9 +122,22 @@
 
     private async Task ReloadData()
     {
-       // var Id = Guid.Parse(specificModel);
         TicketList = await TicketService.GetSpecificTickets(specificId);
     }
+
+    private async Task<string> GetUserName(Guid id)
+    {
+        var user = await userService.GetUser(id);
+        return $"{user.FirstName} {user.SecondName}";
+    }
+
+    private async Task<string> GetEventName(Guid id)
+    {
+        var specific = await specificService.GetSpecific(id);
+        var eventModel = await eventService.GetEvent(specific.EventId);
+        return eventModel.Name;
+    }
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -62,3 +151,4 @@
         }
     }
 }
+ *@

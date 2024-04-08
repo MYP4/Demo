@@ -5,12 +5,15 @@
 @using EventPad.Web.Pages.Profiles
 @using EventPad.Web.Pages.SpecificEvents
 @using EventPad.Web.Pages.Tickets
+@using EventPad.Web.Pages.Users
 @using Microsoft.AspNetCore.Authorization
 
+@inject IUserService userService;
 @inject IEventService eventService
 @inject ISpecificService specificService
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
+@inject IProfileService profileService
 
 @attribute [Authorize]
 @layout MainLayout
@@ -25,31 +28,35 @@
                     <MudGrid>
                         <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
                             <MudText Typo="Typo.h5" Class="mb-2">@specificModel.Description</MudText>
-                                <MudText Typo="Typo.body2" Class="mb-2">Ticket Count: @specificModel.TicketCount</MudText>
-                                <MudText Typo="Typo.body2" Class="mb-2">Price: @specificModel.Price</MudText>
-                                <MudText Typo="Typo.body2" Class="mb-2">Address: @specificModel.Address</MudText>
-                                <MudText Typo="Typo.body2" Class="mb-2">Date: @specificModel.Date?.ToString("d")</MudText>
-                                <MudText Typo="Typo.body2" Class="mb-2">Day of Week: @specificModel.DayOfWeek?.ToString()</MudText>
-                                <MudText Typo="Typo.body2" Class="mb-2">Time: @specificModel.Time?.ToString("t")</MudText>
+                            <MudText Typo="Typo.body2" Class="mb-2">Ticket Count: @specificModel.TicketCount</MudText>
+                            <MudText Typo="Typo.body2" Class="mb-2">Price: @specificModel.Price</MudText>
+                            <MudText Typo="Typo.body2" Class="mb-2">Address: @specificModel.Address</MudText>
+                            <MudText Typo="Typo.body2" Class="mb-2">Date: @specificModel.Date?.ToString("d")</MudText>
+                            <MudText Typo="Typo.body2" Class="mb-2">Day of Week: @specificModel.DayOfWeek?.ToString()</MudText>
+                            <MudText Typo="Typo.body2" Class="mb-2">Time: @specificModel.Time?.ToString("t")</MudText>
+                            @if (isOwner)
+                            {
                                 <MudText Typo="Typo.body2" Class="mb-2">Private: @specificModel.Private</MudText>
                                 <MudText Typo="Typo.body2" Class="mb-2">Code: @specificModel.Code</MudText>
-                                <MudText Typo="Typo.body2" Class="mb-2">Rating: @specificModel.Rating</MudText>
-                            </MudItem>
-                        </MudGrid>
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="EditSpecificModel">Edit Specific Model</MudButton>
-                        <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="DeleteSpecificModel">Delete Specific Model</MudButton>
-                    </MudCardActions>
-                </MudCard>
-            </MudItem>
-        </MudGrid>
-    </MudContainer>
+                            }
+                            <MudText Typo="Typo.body2" Class="mb-2">Rating: @specificModel.Rating</MudText>
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="EditSpecificModel">Edit</MudButton>
+                    <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="DeleteSpecificModel">Delete</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
 
-    <SpecificTickets specificId="specificModel.Id"></SpecificTickets>
+<SpecificTickets specificId="specificModel.Id"></SpecificTickets>
 
-    @code {
+@code {
     private SpecificModel specificModel;
+    private bool isOwner = false;
 
     [Parameter]
     public string id { get; set; }
@@ -65,12 +72,24 @@
     {
         try
         {
+            IsOwner();
             await ReloadData();
         }
         catch (Exception ex)
         {
             Snackbar.Add(ex.Message, Severity.Error);
         }
+    }
+
+    private async void IsOwner()
+    {
+        var user = await profileService.Me();
+        var eventModel = await eventService.GetEvent(specificModel.EventId);
+        var eventAdmin = await userService.GetUser(eventModel.AdminId);
+
+        if (user.Id == eventAdmin.Id)
+            isOwner = true;
+        else isOwner = false;
     }
 
     private void EditSpecificModel()

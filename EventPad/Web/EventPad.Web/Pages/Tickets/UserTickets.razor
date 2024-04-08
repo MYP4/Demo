@@ -1,0 +1,64 @@
+﻿@using EventPad.Web.Pages.Events
+@using EventPad.Web.Components
+@using EventPad.Web.Pages.Profiles
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inject ITicketService TicketService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@inject IProfileService ProfileService
+
+@attribute [Authorize]
+@layout MainLayout
+
+<PageTitle>UserTickets</PageTitle>
+<MudContainer>
+    <MudText Typo="Typo.h4" Class="ma-8">Tickets</MudText>
+    <MudTable Items="@TicketList" Hover="true" Breakpoint="Breakpoint.Sm">
+        <HeaderContent>
+            <MudTh>ID</MudTh>
+            <MudTh>User ID</MudTh>
+            <MudTh>Specific ID</MudTh>
+            <MudTh>Status</MudTh>
+            <MudTh>Feedback</MudTh>
+            <MudTh>Rating</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>@context.Id.ToString()</MudTd>
+                <MudTd>@context.UserId.ToString()</MudTd>
+                <MudTd>@context.SpecificId.ToString()</MudTd>
+                <MudTd>@context.Status</MudTd>
+                <MudTd>@context.Feedback</MudTd>
+                <MudTd>@context.Rating</MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudContainer>
+
+
+    @code {
+
+    [Parameter]
+    public Guid specificId { get; set; }
+
+    private IEnumerable<TicketModel> TicketList = new List<TicketModel>();
+    private string searchString = string.Empty;
+
+    private async Task ReloadData()
+    {
+       // var Id = Guid.Parse(specificModel);
+        TicketList = await TicketService.GetUserTickets();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await ReloadData();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+    }
+}
