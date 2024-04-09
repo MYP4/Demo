@@ -11,7 +11,6 @@
 @inject IProfileService ProfileService
 
 @attribute [Authorize]
-@* @layout MainLayout *@
 
 <PageTitle>SpecificEvents</PageTitle>
 
@@ -22,10 +21,7 @@
         {
             <MudItem xs="12" sm="6" md="3">
                 <MudNavLink Href="@($"/specific/{eventItem.Id}")">
-                    <MudCard>
-                        <MudCardMedia>
-                            <MudIcon Icon="Icons.Material.Filled.Door" Size="Size.Large" />
-                        </MudCardMedia>
+                    <MudCard>                       
                         <MudCardContent>
                             <MudText Typo="Typo.h5">@eventItem.Description</MudText>
                                 <MudText Typo="Typo.body2">Ticket Count: @eventItem.TicketCount</MudText>

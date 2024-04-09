@@ -27,8 +27,11 @@
             <MudCard Elevation="2" Outlined="true">
                 <MudCardContent>
                     <MudGrid>
-                        <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
-                            <MudText Typo="Typo.h5" Class="mb-2 text-center">@specificModel.Description</MudText>
+                        <MudItem xs="12" sm="6" md="6" lg="6" xl="6">
+                            <MudImage Src="@($"{Settings.ApiRoot}/{eventModel.Image}")" Height="300" Width="300" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="6" lg="6" xl="6">
+                            <MudText Typo="Typo.h5" Class="mb-2">@specificModel.Description</MudText>
                                 <MudText Typo="Typo.body2" Class="mb-2">Ticket Count: @specificModel.TicketCount</MudText>
                                 <MudText Typo="Typo.body2" Class="mb-2">Price: @specificModel.Price</MudText>
                                 <MudText Typo="Typo.body2" Class="mb-2">Address: @specificModel.Address</MudText>
@@ -36,30 +39,25 @@
                                 <MudText Typo="Typo.body2" Class="mb-2">Day of Week: @specificModel.DayOfWeek?.ToString()</MudText>
                                 <MudText Typo="Typo.body2" Class="mb-2">Time: @specificModel.Time?.ToString("t")</MudText>
                                 @if (isOwner)
-                                {
-                                    <MudText Typo="Typo.body2" Class="mb-2">Private: @specificModel.Private</MudText>
-                                    <MudText Typo="Typo.body2" Class="mb-2">Code: @specificModel.Code</MudText>
-                                }
+                            {
+                                <MudText Typo="Typo.body2" Class="mb-2">Private: @specificModel.Private</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Code: @specificModel.Code</MudText>
+                            }
                             <MudText Typo="Typo.body2" Class="mb-2">Rating: @specificModel.Rating</MudText>
                             </MudItem>
                         </MudGrid>
                     </MudCardContent>
-@*                     <MudCardActions>
+                    @if (isOwner)
+                {
+                    <MudCardActions>
                         <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="EditSpecificModel">Edit</MudButton>
                         <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="DeleteSpecificModel">Delete</MudButton>
-                    </MudCardActions> *@
-                </MudCard>
-            </MudItem>
-        </MudGrid>
-    </MudContainer>
-
-    <MudContainer>
-        <MudGrid>
-            <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
-                <SpecificTickets specificId="specificModel.Id"></SpecificTickets>
-            </MudItem>
-        </MudGrid>
-    </MudContainer>
+                    </MudCardActions>
+                }
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
 
 <MudContainer>
     <MudGrid>
@@ -68,10 +66,18 @@
         </MudItem>
     </MudGrid>
 </MudContainer>
+<MudContainer>
+    <MudGrid>
+        <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
+            <SpecificTickets specificId="specificModel.Id"></SpecificTickets>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
 
 
 @code {
     private SpecificModel specificModel;
+    private EventModel eventModel;
     private bool isOwner = false;
 
     [Parameter]
@@ -82,14 +88,15 @@
     {
         var specificId = Guid.Parse(id);
         specificModel = await specificService.GetSpecific(specificId);
-        IsOwner();
+        eventModel = await eventService.GetEvent(specificModel.EventId);
+        await IsOwner();
     }
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            await ReloadData();            
+            await ReloadData();
         }
         catch (Exception ex)
         {
@@ -97,7 +104,7 @@
         }
     }
 
-    private async void IsOwner()
+    private async Task IsOwner()
     {
         var user = await profileService.Me();
         var eventModel = await eventService.GetEvent(specificModel.EventId);
