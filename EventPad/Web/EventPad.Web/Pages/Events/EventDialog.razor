@@ -67,14 +67,9 @@
 
     private MudForm form = default!;
 
-    MudSelect<Guid> selectOwner = default!;
-    private List<UserModel> Owners { get; set; } = new List<UserModel>();
 
     protected override async Task OnInitializedAsync()
     {
-        var owners = await userService.GetUsers();
-
-        Owners.AddRange(owners);
 
         if (EventId != null)
         {

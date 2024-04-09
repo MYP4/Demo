@@ -12,7 +12,6 @@ namespace EventPad.Api.Controllers.UserProfile;
 [ApiController]
 [ApiVersion("1.0")]
 [ApiExplorerSettings(GroupName = "Product")]
-//[Authorize(policy: AppScopes.Admin)]
 [Route("v{version:apiVersion}/profile")]
 public class ProfileController : ControllerBase
 {

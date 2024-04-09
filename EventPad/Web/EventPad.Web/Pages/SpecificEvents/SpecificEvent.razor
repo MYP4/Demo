@@ -14,6 +14,7 @@
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 @inject IProfileService profileService
+@inject ITicketService ticketService
 
 @attribute [Authorize]
 @layout MainLayout
@@ -27,32 +28,47 @@
                 <MudCardContent>
                     <MudGrid>
                         <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
-                            <MudText Typo="Typo.h5" Class="mb-2">@specificModel.Description</MudText>
-                            <MudText Typo="Typo.body2" Class="mb-2">Ticket Count: @specificModel.TicketCount</MudText>
-                            <MudText Typo="Typo.body2" Class="mb-2">Price: @specificModel.Price</MudText>
-                            <MudText Typo="Typo.body2" Class="mb-2">Address: @specificModel.Address</MudText>
-                            <MudText Typo="Typo.body2" Class="mb-2">Date: @specificModel.Date?.ToString("d")</MudText>
-                            <MudText Typo="Typo.body2" Class="mb-2">Day of Week: @specificModel.DayOfWeek?.ToString()</MudText>
-                            <MudText Typo="Typo.body2" Class="mb-2">Time: @specificModel.Time?.ToString("t")</MudText>
-                            @if (isOwner)
-                            {
-                                <MudText Typo="Typo.body2" Class="mb-2">Private: @specificModel.Private</MudText>
-                                <MudText Typo="Typo.body2" Class="mb-2">Code: @specificModel.Code</MudText>
-                            }
+                            <MudText Typo="Typo.h5" Class="mb-2 text-center">@specificModel.Description</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Ticket Count: @specificModel.TicketCount</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Price: @specificModel.Price</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Address: @specificModel.Address</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Date: @specificModel.Date?.ToString("d")</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Day of Week: @specificModel.DayOfWeek?.ToString()</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Time: @specificModel.Time?.ToString("t")</MudText>
+                                @if (isOwner)
+                                {
+                                    <MudText Typo="Typo.body2" Class="mb-2">Private: @specificModel.Private</MudText>
+                                    <MudText Typo="Typo.body2" Class="mb-2">Code: @specificModel.Code</MudText>
+                                }
                             <MudText Typo="Typo.body2" Class="mb-2">Rating: @specificModel.Rating</MudText>
-                        </MudItem>
-                    </MudGrid>
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="EditSpecificModel">Edit</MudButton>
-                    <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="DeleteSpecificModel">Delete</MudButton>
-                </MudCardActions>
-            </MudCard>
+                            </MudItem>
+                        </MudGrid>
+                    </MudCardContent>
+@*                     <MudCardActions>
+                        <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="EditSpecificModel">Edit</MudButton>
+                        <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="DeleteSpecificModel">Delete</MudButton>
+                    </MudCardActions> *@
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+
+    <MudContainer>
+        <MudGrid>
+            <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
+                <SpecificTickets specificId="specificModel.Id"></SpecificTickets>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+
+<MudContainer>
+    <MudGrid>
+        <MudItem xs="12" sm="12" md="12" lg="12" xl="12" Class="d-flex justify-content-center">
+            <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="BuyTicket">Buy ticket</MudButton>
         </MudItem>
     </MudGrid>
 </MudContainer>
 
-<SpecificTickets specificId="specificModel.Id"></SpecificTickets>
 
 @code {
     private SpecificModel specificModel;
@@ -66,14 +82,14 @@
     {
         var specificId = Guid.Parse(id);
         specificModel = await specificService.GetSpecific(specificId);
+        IsOwner();
     }
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            IsOwner();
-            await ReloadData();
+            await ReloadData();            
         }
         catch (Exception ex)
         {
@@ -90,6 +106,11 @@
         if (user.Id == eventAdmin.Id)
             isOwner = true;
         else isOwner = false;
+    }
+
+    private void BuyTicket()
+    {
+        ticketService.AddTicket(new Tickets.CreateModel() { SpecificId = specificModel.Id });
     }
 
     private void EditSpecificModel()

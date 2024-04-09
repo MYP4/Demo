@@ -39,7 +39,7 @@ public class ProfileService : IProfileService
             UserId = user.Id
         });
 
-        AccountModel result = new AccountModel();
+        AccountModel result = new AccountModel() { Balance = 0, AccountNumber = ""};
         for (var i = 0; i < 10; i++)
         {
             await Task.Delay(1000);
@@ -47,14 +47,12 @@ public class ProfileService : IProfileService
             {
                 result = await redisService.Get<AccountModel>(requestId);
 
-                if (result == null)
-                    continue;
-
-                break;
+                if (result != null)
+                    break;
             }
             catch (Exception ex)
             {
-                
+
             }
         }
 

@@ -36,13 +36,6 @@
                                 <MudText Typo="Typo.body2">Time: @eventItem.Time?.ToString("t")</MudText>
                                 <MudText Typo="Typo.body2">Rating: @eventItem.Rating</MudText>
                         </MudCardContent>
-                        @if (isOwner)
-                        {
-                            <MudCardActions>
-                                <MudButton Color="Color.Primary" OnClick="@(() => EditEvent(eventItem.Id))">Edit</MudButton>
-                                <MudButton Color="Color.Secondary" OnClick="@(() => DeleteEvent(eventItem.Id))">Delete</MudButton>
-                            </MudCardActions>
-                        }
                     </MudCard>
                 </MudNavLink>
             </MudItem>

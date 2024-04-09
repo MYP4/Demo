@@ -20,7 +20,6 @@
         @foreach (var eventItem in EventList)
         {
             <MudItem xs="12" sm="6" md="3">
-                <MudNavLink Href="@($"/event/{eventItem.Id}")">
                 <MudCard>
                     <MudCardMedia>
                         <MudIcon Icon="Icons.Material.Filled.Door" Size="Size.Large" />
@@ -33,11 +32,15 @@
                             <MudText Typo="Typo.body2">Type: @eventItem.Type</MudText>
                             <MudText Typo="Typo.body2">Rating: @eventItem.Rating</MudText>
                         </MudCardContent>
-                </MudCard>
-                </MudNavLink>
-            </MudItem>
+                        <MudCardActions>
+                            <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="() => EditEvent(eventItem.Id)">Edit</MudButton>
+                            <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="() => DeleteEvent(eventItem.Id)">Delete</MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
         }
     </MudGrid>
+    <MudButton Color="Color.Default" Variant="Variant.Text" OnClick="AddEvent" Class="mt-4">Add</MudButton>
 </MudContainer>
 
 

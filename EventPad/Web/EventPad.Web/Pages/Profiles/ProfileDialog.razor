@@ -1,13 +1,11 @@
 ﻿@* 
 @using EventPad.Web.Components
 @using EventPad.Web.Pages.Events
-@using EventPad.Web.Pages.Events.Models
-@using EventPad.Web.Pages.Events.Services
-@using EventPad.Web.Pages.Profiles.Models
-@using EventPad.Web.Pages.Profiles.Services
-@using EventPad.Web.Pages.Users.Services
-@using Microsoft.AspNetCore.Authorization
+@using EventPad.Web.Pages.Profiles
+@using EventPad.Web.Pages.Users
 
+
+@inherits MudComponentBase
 
 @inject IEventService eventService
 @inject IProfileService profileService
@@ -24,7 +22,6 @@
         <MudCard>
             <MudCardContent>
                 <MudText Typo="Typo.h5">@userModel.FirstName @userModel.SecondName</MudText>
-                    <MudTextField @bind-Value="userModel.Role" Label="Role" />
                     <MudTextField @bind-Value="userModel.Rating" Label="Rating" />
                     <MudTextField @bind-Value="userModel.Email" Label="Email" />
                     <MudTextField @bind-Value="userModel.AccountNumber" Label="Account Number" />
@@ -39,11 +36,13 @@
     </MudDialog>
 
 
-@code {
+    @code {
     [Parameter]
     public Guid Id { get; set; }
 
     private UserModel userModel;
+
+    private MudForm form = default!;
 
     protected override async Task OnInitializedAsync()
     {
@@ -52,15 +51,17 @@
 
     private void SaveChanges()
     {
-        // Здесь можно добавить логику для сохранения изменений
-        Console.WriteLine("Changes saved");
-        CloseDialog();
+
     }
 
-    private void CloseDialog()
+    async Task Submit()
     {
-        // Закрытие диалогового окна
-        Dialog.Close(DialogResult.Ok(true));
+        await form.Validate();
+        if (form.IsValid)
+        {
+            MudDialog.Close(DialogResult.Ok(true));
+        }
     }
-}
- *@
+
+    void Cancel() => MudDialog.Cancel();
+} *@

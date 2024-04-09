@@ -1,0 +1,64 @@
+﻿@using EventPad.Web.Pages.Events
+@using EventPad.Web.Pages.Users
+
+
+@inherits MudComponentBase
+
+@inject IUserService userService
+@inject IEventService eventService
+
+@using MudBlazor
+
+<MudDialog>
+    <DialogContent>
+        <MudForm Model="UpdateModel" @ref="form">
+            <MudGrid>
+                <MudItem xs="12" sm="6">
+                    <MudSelect T="TicketStatus" Label="Status" @bind-Value="UpdateModel.Status">
+                        <MudSelectItem Value="TicketStatus.Paid" />
+                        <MudSelectItem Value="TicketStatus.Returned" />
+                        <MudSelectItem Value="TicketStatus.Used" />
+                        <MudSelectItem Value="TicketStatus.Ban" />
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="Feedback" Lines="5" @bind-Value="UpdateModel.Feedback" />
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField Label="Rating" @bind-Value="UpdateModel.Rating" InputType="InputType.Number" Step="0.1" />
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">Submit</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter]
+    public UpdateModel UpdateModel { get; set; } = new();
+
+    private MudForm form = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Initialize your model here if needed
+    }
+
+    async Task Submit()
+    {
+        await form.Validate();
+        if (form.IsValid)
+        {
+            // Handle the submission logic here
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+    }
+
+    void Cancel() => MudDialog.Cancel();
+}

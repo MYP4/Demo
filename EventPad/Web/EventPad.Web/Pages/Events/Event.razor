@@ -36,13 +36,13 @@
                         </MudItem>
                     </MudGrid>
                 </MudCardContent>
-                @if (isOwner)
-                {
+@*                 @if (isOwner)
+                { *@
                     <MudCardActions>
                         <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="EditEvent">Edit Event</MudButton>
                         <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="DeleteEvent">Delete Event</MudButton>
                     </MudCardActions>
-                }
+                @* } *@
             </MudCard>
         </MudItem>
     </MudGrid>
@@ -52,7 +52,7 @@
 
 @code {
     private EventModel eventModel;
-    private bool isOwner = false;
+    private bool isOwner;
 
     [Parameter]
     public string id { get; set; }
@@ -62,13 +62,14 @@
     {
         var eventId = Guid.Parse(id);
         eventModel = await eventService.GetEvent(eventId);
+        IsOwner();
+        StateHasChanged();
     }
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            IsOwner();
             await ReloadData();
         }
         catch (Exception ex)
