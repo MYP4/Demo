@@ -1,21 +1,23 @@
 ﻿using AutoMapper;
 using EventPad.Api.Context;
 using EventPad.Api.Context.Entities;
+using EventPad.Common.Files;
 using FluentValidation;
+
 using Microsoft.EntityFrameworkCore;
+
 
 namespace EventPad.Api.Services.Events;
 
 public class CreateEventModel
 {
     public Guid AdminId { get; set; }
-
     public string Name { get; set; }
     public string? Description { get; set; }
     public float Price { get; set; }
     public string Address { get; set; }
     public EventType Type { get; set; }
-
+    public FileData Image { get; set; }
 }
 
 

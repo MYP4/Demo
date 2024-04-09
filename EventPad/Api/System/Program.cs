@@ -49,6 +49,8 @@ var app = builder.Build();
 
 var Logger = app.Services.GetRequiredService<IAppLogger>();
 
+app.UseStaticFiles();
+
 app.UseAppSwagger();
 
 app.UseAppHealthChecks();

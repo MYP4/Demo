@@ -62,7 +62,7 @@ public class EventController : ControllerBase
 
     [HttpPost("")]
     [Authorize]
-    public async Task<EventResponse> Create(CreateEventRequest request)
+    public async Task<EventResponse> Create([FromForm] CreateEventRequest request)
     {
         var userId = User.GetUserGuid();
 

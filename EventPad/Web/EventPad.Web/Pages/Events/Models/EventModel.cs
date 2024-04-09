@@ -14,4 +14,5 @@ public class EventModel
 
     public Guid AdminId { get; set; }
     public string AdminName { get; set; }
+    public string Image { get; set; }
 }

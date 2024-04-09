@@ -4,6 +4,7 @@ using EventPad.Api.Context.Entities;
 using EventPad.Api.Service.Users;
 using EventPad.Common;
 using EventPad.Services.Actions;
+using EventPad.Settings;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventPad.Api.Services.Events;
@@ -16,13 +17,15 @@ public class EventService : IEventService
     private readonly IModelValidator<CreateEventModel> createModelValidator;
     private readonly IModelValidator<UpdateEventModel> updateModelValidator;
     private readonly IRightsService rightsService;
+    private readonly MainSettings mainSettings;
 
     public EventService(IDbContextFactory<ApiDbContext> dbContextFactory,
         IMapper mapper,
         IAction action,
         IModelValidator<CreateEventModel> createModelValidator,
         IModelValidator<UpdateEventModel> updateModelValidator,
-        IRightsService rightsService)
+        IRightsService rightsService,
+        MainSettings mainSettings)
     {
         this.dbContextFactory = dbContextFactory;
         this.action = action;
@@ -30,6 +33,7 @@ public class EventService : IEventService
         this.createModelValidator = createModelValidator;
         this.updateModelValidator = updateModelValidator;
         this.rightsService = rightsService;
+        this.mainSettings = mainSettings;
     }
 
 
@@ -111,7 +115,10 @@ public class EventService : IEventService
 
         var _event = mapper.Map<Event>(model);
 
+        var fileName = await model.Image.SaveToFile(Path.Combine(mainSettings.RootDir, mainSettings.FileDir));
+
         _event.Uid = Guid.NewGuid();
+        _event.Image = fileName;
 
         await context.Events.AddAsync(_event);
 
