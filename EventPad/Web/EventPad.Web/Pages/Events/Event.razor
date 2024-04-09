@@ -25,24 +25,27 @@
             <MudCard Elevation="2" Outlined="true">
                 <MudCardContent>
                     <MudGrid>
-                        <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
-                            <MudText Typo="Typo.h5" Class="mb-2">@eventModel.Name</MudText>
-                            <MudText Typo="Typo.body2" Class="mb-2">Description: @eventModel.Description</MudText>
-                            <MudText Typo="Typo.body2" Class="mb-2">Price: @eventModel.Price</MudText>
-                            <MudText Typo="Typo.body2" Class="mb-2">Address: @eventModel.Address</MudText>
-                            <MudText Typo="Typo.body2" Class="mb-2">Type: @eventModel.Type</MudText>
-                            <MudText Typo="Typo.body2" Class="mb-2">Rating: @eventModel.Rating</MudText>
-                            <MudText Typo="Typo.body2" Class="mb-2">Admin: @eventModel.AdminName</MudText>
+                        <MudItem xs="12" sm="6" md="6" lg="6" xl="6">
+                            <MudImage Src="@($"{Settings.ApiRoot}/{eventModel.Image}")" Height="300" Width="300" />
                         </MudItem>
-                    </MudGrid>
-                </MudCardContent>
-@*                 @if (isOwner)
-                { *@
+                        <MudItem xs="12" sm="6" md="6" lg="6" xl="6">
+                            <MudText Typo="Typo.h5" Class="mb-2">@eventModel.Name</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Description: @eventModel.Description</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Price: @eventModel.Price</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Address: @eventModel.Address</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Type: @eventModel.Type</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Rating: @eventModel.Rating</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Admin: @eventModel.AdminName</MudText>
+                            </MudItem>
+                        </MudGrid>
+                    </MudCardContent>
+                    @if (isOwner)
+                {
                     <MudCardActions>
                         <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="EditEvent">Edit Event</MudButton>
                         <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="DeleteEvent">Delete Event</MudButton>
                     </MudCardActions>
-                @* } *@
+                }
             </MudCard>
         </MudItem>
     </MudGrid>

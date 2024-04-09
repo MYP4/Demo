@@ -101,3 +101,10 @@ a, .btn-link {
 code {
     color: #c02d76;
 }
+
+.center-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none; /* Убираем подчеркивание ссылки */
+}
