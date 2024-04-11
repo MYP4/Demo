@@ -9,8 +9,6 @@ public class UpdateUserModel
 {
     public string? FirstName { get; set; }
     public string? SecondName { get; set; }
-    public float? Rating { get; set; }
-    public string? Email { get; set; }
     public FileData Image { get; set; }
 }
 
@@ -33,8 +31,5 @@ public class UpdateUserModelValidator : AbstractValidator<UpdateUserModel>
 
         RuleFor(x => x.SecondName)
             .NotEmpty().WithMessage("User second name is required");
-
-        RuleFor(x => x.Email)
-            .EmailAddress().WithMessage("Email is required");
     }
 }

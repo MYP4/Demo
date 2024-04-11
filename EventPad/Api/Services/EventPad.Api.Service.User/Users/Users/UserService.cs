@@ -5,6 +5,7 @@ using EventPad.Api.Context.Entities;
 using EventPad.Common;
 using EventPad.Redis;
 using EventPad.Services.Actions;
+using EventPad.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -20,7 +21,8 @@ public class UserService : IUserService
     private readonly IModelValidator<RegiserUserModel> registerUserModelValidator;
     private readonly IAction action;
     private readonly IRedisService redisService;
-     
+    private readonly MainSettings mainSettings;
+
     public UserService(
         IMapper mapper,
         UserManager<User> userManager,
@@ -28,7 +30,8 @@ public class UserService : IUserService
         IAction action,
         ILogger logger,
         IRightsService rightsService,
-        IRedisService redisService)
+        IRedisService redisService,
+        MainSettings mainSettings)
     {
         this.mapper = mapper;
         this.userManager = userManager;
@@ -37,6 +40,7 @@ public class UserService : IUserService
         this.logger = logger;
         this.rightsService = rightsService;
         this.redisService = redisService;
+        this.mainSettings = mainSettings;
     }
 
     public async Task<bool> IsEmpty()
@@ -84,6 +88,9 @@ public class UserService : IUserService
             PhoneNumberConfirmed = false
         };
 
+        var fileName = await model.Image.SaveToFile(Path.Combine(mainSettings.RootDir, mainSettings.FileDir));
+
+        user.Image = fileName;
 
         var result = await userManager.CreateAsync(user, model.Password);
         if (!result.Succeeded)
@@ -123,6 +130,10 @@ public class UserService : IUserService
             throw new ProcessException($"User {id} not found");
 
         user = mapper.Map(model, user);
+
+        var fileName = await model.Image.SaveToFile(Path.Combine(mainSettings.RootDir, mainSettings.FileDir));
+
+        user.Image = fileName;
 
         var result = await userManager.UpdateAsync(user);
         if (!result.Succeeded)
