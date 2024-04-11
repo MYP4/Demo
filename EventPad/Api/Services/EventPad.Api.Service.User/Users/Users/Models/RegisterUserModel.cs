@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EventPad.Api.Context.Entities;
+using EventPad.Common.Files;
 using FluentValidation;
 
 namespace EventPad.Api.Service.Users;
@@ -10,7 +11,7 @@ public class RegiserUserModel
     public string SecondName { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
-
+    public FileData Image { get; set; }
 }
 
 public class CreateModelProfile : Profile

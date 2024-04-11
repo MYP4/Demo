@@ -11,6 +11,8 @@ public class User : IdentityUser<Guid>
 
     public Guid Account { get; set; }
 
+    public string Image { get; set; }
+
     public virtual ICollection<Event> Events { get; set; }
     public virtual ICollection<Ticket> Tickets { get; set; }
 }

@@ -47,11 +47,10 @@ public class CreateModelActions : IMappingAction<CreateEventModel, Event>
     public void Process(CreateEventModel source, Event dest, ResolutionContext context)
     {
         using var db = dbContextFactory.CreateDbContext();
-        //var account = eventAccountService.Create().GetAwaiter().GetResult();
+
         var admin = db.Users.FirstOrDefault(x => x.Id == source.AdminId);
 
         dest.AdminId = admin.Id;
-        //dest.EventAccount = account;
     }
 }
 

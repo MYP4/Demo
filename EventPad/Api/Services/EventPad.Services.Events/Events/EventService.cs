@@ -3,8 +3,8 @@ using EventPad.Api.Context;
 using EventPad.Api.Context.Entities;
 using EventPad.Api.Service.Users;
 using EventPad.Common;
-using EventPad.Services.Actions;
 using EventPad.Settings;
+using EventPad.Services.Actions;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventPad.Api.Services.Events;
@@ -62,8 +62,6 @@ public class EventService : IEventService
         {
             events = events.Where(e => e.Price >= minPrice);
         }
-
-
         if (type != null)
         {
             events = events.Where(e => e.Type == type);
@@ -145,6 +143,10 @@ public class EventService : IEventService
         }
 
         _event = mapper.Map(model, _event);
+
+        var fileName = await model.Image.SaveToFile(Path.Combine(mainSettings.RootDir, mainSettings.FileDir));
+
+        _event.Image = fileName;
 
         context.Events.Update(_event);
 

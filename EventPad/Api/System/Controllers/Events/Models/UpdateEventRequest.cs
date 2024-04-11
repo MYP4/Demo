@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EventPad.Api.Context.Entities;
 using EventPad.Api.Services.Events;
+using EventPad.Common;
 
 namespace EventPad.Api.Controllers.Events;
 
@@ -11,6 +12,7 @@ public class UpdateEventRequest
     public float? Price { get; set; }
     public string? Address { get; set; }
     public EventType? Type { get; set; }
+    public IFormFile? Image { get; set; }
 }
 
 
@@ -18,7 +20,8 @@ public class EventUpdateProfile : Profile
 {
     public EventUpdateProfile()
     {
-        CreateMap<UpdateEventRequest, UpdateEventModel>();
+        CreateMap<UpdateEventRequest, UpdateEventModel>()
+            .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Image.ToFileData()));
     }
 }
 

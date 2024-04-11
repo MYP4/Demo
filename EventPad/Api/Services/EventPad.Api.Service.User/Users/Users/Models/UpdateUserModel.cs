@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EventPad.Api.Context.Entities;
+using EventPad.Common.Files;
 using FluentValidation;
 
 namespace EventPad.Api.Service.Users;
@@ -10,6 +11,7 @@ public class UpdateUserModel
     public string? SecondName { get; set; }
     public float? Rating { get; set; }
     public string? Email { get; set; }
+    public FileData Image { get; set; }
 }
 
 public class UpdateUserModelProfile : Profile

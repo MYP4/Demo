@@ -2,10 +2,13 @@
 @using EventPad.Web.Pages.Users
 
 
+
 @inherits MudComponentBase
 
 @inject IUserService userService
 @inject IEventService eventService
+
+
 
 <MudDialog>
     <DialogContent>
@@ -45,6 +48,26 @@
                         <MudSelectItem Value="@("Multiple")" />
                     </MudSelect>
                 </MudItem>
+                <MudFileUpload T="IBrowserFile" FilesChanged="HandleFileUploaded">
+                    <ButtonTemplate>
+                        <MudButton HtmlTag="label"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   for="@context.Id">
+                            Avatar
+                        </MudButton>
+                    </ButtonTemplate>
+                    <SelectedTemplate>
+                        @if (context != null)
+                        {
+                            <MudText>@context.Name</MudText>
+                        }
+                        else
+                        {
+                            <MudText>No File</MudText>
+                        }
+                    </SelectedTemplate>
+                </MudFileUpload>
             </MudGrid>
         </MudForm>
     </DialogContent>
@@ -65,7 +88,11 @@
     [Parameter] 
     public EventModel Model { get; set; } = new();
 
+    [Parameter]
+    public IBrowserFile file { get; set; }
+
     private MudForm form = default!;
+
 
 
     protected override async Task OnInitializedAsync()
@@ -87,6 +114,7 @@
         }
     }
 
+
     async Task Submit()
     {
         await form.Validate();
@@ -97,4 +125,10 @@
     }
 
     void Cancel() => MudDialog.Cancel();
+
+
+    private void HandleFileUploaded(IBrowserFile file)
+    {
+        this.file = file;
+    }
 }

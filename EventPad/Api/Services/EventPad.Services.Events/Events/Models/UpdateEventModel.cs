@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EventPad.Api.Context.Entities;
+using EventPad.Common.Files;
 using FluentValidation;
 
 namespace EventPad.Api.Services.Events;
@@ -11,6 +12,7 @@ public class UpdateEventModel
     public float Price { get; set; }
     public string Address { get; set; }
     public EventType Type { get; set; }
+    public FileData Image { get; set; }
 }
 
 

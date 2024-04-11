@@ -68,6 +68,7 @@ public class EventService(HttpClient httpClient) : IEventService
     public async Task EditEvent(Guid eventId, UpdateModel model)
     {
         var requestContent = JsonContent.Create(model);
+
         var response = await httpClient.PutAsync($"v1/event/{eventId}", requestContent);
 
         var content = await response.Content.ReadAsStringAsync();

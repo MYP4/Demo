@@ -78,7 +78,7 @@ public class EventController : ControllerBase
 
     [HttpPut("{id:Guid}")]
     [Authorize]
-    public async Task<EventResponse> Update([FromRoute] Guid id, UpdateEventRequest request)
+    public async Task<EventResponse> Update([FromRoute] Guid id, [FromForm] UpdateEventRequest request)
     {
         var userId = User.GetUserGuid();
 
