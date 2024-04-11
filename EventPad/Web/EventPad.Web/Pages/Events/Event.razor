@@ -1,5 +1,6 @@
 ﻿@page "/event/{id}"
 
+@using EventPad.Web.Common.Files
 @using EventPad.Web.Components
 @using EventPad.Web.Pages.Events
 @using EventPad.Web.Pages.Profiles
@@ -8,9 +9,9 @@
 @using Microsoft.AspNetCore.Authorization
 
 
-@inject IUserService userService;
-@inject IProfileService profileService;
-@inject IEventService eventService
+@inject IUserService UserService;
+@inject IProfileService ProfileService;
+@inject IEventService EventService
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 
@@ -42,8 +43,8 @@
                     @if (isOwner)
                 {
                     <MudCardActions>
-                        <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="EditEvent">Edit Event</MudButton>
-                        <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="DeleteEvent">Delete Event</MudButton>
+                        <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="() => EditEvent(eventModel.Id)">Edit</MudButton>
+                        <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="() => DeleteEvent(eventModel.Id)">Delete</MudButton>
                     </MudCardActions>
                 }
             </MudCard>
@@ -64,7 +65,7 @@
     private async Task ReloadData()
     {
         var eventId = Guid.Parse(id);
-        eventModel = await eventService.GetEvent(eventId);
+        eventModel = await EventService.GetEvent(eventId);
         IsOwner();
         StateHasChanged();
     }
@@ -83,21 +84,67 @@
 
     private async void IsOwner()
     {
-        var user = await profileService.Me();
-        var eventAdmin = await userService.GetUser(eventModel.AdminId);
+        var user = await ProfileService.Me();
+        var eventAdmin = await UserService.GetUser(eventModel.AdminId);
 
         if (user.Id == eventAdmin.Id)
             isOwner = true;
         else isOwner = false;
     }
 
-    private void EditEvent()
+    private async void EditEvent(Guid eventId)
     {
-        // Implementation for editing the event
+        var parameters = new DialogParameters();
+        parameters.Add("EventId", eventId);
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true };
+        var dialog = DialogService.Show<EventDialog>("Edit Event", parameters, options);
+        var result = await dialog.Result;
+
+        if (result.Canceled)
+            return;
+
+        var file = ((EventDialog)dialog.Dialog).file;
+        var buffer = new byte[file.Size];
+
+        await file.OpenReadStream(int.MaxValue).ReadAsync(buffer);
+        var content = Convert.ToBase64String(buffer);
+
+        var model = ((EventDialog)dialog.Dialog).Model;
+        var updateModel = new UpdateModel()
+            {
+                Name = model.Name,
+                Description = model.Description,
+                Price = model.Price,
+                Address = model.Address,
+                Type = model.Type,
+                Image = new FilePayload()
+                {
+                    FileName = file.Name,
+                    Content = content
+                }
+            };
+
+        await EventService.EditEvent(eventId, updateModel);
+        await ReloadData();
     }
 
-    private void DeleteEvent()
+    private async void DeleteEvent(Guid eventId)
     {
-        // Implementation for deleting the event
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Do you really want to delete this Event? This process cannot be undone.");
+        parameters.Add("ButtonText", "Delete");
+        parameters.Add("Color", Color.Error);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = await DialogService.ShowAsync<ConfirmationDialog>("Delete Event", parameters, options);
+        var result = await dialog.Result;
+
+        if (result.Canceled)
+            return;
+
+        await EventService.DeleteEvent(eventId);
+        await ReloadData();
     }
 }

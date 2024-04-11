@@ -1,6 +1,5 @@
 ﻿using Asp.Versioning;
 using AutoMapper;
-using EventPad.Api.Configuration;
 using EventPad.Api.Controllers.Users;
 using EventPad.Api.Service.Users;
 using EventPad.Common.Extensions;
@@ -51,7 +50,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("")]
-    public async Task<UserResponse> Create(RegisterUserRequest request)
+    public async Task<UserResponse> Create([FromBody] RegisterUserRequest request)
     {
         var result = await UserService.Create(mapper.Map<RegiserUserModel>(request));
 
@@ -61,7 +60,7 @@ public class UserController : ControllerBase
 
     [HttpPut("{id:Guid}")]
     [Authorize]
-    public async Task<UserResponse> Update([FromRoute] Guid id, UpdateUserRequest request)
+    public async Task<UserResponse> Update([FromRoute] Guid id, [FromBody] UpdateUserRequest request)
     {
         var userId = User.GetUserGuid();
 

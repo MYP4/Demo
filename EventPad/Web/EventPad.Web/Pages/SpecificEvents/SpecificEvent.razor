@@ -117,7 +117,14 @@
 
     private void BuyTicket()
     {
-        ticketService.AddTicket(new Tickets.CreateModel() { SpecificId = specificModel.Id });
+        try
+        {
+            ticketService.AddTicket(new Tickets.CreateModel() { SpecificId = specificModel.Id });
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
     }
 
     private void EditSpecificModel()

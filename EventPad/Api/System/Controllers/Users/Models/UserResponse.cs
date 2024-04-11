@@ -12,6 +12,7 @@ public class UserResponse
     public UserRole Role { get; set; }
     public float Rating { get; set; }
     public string Email { get; set; }
+    public string Image { get; set; }
 }
 
 

@@ -1,5 +1,5 @@
 ﻿using EventPad.Api.Context.Entities;
-using Microsoft.AspNetCore.Components.Forms;
+using EventPad.Web.Common.Files;
 
 namespace EventPad.Web.Pages.Events;
 
@@ -10,7 +10,7 @@ public class CreateModel
     public float Price { get; set; }
     public string Address { get; set; }
     public EventType Type { get; set; }
-    public IBrowserFile Image { get; set; }
+    public FilePayload Image { get; set; }
 
     public Guid AdminId { get; set; }
 }

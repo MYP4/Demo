@@ -13,4 +13,6 @@ public class ProfileModel
 
     public string AccountNumber { get; set; }
     public float Balance { get; set; }
+
+    public string Image {  get; set; }
 }

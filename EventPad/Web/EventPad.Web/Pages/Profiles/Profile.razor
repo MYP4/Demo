@@ -1,14 +1,17 @@
 ﻿@page "/profile"
 
+@using EventPad.Web.Common.Files
 @using EventPad.Web.Components
 @using EventPad.Web.Pages.Events
 @using EventPad.Web.Pages.Profiles
 @using EventPad.Web.Pages.Tickets
+@using EventPad.Web.Pages.Users
 @using Microsoft.AspNetCore.Authorization
 
 
-@inject IEventService eventService
-@inject IProfileService profileService
+@inject IEventService EventService
+@inject IProfileService ProfileService
+@inject IUserService UserService
 @inject IEventService EventService
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
@@ -25,7 +28,7 @@
                 <MudCardContent>
                     <MudGrid>
                         <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
-                            <MudAvatar Src="path_to_your_avatar_image" Size="Size.Large" />
+                            <MudAvatar Src="@($"{Settings.ApiRoot}/{profileModel.Image}")" Size="Size.Large" />
                         </MudItem>
                         <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
                             <MudText Typo="Typo.h5" Class="mb-2">@profileModel.FirstName @profileModel.SecondName</MudText>
@@ -49,12 +52,14 @@
 
 
 
-@code {
+    @code {
     private ProfileModel profileModel;
+    private Guid profileId;
 
     private async Task ReloadData()
     {
-        profileModel = await profileService.Me();
+        profileModel = await ProfileService.Me();
+        profileId = profileModel.Id;
     }
 
     protected override async Task OnInitializedAsync()
@@ -69,9 +74,38 @@
         }
     }
 
-    private void EditProfile()
+    private async void EditProfile()
     {
+        var parameters = new DialogParameters();
+        parameters.Add("UserId", profileId);
 
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true };
+        var dialog = DialogService.Show<ProfileDialog>("Edit Profile", parameters, options);
+        var result = await dialog.Result;
+
+        if (result.Canceled)
+            return;
+
+        var file = ((EventDialog)dialog.Dialog).file;
+        var buffer = new byte[file.Size];
+
+        await file.OpenReadStream(int.MaxValue).ReadAsync(buffer);
+        var content = Convert.ToBase64String(buffer);
+
+        var model = ((ProfileDialog)dialog.Dialog).Model;
+        var updateModel = new UpdateProfileModel()
+            {
+                FirstName = model.FirstName,
+                SecondName = model.SecondName,
+                Image = new FilePayload()
+                {
+                    FileName = file.Name,
+                    Content = content
+                }
+            };
+
+        await UserService.EditUser(profileId, updateModel);
+        await ReloadData();
     }
 
     private void DeleteProfile()

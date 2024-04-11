@@ -3,7 +3,7 @@
 using EventPad.Common.Files;
 using Microsoft.AspNetCore.Http;
 
-public static class IFormFileExtension
+public static class FormFileExtension
 {
     public static FileData ToFileData(this IFormFile file)
     {

@@ -1,58 +1,93 @@
-﻿@* 
-@using EventPad.Web.Components
-@using EventPad.Web.Pages.Events
-@using EventPad.Web.Pages.Profiles
-@using EventPad.Web.Pages.Users
-
+﻿@inject IProfileService ProfileService
 
 @inherits MudComponentBase
 
-@inject IEventService eventService
-@inject IProfileService profileService
-@inject IEventService EventService
-@inject ISnackbar Snackbar
-@inject IDialogService DialogService
-@inject IUserService UserService
-
-@attribute [Authorize]
-@layout MainLayout
 
 <MudDialog>
     <DialogContent>
-        <MudCard>
-            <MudCardContent>
-                <MudText Typo="Typo.h5">@userModel.FirstName @userModel.SecondName</MudText>
-                    <MudTextField @bind-Value="userModel.Rating" Label="Rating" />
-                    <MudTextField @bind-Value="userModel.Email" Label="Email" />
-                    <MudTextField @bind-Value="userModel.AccountNumber" Label="Account Number" />
-                    <MudTextField @bind-Value="userModel.Balance" Label="Balance" />
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="SaveChanges">Save</MudButton>
-                    <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="CloseDialog">Cancel</MudButton>
-                </MudCardActions>
-            </MudCard>
-        </DialogContent>
-    </MudDialog>
+        <MudForm Model="Model" @ref="form">
+            <MudGrid>
+                <MudItem xs="12" sm="6">
+                    <MudTextField Label="Name" @bind-Value="Model.FirstName"
+                                  For="@(() => Model.FirstName)"
+                                  Required="true"
+                                  RequiredError="FirstName is required!">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField Label="Name" @bind-Value="Model.SecondName"
+                                  For="@(() => Model.SecondName)"
+                                  Required="true"
+                                  RequiredError="SecondName is required!">
+                    </MudTextField>
+                </MudItem>
+                <MudFileUpload T="IBrowserFile" FilesChanged="HandleFileUploaded">
+                    <ButtonTemplate>
+                        <MudButton HtmlTag="label"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   for="@context.Id">
+                            Avatar
+                        </MudButton>
+                    </ButtonTemplate>
+                    <SelectedTemplate>
+                        @if (context != null)
+                        {
+                            <MudText>@context.Name</MudText>
+                        }
+                        else
+                        {
+                            <MudText>No File</MudText>
+                        }
+                    </SelectedTemplate>
+                </MudFileUpload>
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
 
 
-    @code {
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+
     [Parameter]
-    public Guid Id { get; set; }
+    public Guid? EventId { get; set; }
 
-    private UserModel userModel;
+    [Parameter]
+    public ProfileModel Model { get; set; } = new();
+
+    [Parameter]
+    public IBrowserFile file { get; set; }
 
     private MudForm form = default!;
 
+
+
     protected override async Task OnInitializedAsync()
     {
-        userModel = await UserService.GetUser(Id);
+
+        if (EventId != null)
+        {
+            var model = await ProfileService.Me();
+
+            Model.Id = model.Id;
+            Model.FirstName = model.FirstName;
+            Model.SecondName = model.SecondName;
+            Model.AccountNumber = model.AccountNumber;
+            Model.Balance = model.Balance;
+            Model.Rating = model.Rating;
+            Model.Role = model.Role;
+            Model.Email = model.Email;
+            Model.Image = model.Image;
+        }
     }
 
-    private void SaveChanges()
-    {
-
-    }
 
     async Task Submit()
     {
@@ -64,4 +99,11 @@
     }
 
     void Cancel() => MudDialog.Cancel();
-} *@
+
+
+    private void HandleFileUploaded(IBrowserFile file)
+    {
+        this.file = file;
+    }
+}
+

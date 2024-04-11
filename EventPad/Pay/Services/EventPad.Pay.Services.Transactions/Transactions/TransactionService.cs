@@ -5,6 +5,7 @@ using EventPad.Pay.Context.Entities;
 using EventPad.Pay.Services.EventAccounts;
 using EventPad.Pay.Services.UserAccounts;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace EventPad.Pay.Services.Transactions;
 
@@ -95,23 +96,27 @@ public class TransactionService : ITransactionService
 
         if (type == TransactionType.Purchase)
         {
-            //var userAcc = await userAccountService.GetUserAccountById(userAccount.Uid);
-            //if (userAcc.Balance < transaction.Amount)
-            //    throw new ProcessException("Top up your balance. Insufficient funds");
+            try
+            {
+                if (userAccount.Balance <= model.Amount)
+                    throw new Exception();
 
-
-            await userAccountService.Update(userAccount.Uid, new UpdateUserAccountModel() { Amount = -transaction.Amount }, context);
-            await eventAccountService.Update(eventAccount.Uid, new UpdateEventAccountModel() { Amount = transaction.Amount }, context);
+                await userAccountService.Update(userAccount.Uid, new UpdateUserAccountModel() { Amount = -transaction.Amount }, context);
+                await eventAccountService.Update(eventAccount.Uid, new UpdateEventAccountModel() { Amount = transaction.Amount }, context);
+            }
+            catch (Exception ex)
+            {
+                throw new ProcessException("Недостаточно средств");
+            }
         }
         if (type == TransactionType.Refund)
         {
-
             await eventAccountService.Update(eventAccount.Uid, new UpdateEventAccountModel() { Amount = -transaction.Amount }, context);
             await userAccountService.Update(userAccount.Uid, new UpdateUserAccountModel() { Amount = transaction.Amount }, context);
         }
         if (type == TransactionType.Cashout)
         {
-
+            // Здесь сюда можно подключить внешний сервис
         }
 
         await context.SaveChangesAsync();

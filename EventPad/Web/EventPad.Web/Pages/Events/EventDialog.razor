@@ -1,8 +1,6 @@
 ﻿@using EventPad.Web.Pages.Events
 @using EventPad.Web.Pages.Users
 
-
-
 @inherits MudComponentBase
 
 @inject IUserService userService
@@ -21,7 +19,7 @@
                                   RequiredError="Name is required!">
                     </MudTextField>
                 </MudItem>
-                <MudItem xs="12">
+                <MudItem xs="12" sm="6">
                     <MudTextField Label="Description"
                                   Lines="5"
                                   For="@(() => Model.Description)"

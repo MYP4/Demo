@@ -2,6 +2,7 @@
 using EventPad.Api.Context.Entities;
 using EventPad.Api.Services.Events;
 using EventPad.Common;
+using EventPad.Common.Files;
 
 namespace EventPad.Api.Controllers.Events;
 
@@ -12,7 +13,7 @@ public class UpdateEventRequest
     public float? Price { get; set; }
     public string? Address { get; set; }
     public EventType? Type { get; set; }
-    public IFormFile? Image { get; set; }
+    public FilePayload Image { get; set; }
 }
 
 

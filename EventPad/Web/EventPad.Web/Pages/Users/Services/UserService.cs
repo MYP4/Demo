@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using EventPad.Web.Pages.Profiles;
+using System.Net.Http.Json;
 
 namespace EventPad.Web.Pages.Users;
 
@@ -16,7 +17,7 @@ public class UserService(HttpClient httpClient) : IUserService
         }
     }
 
-    public async Task EditUser(Guid userId, UpdateModel model)
+    public async Task EditUser(Guid userId, UpdateProfileModel model)
     {
         var requestContent = JsonContent.Create(model);
         var response = await httpClient.PutAsync($"v1/user/{userId}", requestContent);

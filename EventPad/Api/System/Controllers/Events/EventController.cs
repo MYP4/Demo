@@ -62,7 +62,7 @@ public class EventController : ControllerBase
 
     [HttpPost("")]
     [Authorize]
-    public async Task<EventResponse> Create([FromForm] CreateEventRequest request)
+    public async Task<EventResponse> Create([FromBody] CreateEventRequest request)
     {
         var userId = User.GetUserGuid();
 
@@ -78,7 +78,7 @@ public class EventController : ControllerBase
 
     [HttpPut("{id:Guid}")]
     [Authorize]
-    public async Task<EventResponse> Update([FromRoute] Guid id, [FromForm] UpdateEventRequest request)
+    public async Task<EventResponse> Update([FromRoute] Guid id, [FromBody] UpdateEventRequest request)
     {
         var userId = User.GetUserGuid();
 

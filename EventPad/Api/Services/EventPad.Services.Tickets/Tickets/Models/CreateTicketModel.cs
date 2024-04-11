@@ -45,7 +45,7 @@ public class CreateModelActions : IMappingAction<CreateTicketModel, Ticket>
 
         dest.UserId = user.Id;
         dest.SpecificEventId = specific.Id;
-        dest.Status = TicketStatus.Paid;
+        dest.Status = TicketStatus.Check;
     }
 }
 

@@ -114,7 +114,7 @@ public class TicketService : ITicketService
 
         var tickets = context.Tickets.Where(x => x.SpecificEvent.Uid == model.SpecificId);
 
-        if (tickets.Count() >= specific.TicketCount)
+        if (tickets.Where(x => x.Status == TicketStatus.Paid).Count() >= specific.TicketCount)
         {
             throw new ProcessException("Tickets are out");
         }
@@ -174,7 +174,9 @@ public class TicketService : ITicketService
             Amount = ticket.SpecificEvent.Price
         });
 
-        context.Tickets.Remove(ticket);
+        ticket.Status = TicketStatus.Returned;
+
+        context.Tickets.Update(ticket);
 
         await context.SaveChangesAsync();
     }

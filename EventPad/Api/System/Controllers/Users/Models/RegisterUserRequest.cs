@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using EventPad.Api.Context.Entities;
 using EventPad.Api.Service.Users;
+using EventPad.Common.Files;
 
 namespace EventPad.Api.Controllers.Users;
 
