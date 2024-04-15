@@ -3,8 +3,6 @@ using EventPad.Settings;
 
 namespace EventPad.EmailService;
 
-
-
 public class EmailSender : IEmailSender
 {
     private readonly EmailSettings settings;
