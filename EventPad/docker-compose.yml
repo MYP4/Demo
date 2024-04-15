@@ -1,0 +1,46 @@
+version: '3.4'
+
+services:
+
+  eventpad_postgresql:
+    image: postgres:14.1
+    
+  eventpad_rabbitmq:
+    image: rabbitmq:management
+    
+  eventpad_redis:
+    image: redis
+            
+  eventpad_api:
+    image: ${DOCKER_REGISTRY-}eventpadapi
+    build:
+      context: .
+      dockerfile: Api/System/Dockerfile
+    depends_on:
+      - eventpad_postgresql
+      - eventpad_rabbitmq
+      - eventpad_redis
+ 
+  eventpad_pay:
+    image: ${DOCKER_REGISTRY-}eventpadpayms
+    build:
+      context: .
+      dockerfile: Pay/System/Dockerfile
+    depends_on:
+      - eventpad_postgresql
+      - eventpad_rabbitmq
+      - eventpad_api
+      - eventpad_redis
+
+  eventpad_worker:
+    image: ${DOCKER_REGISTRY-}eventpadworker
+    build:
+      context: .
+      dockerfile: Worker\EventPad.Worker/Dockerfile
+    depends_on:
+      - eventpad_postgresql
+      - eventpad_rabbitmq
+      - eventpad_redis
+      - eventpad_api
+      - eventpad_pay
+      
