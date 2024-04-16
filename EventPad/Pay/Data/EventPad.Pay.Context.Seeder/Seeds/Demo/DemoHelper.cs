@@ -1,46 +1,32 @@
-﻿//namespace EventPad.Pay.Context.Seeder;
+﻿using EventPad.Pay.Context.Entities;
+
+namespace EventPad.Pay.Context.Seeder;
 
 
-//public class DemoHelper
-//{
-//    public IEnumerable<Event> GetEvents = new List<Event>
-//    {
-//        new Event()
-//        {
-//            Id = 0,
-//            Uid = Guid.NewGuid(),
-//            Name = "Volleyball",
-//            Description = "1 hour",
-//            Price = 150,
-//            Address = "VSU",
-//            Type = EventType.Multiple,
-//            Admin = new User()
-//                {
-//                    Id = 0,
-//                    FirstName = "Igor",
-//                    SecondName = "Kononov",
-//                    Uid = Guid.NewGuid(),
-
-//                }
-//        },
-//        new Event()
-//        {
-//            Id = 1,
-//            Uid = Guid.NewGuid(),
-//            Name = "Volleyball",
-//            Description = "1 hour",
-//            Price = 100,
-//            Address = "VSU",
-//            Type = EventType.Single,
-
-//            Admin = new User()
-//                {
-//                    Id = 1,
-//                    FirstName = "Olga",
-//                    SecondName = "Shishkina",
-//                    Uid = Guid.NewGuid(),
-
-//                }
-//        }
-//    };
-//}
+public class DemoHelper
+{
+    public IEnumerable<UserAccount> GetUserAccounts = new List<UserAccount>
+    {
+        new UserAccount()
+        {
+            Id = 1,
+            Uid = Guid.Parse("9766f76a-fdb0-4b21-bd03-625710a3f1f9"),
+            AccountNumber = "1234567891012146",
+            Balance = 1000
+        },
+        new UserAccount()
+        {
+            Id = 2,
+            Uid = Guid.Parse("29252196-f44e-49e0-b69f-8a08ec21d27b"),
+            AccountNumber = "4321567891021246",
+            Balance = 2000        
+        },
+        new UserAccount()
+        {
+            Id = 3,
+            Uid = Guid.Parse("43ba55b1-d0e9-44fc-aa7a-55263e8c721d"),
+            AccountNumber = "4321659700021246",
+            Balance = 5000
+        }
+    };
+}

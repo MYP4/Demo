@@ -46,7 +46,12 @@ public static class DbSeeder
         if (await context.Events.AnyAsync())
             return;
 
-        //await context.Events.AddRangeAsync(new DemoHelper().GetEvents);
+        var userManager = scope.ServiceProvider.GetService<UserManager<User>>();
+
+        var demoHelper = new DemoHelper(userManager);
+        var events = await demoHelper.GetEvents();
+
+        await context.Events.AddRangeAsync(events);
 
         await context.SaveChangesAsync();
     }
@@ -67,13 +72,12 @@ public static class DbSeeder
             return;
 
         var adminId = Guid.Parse("5152F065-E458-4869-B4D0-4C11F72DEECA");
-
         var admin = new User()
         {
             Id = adminId,
 
-            FirstName = "Admin",
-            SecondName = "Admin",
+            FirstName = "Иван",
+            SecondName = "Иванов",
             Role = UserRole.Administrator,
             Rating = 0,
             Account = adminId,
@@ -86,7 +90,5 @@ public static class DbSeeder
 
         await userManager.CreateAsync(admin);
         await userManager.AddPasswordAsync(admin, "123456");
-
-
     }
 }

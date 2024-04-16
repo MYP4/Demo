@@ -8,6 +8,7 @@ using EventPad.Pay.Services.EventAccounts;
 using EventPad.Pay.Services.UserAccounts;
 using EventPad.Pay.Services.Transactions;
 using EventPad.Redis;
+using EventPad.Pay.Context.Seeder;
 
 public static class Bootstrapper
 {
@@ -18,6 +19,7 @@ public static class Bootstrapper
             .AddSwaggerSettings()
             .AddLogSettings()
             .AddAppLogger()
+            .AddDbSeeder()
             .AddActions()
             .AddRabbitMq()
             .AddUserAccountService()

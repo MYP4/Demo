@@ -4,6 +4,7 @@ using EventPad.Settings;
 using EventPad.Pay;
 using EventPad.Pay.Configuration;
 using EventPad.Pay.Context;
+using EventPad.Pay.Context.Seeder;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,7 +44,7 @@ app.UseAppMiddlewares();
 
 DbInitializer.Execute(app.Services);
 
-//DbSeeder.Execute(app.Services);
+DbSeeder.Execute(app.Services);
 
 logger.Information("The PayMS API was started");
 
