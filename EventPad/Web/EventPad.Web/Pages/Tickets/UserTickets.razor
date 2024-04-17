@@ -26,6 +26,7 @@
             <MudTh>Status</MudTh>
             <MudTh>Feedback</MudTh>
             <MudTh>Rating</MudTh>
+            <MudTh>Action</MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd>@userNames[context.UserId]</MudTd>
@@ -33,6 +34,9 @@
                 <MudTd>@context.Status</MudTd>
                 <MudTd>@context.Feedback</MudTd>
                 <MudTd>@context.Rating</MudTd>
+                <MudTd>
+                    Action
+                </MudTd>
             </RowTemplate>
             <PagerContent>
                 <MudTablePager />

@@ -43,12 +43,13 @@ public static class DbSeeder
 
         await using var context = DbContext(serviceProvider);
 
-        if (await context.Events.AnyAsync())
-            return;
-
         var userManager = scope.ServiceProvider.GetService<UserManager<User>>();
 
         var demoHelper = new DemoHelper(userManager);
+
+
+
+        //await demoHelper.GenerateUsers();
         var events = await demoHelper.GetEvents();
 
         await context.Events.AddRangeAsync(events);

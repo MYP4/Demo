@@ -12,6 +12,7 @@
 @inject IUserService UserService;
 @inject IProfileService ProfileService;
 @inject IEventService EventService
+@inject ISpecificService SpecificService
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 
@@ -45,6 +46,7 @@
                     <MudCardActions>
                         <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="() => EditEvent(eventModel.Id)">Edit</MudButton>
                         <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="() => DeleteEvent(eventModel.Id)">Delete</MudButton>
+                        <MudButton Color="Color.Info" Variant="Variant.Text" OnClick="CreateSpecificEvent">Create Specific</MudButton>
                     </MudCardActions>
                 }
             </MudCard>
@@ -146,5 +148,42 @@
 
         await EventService.DeleteEvent(eventId);
         await ReloadData();
+    }
+
+
+    private async Task CreateSpecificEvent()
+    {
+        var parameters = new DialogParameters { };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true };
+
+        var dialog = await DialogService.ShowAsync<EventDialog>("Add Specific", parameters, options);
+        var result = await dialog.Result;
+
+        if (result.Canceled)
+            return;
+
+        try
+        {
+            var model = ((SpecificDialog)dialog.Dialog).Model;
+
+            var createModel = new CreateSpecificModel()
+                {
+                    Description = model.Description,
+                    TicketCount = model.TicketCount,
+                    Price = model.Price,
+                    Address = model.Address,
+                    Date = model.Date,
+                    DayOfWeek = model.DayOfWeek,
+                    Time = model.Time,
+                    Private = model.Private,
+                };
+
+            await SpecificService.AddSpecific(createModel);
+            await ReloadData();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
     }
 }

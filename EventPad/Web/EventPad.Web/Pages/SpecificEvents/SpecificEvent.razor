@@ -35,9 +35,9 @@
                                 <MudText Typo="Typo.body2" Class="mb-2">Ticket Count: @specificModel.TicketCount</MudText>
                                 <MudText Typo="Typo.body2" Class="mb-2">Price: @specificModel.Price</MudText>
                                 <MudText Typo="Typo.body2" Class="mb-2">Address: @specificModel.Address</MudText>
-                                <MudText Typo="Typo.body2" Class="mb-2">Date: @specificModel.Date?.ToString("d")</MudText>
-                                <MudText Typo="Typo.body2" Class="mb-2">Day of Week: @specificModel.DayOfWeek?.ToString()</MudText>
-                                <MudText Typo="Typo.body2" Class="mb-2">Time: @specificModel.Time?.ToString("t")</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Date: @specificModel.Date.ToString("d")</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Day of Week: @specificModel.DayOfWeek.ToString()</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Time: @specificModel.Time.ToString("t")</MudText>
                                 @if (isOwner)
                             {
                                 <MudText Typo="Typo.body2" Class="mb-2">Private: @specificModel.Private</MudText>

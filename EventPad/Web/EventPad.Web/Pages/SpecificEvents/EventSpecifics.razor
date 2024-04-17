@@ -27,9 +27,9 @@
                                 <MudText Typo="Typo.body2">Ticket Count: @eventItem.TicketCount</MudText>
                                 <MudText Typo="Typo.body2">Price: @eventItem.Price</MudText>
                                 <MudText Typo="Typo.body2">Address: @eventItem.Address</MudText>
-                                <MudText Typo="Typo.body2">Date: @eventItem.Date?.ToString("d")</MudText>
-                                <MudText Typo="Typo.body2">Day of Week: @eventItem.DayOfWeek?.ToString()</MudText>
-                                <MudText Typo="Typo.body2">Time: @eventItem.Time?.ToString("t")</MudText>
+                                <MudText Typo="Typo.body2">Date: @eventItem.Date.ToString("d")</MudText>
+                                <MudText Typo="Typo.body2">Day of Week: @eventItem.DayOfWeek.ToString()</MudText>
+                                <MudText Typo="Typo.body2">Time: @eventItem.Time.ToString("t")</MudText>
                                 <MudText Typo="Typo.body2">Rating: @eventItem.Rating</MudText>
                         </MudCardContent>
                     </MudCard>
@@ -76,20 +76,5 @@
             return true;
 
         return false;
-    }
-
-    private async Task AddEvent()
-    {
-
-    }
-
-    private async Task EditEvent(Guid eventId)
-    {
-
-    }
-
-    private async Task DeleteEvent(Guid eventId)
-    {
-
     }
 }

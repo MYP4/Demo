@@ -54,7 +54,7 @@ public class SpecificService(HttpClient httpClient) : ISpecificService
         return await response.Content.ReadFromJsonAsync<SpecificModel>() ?? new();
     }
 
-    public async Task AddSpecific(CreateModel model)
+    public async Task AddSpecific(CreateSpecificModel model)
     {
         var requestContent = JsonContent.Create(model);
         var response = await httpClient.PostAsync("v1/specific-event", requestContent);

@@ -6,15 +6,15 @@ using Microsoft.AspNetCore.Identity;
 public class DemoHelper
 {
     private readonly UserManager<User> userManager;
-
+    private List<User> users;
     public DemoHelper(UserManager<User> userManager)
     {
         this.userManager = userManager;
     }
 
-    public async Task<IEnumerable<Event>> GetEvents()
+    public async Task GenerateUsers()
     {
-        var userId1 = Guid.Parse("9766f76a-fdb0-4b21-bd03-625710a3f1f9");
+        var userId1 = Guid.Parse("142c4915-c4b3-4254-b0b2-8f0c34960c6e");
         var user1 = new User()
         {
             Id = userId1,
@@ -23,6 +23,7 @@ public class DemoHelper
             Role = UserRole.Regular,
             Rating = 3,
             Account = userId1,
+            Image = "5c9cd0f4-61e3-430c-9f84-7d264a39167c_avatar.png",
 
             UserName = "Petrov@pad.com",
             EmailConfirmed = true,
@@ -42,6 +43,7 @@ public class DemoHelper
             Role = UserRole.Regular,
             Rating = 3,
             Account = userId2,
+            Image = "5c9cd0f4-61e3-430c-9f84-7d264a39167c_avatar.png",
 
             UserName = "a.olga@pad.com",
             EmailConfirmed = true,
@@ -60,6 +62,7 @@ public class DemoHelper
             Role = UserRole.Regular,
             Rating = 3,
             Account = userId3,
+            Image = "4b951cc9f4ea475d89f7890de34e5dff_AMM.jpg",
 
             UserName = "GusevMaks@pad.com",
             EmailConfirmed = true,
@@ -69,7 +72,12 @@ public class DemoHelper
         await userManager.CreateAsync(user3);
         await userManager.AddPasswordAsync(user3, "MaksGus");
 
+        users = new List<User> { user1, user2, user3 };
+    }
 
+
+    public async Task<IEnumerable<Event>> GetEvents()
+    {
         return new List<Event>
         {
             new Event()
@@ -82,7 +90,7 @@ public class DemoHelper
                 Address = "ВГУ",
                 Type = EventType.Multiple,
                 Image = "40ca53b3914545a1bea0e700a40de577_volleyball.jpg",
-                Admin = user1
+                Admin = users[0]
             },
             new Event()
             {
@@ -94,7 +102,7 @@ public class DemoHelper
                 Address = "ВГУ",
                 Type = EventType.Single,
                 Image = "6d9dd28f491f4d0081a5a5d3da828d18_basketball.jpg",
-                Admin = user2
+                Admin = users[1]
             },
             new Event()
             {
@@ -106,7 +114,7 @@ public class DemoHelper
                 Address = "ВГУ",
                 Type = EventType.Single,
                 Image = "7b5d5f54e04f4f51ae597a8ecd9526d1_football.jpg",
-                Admin = user2
+                Admin = users[2]
             }
         };
     }

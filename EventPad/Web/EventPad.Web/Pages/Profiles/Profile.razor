@@ -108,8 +108,22 @@
         await ReloadData();
     }
 
-    private void DeleteProfile()
+    private async void DeleteProfile()
     {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Do you really want to delete profile? This process cannot be undone.");
+        parameters.Add("ButtonText", "Delete");
+        parameters.Add("Color", Color.Error);
 
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = await DialogService.ShowAsync<ConfirmationDialog>("Delete profile", parameters, options);
+        var result = await dialog.Result;
+
+        if (result.Canceled)
+            return;
+
+        await UserService.DeleteUser(profileId);
+        await ReloadData();
     }
 }

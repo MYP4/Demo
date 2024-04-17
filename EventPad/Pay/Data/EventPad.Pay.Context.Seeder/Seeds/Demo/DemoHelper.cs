@@ -10,7 +10,7 @@ public class DemoHelper
         new UserAccount()
         {
             Id = 1,
-            Uid = Guid.Parse("9766f76a-fdb0-4b21-bd03-625710a3f1f9"),
+            Uid = Guid.Parse("142c4915-c4b3-4254-b0b2-8f0c34960c6e"),
             AccountNumber = "1234567891012146",
             Balance = 1000
         },

@@ -1,66 +1,73 @@
-﻿@* @using EventPad.Web.Pages.Events
+﻿@using EventPad.Web.Pages.Events
 @using EventPad.Web.Pages.Users
+@using EventPad.Web.Pages.SpecificEvents;
 
 
-@inherits MudComponentBase
-
-@inject IUserService userService
-@inject ISpecificService specificService
-
-
-<MudDialog @ref="form" Title="Create Event" MaxWidth="MaxWidth.Large" FullWidth="true">
+<MudDialog>
     <DialogContent>
-        <MudTextField Label="Description" @bind-Value="Model.Description"/>
-        <MudTextField Label="Ticket Count" @bind-Value="Model.TicketCount.ToString()" />
-        <MudTextField Label="Price" @bind-Value="Model.Price.ToString()" />
-        <MudTextField Label="Address" @bind-Value="Model.Address" />
-        <MudDatePicker Label="Date" @bind-Date="Model.Date"/>
-        <MudSelect Label="Day of Week" @bind-Value="Model.DayOfWeek">
-            @foreach (var day in Enum.GetValues(typeof(DayOfWeek)))
-            {
-                <MudSelectItem Value="@day">@day</MudSelectItem>
-            }
-        </MudSelect>
-        <MudTimePicker Label="Time" @bind-Time="Model.Time" />
-        <MudSwitch Label="Private" @bind-Checked="Model.Private" />
+        <MudForm Model="Model" @ref="form">
+            <MudGrid>
+                <MudItem xs="12" sm="6">
+                    <MudTextField Label="Description"
+                                  Lines="5"
+                                  For="@(() => Model.Description)"
+                                  @bind-Value="Model.Description">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField Label="Ticket Count" @bind-Value="Model.TicketCount"
+                                  For="@(() => Model.TicketCount)"
+                                  Required="true"
+                                  RequiredError="Ticket count is required!">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField Label="Price" @bind-Value="Model.Price"
+                                  For="@(() => Model.Price)"
+                                  Required="true"
+                                  RequiredError="Price is required!">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField Label="Address" @bind-Value="Model.Address"
+                                  For="@(() => Model.Address)"
+                                  Required="true"
+                                  RequiredError="Address is required!">
+                    </MudTextField>
+                </MudItem>
+@*                 <MudItem>
+                    <MudDatePicker Label="DateTime" @bind-Date="dateTime" />
+                </MudItem> *@
+                <MudItem>
+                    <MudSelect T="DayOfWeek" Label="Day of Week" AnchorOrigin="Origin.BottomCenter">
+                        @foreach (var day in Enum.GetValues<DayOfWeek>())
+                        {
+                            <MudSelectItem Value="@day" />
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem>
+                    <MudSwitch Label="Private" @bind-Checked="Model.Private" />
+                </MudItem>
+            </MudGrid>
+        </MudForm>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton OnClick="Submit" Color="Color.Primary">Create</MudButton>
+        <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">Ok</MudButton>
     </DialogActions>
 </MudDialog>
 
 @code {
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
-    [Parameter] public Guid? EventId { get; set; }
-    Variant Model = new SpecificModel();
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter]
+    public CreateSpecificModel Model { get; set; } = new();
+
+//    private DateTime dateTime { get; set; }
 
     private MudForm form = default!;
-
-    MudSelect<Guid> selectOwner = default!;
-    private List<UserModel> Owners { get; set; } = new List<UserModel>();
-
-    protected override async Task OnInitializedAsync()
-    {
-        var owners = await userService.GetUsers();
-
-        Owners.AddRange(owners);
-
-        if (EventId != null)
-        {
-            var model = await specificService.GetSpecific(EventId.Value);
-
-            Model.Id = model.Id;
-            Model.Name = model.Name;
-            Model.Description = model.Description;
-            Model.Price = model.Price;
-            Model.Address = model.Address;
-            Model.Type = model.Type;
-            Model.Rating = model.Rating;
-            Model.AdminId = model.AdminId;
-            Model.AdminName = model.AdminName;
-        }
-    }
 
     async Task Submit()
     {
@@ -71,5 +78,11 @@
         }
     }
 
+    // void FillDateTime()
+    // {
+    //     Model.Date = DateOnly.FromDateTime(dateTime);
+    //     Model.Time = TimeOnly.FromDateTime(dateTime);
+    // }
+
     void Cancel() => MudDialog.Cancel();
-} *@
+}
