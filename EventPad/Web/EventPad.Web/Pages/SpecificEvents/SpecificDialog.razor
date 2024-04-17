@@ -35,9 +35,9 @@
                                   RequiredError="Address is required!">
                     </MudTextField>
                 </MudItem>
-@*                 <MudItem>
-                    <MudDatePicker Label="DateTime" @bind-Date="dateTime" />
-                </MudItem> *@
+                <MudItem>
+                    <MudDatePicker Label="DateTime" @bind-Date="date" />
+                </MudItem>
                 <MudItem>
                     <MudSelect T="DayOfWeek" Label="Day of Week" AnchorOrigin="Origin.BottomCenter">
                         @foreach (var day in Enum.GetValues<DayOfWeek>())
@@ -65,7 +65,7 @@
     [Parameter]
     public CreateSpecificModel Model { get; set; } = new();
 
-//    private DateTime dateTime { get; set; }
+    private DateTime? date = DateTime.Today;
 
     private MudForm form = default!;
 
@@ -78,11 +78,11 @@
         }
     }
 
-    // void FillDateTime()
-    // {
-    //     Model.Date = DateOnly.FromDateTime(dateTime);
-    //     Model.Time = TimeOnly.FromDateTime(dateTime);
-    // }
+    void FillDateTime()
+    {
+        // Model.Date = DateOnly.FromDateTime(dateTime);
+        // Model.Time = TimeOnly.FromDateTime(dateTime);
+    }
 
     void Cancel() => MudDialog.Cancel();
 }

@@ -5,8 +5,12 @@ using Microsoft.AspNetCore.Identity;
 
 public class DemoHelper
 {
+    public Guid userId1 = Guid.Parse("142c4915-c4b3-4254-b0b2-8f0c34960c6e");
+    public Guid userId2 = Guid.Parse("29252196-f44e-49e0-b69f-8a08ec21d27b");
+    public Guid userId3 = Guid.Parse("43ba55b1-d0e9-44fc-aa7a-55263e8c721d");
+
     private readonly UserManager<User> userManager;
-    private List<User> users;
+    private List<User> users = new List<User>();
     public DemoHelper(UserManager<User> userManager)
     {
         this.userManager = userManager;
@@ -14,7 +18,6 @@ public class DemoHelper
 
     public async Task GenerateUsers()
     {
-        var userId1 = Guid.Parse("142c4915-c4b3-4254-b0b2-8f0c34960c6e");
         var user1 = new User()
         {
             Id = userId1,
@@ -32,9 +35,9 @@ public class DemoHelper
         };
         await userManager.CreateAsync(user1);
         await userManager.AddPasswordAsync(user1, "qwertyui");
+        users.Add(user1);
 
 
-        var userId2 = Guid.Parse("29252196-f44e-49e0-b69f-8a08ec21d27b");
         var user2 = new User()
         {
             Id = userId2,
@@ -52,8 +55,9 @@ public class DemoHelper
         };
         await userManager.CreateAsync(user2);
         await userManager.AddPasswordAsync(user2, "12345678");
+        users.Add(user2);
 
-        var userId3 = Guid.Parse("43ba55b1-d0e9-44fc-aa7a-55263e8c721d");
+
         var user3 = new User()
         {
             Id = userId3,
@@ -71,14 +75,13 @@ public class DemoHelper
         };
         await userManager.CreateAsync(user3);
         await userManager.AddPasswordAsync(user3, "MaksGus");
-
-        users = new List<User> { user1, user2, user3 };
+        users.Add(user3);
     }
 
 
-    public async Task<IEnumerable<Event>> GetEvents()
+    public async Task GenerateEvents(ApiDbContext context)
     {
-        return new List<Event>
+        var events = new List<Event>
         {
             new Event()
             {
@@ -90,7 +93,7 @@ public class DemoHelper
                 Address = "ВГУ",
                 Type = EventType.Multiple,
                 Image = "40ca53b3914545a1bea0e700a40de577_volleyball.jpg",
-                Admin = users[0]
+                AdminId = users[0].Id
             },
             new Event()
             {
@@ -102,7 +105,7 @@ public class DemoHelper
                 Address = "ВГУ",
                 Type = EventType.Single,
                 Image = "6d9dd28f491f4d0081a5a5d3da828d18_basketball.jpg",
-                Admin = users[1]
+                AdminId = users[1].Id
             },
             new Event()
             {
@@ -114,8 +117,10 @@ public class DemoHelper
                 Address = "ВГУ",
                 Type = EventType.Single,
                 Image = "7b5d5f54e04f4f51ae597a8ecd9526d1_football.jpg",
-                Admin = users[2]
+                AdminId = users[2].Id
             }
         };
+
+        await context.Events.AddRangeAsync(events);
     }
 }

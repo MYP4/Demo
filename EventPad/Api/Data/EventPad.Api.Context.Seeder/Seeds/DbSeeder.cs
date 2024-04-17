@@ -34,25 +34,26 @@ public static class DbSeeder
     private static async Task AddDemoData(IServiceProvider serviceProvider)
     {
         using var scope = ServiceScope(serviceProvider);
-        if (scope == null)
+        if (scope == null) 
             return;
 
         var settings = scope.ServiceProvider.GetService<DbSettings>();
         if (!(settings.Init?.AddDemoData ?? false))
             return;
 
-        await using var context = DbContext(serviceProvider);
 
         var userManager = scope.ServiceProvider.GetService<UserManager<User>>();
-
         var demoHelper = new DemoHelper(userManager);
 
 
+        if ((await userManager.Users.AnyAsync(x => x.Id == demoHelper.userId1)))
+            return;
 
-        //await demoHelper.GenerateUsers();
-        var events = await demoHelper.GetEvents();
+        await using var context = DbContext(serviceProvider);
 
-        await context.Events.AddRangeAsync(events);
+        await demoHelper.GenerateUsers();
+        
+        await demoHelper.GenerateEvents(context);
 
         await context.SaveChangesAsync();
     }
@@ -63,9 +64,9 @@ public static class DbSeeder
         if (scope == null)
             return;
 
-        //var settings = scope.ServiceProvider.GetService<DbSettings>();
-        //if (!(settings.Init?.AddAdministrator ?? false))
-        //    return;
+        var settings = scope.ServiceProvider.GetService<DbSettings>();
+        if (!(settings.Init?.AddAdmin ?? false))
+            return;
 
         var userManager = scope.ServiceProvider.GetService<UserManager<User>>();
 
