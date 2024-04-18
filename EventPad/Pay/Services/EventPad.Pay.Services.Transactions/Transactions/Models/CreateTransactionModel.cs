@@ -44,7 +44,7 @@ public class CreateModelActions : IMappingAction<CreateTransactionModel, Transac
 
     public void Process(CreateTransactionModel source, Transaction dest, ResolutionContext context)
     {
-         using var db = dbContextFactory.CreateDbContext();
+        using var db = dbContextFactory.CreateDbContext();
 
         var eventAccount = db.EventAccounts.FirstOrDefault(x => x.Uid == source.EventAccountId);
         var userAccount = db.UserAccounts.FirstOrDefault(x => x.Uid == source.UserAccountId);

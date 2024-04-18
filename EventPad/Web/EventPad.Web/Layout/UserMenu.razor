@@ -30,7 +30,7 @@
         </MudNavLink>
 
         <MudNavLink Href="/events" Match="NavLinkMatch.Prefix">Events</MudNavLink>
-        <MudNavLink Href="/tickets" Match="NavLinkMatch.Prefix">Tickets</MudNavLink>
+            @* <MudNavLink Href="/" Match="NavLinkMatch.Prefix" @onclick="AddModey">Add Modey</MudNavLink> *@
         <MudNavLink Href="/logout">Logout</MudNavLink>
 
     </MudNavMenu>
@@ -111,6 +111,11 @@ else
     private void NavigateToRegister()
     {
         navigationManager.NavigateTo("/register");
+    }
+
+    private void AddModey()
+    {
+        
     }
 
     void Cancel() => MudDialog.Cancel();

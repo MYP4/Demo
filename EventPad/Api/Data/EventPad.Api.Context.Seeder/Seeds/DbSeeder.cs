@@ -55,6 +55,8 @@ public static class DbSeeder
         
         await demoHelper.GenerateEvents(context);
 
+        await demoHelper.GenerateSpecifics(context);
+
         await context.SaveChangesAsync();
     }
 
@@ -73,7 +75,7 @@ public static class DbSeeder
         if ((await userManager.Users.AnyAsync()))
             return;
 
-        var adminId = Guid.Parse("5152F065-E458-4869-B4D0-4C11F72DEECA");
+        var adminId = Guid.Parse("5152f065-e458-4869-b4d0-4c11f72deeca");
         var admin = new User()
         {
             Id = adminId,
@@ -83,6 +85,7 @@ public static class DbSeeder
             Role = UserRole.Administrator,
             Rating = 0,
             Account = adminId,
+            Email = "Admin@adm.com",
 
             UserName = "Admin@adm.com",  
             EmailConfirmed = true,

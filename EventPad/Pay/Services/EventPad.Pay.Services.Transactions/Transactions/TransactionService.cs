@@ -118,6 +118,10 @@ public class TransactionService : ITransactionService
         {
             // Здесь сюда можно подключить внешний сервис
         }
+        if (type == TransactionType.Add)
+        {
+            await userAccountService.Update(userAccount.Uid, new UpdateUserAccountModel() { Amount = 1000 }, context);
+        }
 
         await context.SaveChangesAsync();
 

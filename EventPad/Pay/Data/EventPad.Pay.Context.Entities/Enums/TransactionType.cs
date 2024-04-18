@@ -4,5 +4,6 @@ public enum TransactionType
 {
     Purchase = 1,
     Refund = 2,
-    Cashout = 3
+    Cashout = 3,
+    Add = 4,
 }

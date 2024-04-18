@@ -90,12 +90,20 @@ public class SpecificEventService : ISpecificEventService
         return result;
     }
 
-    public async Task<IEnumerable<SpecificEventModel>> GetCurrentSpecificEvents(Guid id, int page = 1, int pageSize = 10)
+    public async Task<IEnumerable<SpecificEventModel>> GetCurrentSpecificEvents(Guid userId, Guid id, int page = 1, int pageSize = 10)
     {
         using var context = await dbContextFactory.CreateDbContextAsync();
 
         var events = context.SpecificEvents.AsQueryable().Where(e => e.Event.Uid == id);
+        var _event = context.Events.FirstOrDefault(x => x.Uid == id);
 
+        if (userId != _event.AdminId)
+        {
+            if (!await rightsService.IsAdmin(userId))
+            {
+                events = events.Where(x => x.Private == false);
+            }
+        }
         events = events.Skip((page - 1) * pageSize).Take(pageSize);
 
         var eventList = await events.ToListAsync();
