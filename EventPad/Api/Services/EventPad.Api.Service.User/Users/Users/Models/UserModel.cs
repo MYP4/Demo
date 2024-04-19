@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using EventPad.Api.Context;
 using EventPad.Api.Context.Entities;
-using EventPad.Common.Files;
 using EventPad.Settings;
 using Microsoft.EntityFrameworkCore;
 

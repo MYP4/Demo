@@ -10,16 +10,14 @@
 
 @if (IsAuthenticated)
 {
-    <MudNavMenu Color="Color.Inherit" Icon="@Icons.Material.Filled.Face" AnchorOrigin="Origin.BottomRight">
-        @* <MudNavLink Href="/profile" Match="NavLinkMatch.All">Profile</MudNavLink> *@
-
+     <MudNavMenu Color="Color.Inherit" AnchorOrigin="Origin.BottomRight">
         <MudNavLink Href="/profile">
             <MudCard>
                 <MudCardContent>
                     <MudGrid>
-                        <MudItem xs="12" sm="6" md="4">
-                            <MudAvatar Src="path_to_your_avatar_image" Size="Size.Large" />
-                        </MudItem>
+                        <MudAvatar xs="12" sm="6" md="4" Size="Size.Large">
+                            <MudImage Src="@($"{Settings.ApiRoot}/{profileModel.Image}")" Size="Size.Large"></MudImage>
+                        </MudAvatar>
                         <MudItem xs="12" sm="6" md="8">
                             <MudText Typo="Typo.h6">@profileModel.FirstName @profileModel.SecondName</MudText>
                             <MudText Typo="Typo.body2">Balance: @profileModel.Balance</MudText>
@@ -30,7 +28,7 @@
         </MudNavLink>
 
         <MudNavLink Href="/events" Match="NavLinkMatch.Prefix">Events</MudNavLink>
-            @* <MudNavLink Href="/" Match="NavLinkMatch.Prefix" @onclick="AddModey">Add Modey</MudNavLink> *@
+        <MudNavLink Href="/pay" Match="NavLinkMatch.Prefix">Payment</MudNavLink>
         <MudNavLink Href="/logout">Logout</MudNavLink>
 
     </MudNavMenu>

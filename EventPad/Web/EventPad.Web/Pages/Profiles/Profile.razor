@@ -30,7 +30,7 @@
                         <MudItem xs="12" sm="6" md="6" lg="6" xl="6">
                             <MudImage Src="@($"{Settings.ApiRoot}/{profileModel.Image}")" Height="400" Width="300" ObjectFit="ObjectFit.Cover" />
                         </MudItem>
-                        <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
+                        <MudItem xs="12" sm="6" md="6" lg="6" xl="6">
                             <MudText Typo="Typo.h5" Class="mb-2">@profileModel.FirstName @profileModel.SecondName</MudText>
                             <MudText Typo="Typo.body2" Class="mb-2">Email: @profileModel.Email</MudText>
                             <MudText Typo="Typo.body2" Class="mb-2">Account Number: @profileModel.AccountNumber</MudText>
@@ -52,7 +52,7 @@
 
 
 
-    @code {
+@code {
     private ProfileModel profileModel;
     private Guid profileId;
 

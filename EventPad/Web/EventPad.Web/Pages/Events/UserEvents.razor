@@ -16,32 +16,39 @@
 <PageTitle>Your events</PageTitle>
 
 <MudContainer>
-    <MudText Typo="Typo.h4" Class="ma-8">UserEvents</MudText>
+    <MudText Typo="Typo.h4" Class="ma-8">Your Events</MudText>
     <MudGrid>
-        @foreach (var eventItem in EventList)
+        @if (EventList.Any())
         {
-            <MudItem xs="12" sm="6" md="3">
-                <MudNavLink Href="@($"/event/{eventItem.Id}")" Class="center-link">
-                    <MudCard>
-                        <MudImage Src="@($"{Settings.ApiRoot}/{eventItem.Image}")" Height="400" Width="300" ObjectFit="ObjectFit.Cover" />
-                        <MudCardContent>
-                            <MudText Typo="Typo.h5">@eventItem.Name</MudText>
-                                <MudText Typo="Typo.body2">@eventItem.Description</MudText>
-                                <MudText Typo="Typo.body2">Price: @eventItem.Price</MudText>
-                                <MudText Typo="Typo.body2">Address: @eventItem.Address</MudText>
-                                <MudText Typo="Typo.body2">Type: @eventItem.Type</MudText>
-                                <MudText Typo="Typo.body2">Rating: @eventItem.Rating</MudText>
-                            </MudCardContent>
-                        </MudCard>
-                    </MudNavLink>
-                    <MudCardActions>
-                        <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="() => EditEvent(eventItem.Id)">Edit</MudButton>
-                        <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="() => DeleteEvent(eventItem.Id)">Delete</MudButton>
-                    </MudCardActions>
-                </MudItem>
+            @foreach (var eventItem in EventList)
+            {
+                <MudItem xs="12" sm="6" md="3">
+                    <MudNavLink Href="@($"/event/{eventItem.Id}")" Class="center-link">
+                        <MudCard>
+                            <MudImage Src="@($"{Settings.ApiRoot}/{eventItem.Image}")" Height="400" Width="300" ObjectFit="ObjectFit.Cover" />
+                            <MudCardContent>
+                                <MudText Typo="Typo.h5">@eventItem.Name</MudText>
+                                    <MudText Typo="Typo.body2">@eventItem.Description</MudText>
+                                    <MudText Typo="Typo.body2">Price: @eventItem.Price</MudText>
+                                    <MudText Typo="Typo.body2">Address: @eventItem.Address</MudText>
+                                    <MudText Typo="Typo.body2">Type: @eventItem.Type</MudText>
+                                    <MudText Typo="Typo.body2">Rating: @eventItem.Rating</MudText>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudNavLink>
+                        <MudCardActions>
+                            <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="() => EditEvent(eventItem.Id)">Edit</MudButton>
+                            <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="() => DeleteEvent(eventItem.Id)">Delete</MudButton>
+                        </MudCardActions>
+                    </MudItem>
+            }
+        }
+        else
+        {
+            <MudText Typo="Typo.body1" Class="ma-8">No contain elements</MudText>
         }
     </MudGrid>
-    <MudButton Color="Color.Default" Variant="Variant.Text" OnClick="AddEvent" Class="mt-4">Add</MudButton>
+    <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="AddEvent" Class="mt-4" Size="Size.Large" Icon="Icons.Material.AddCircleOutline" IconColor="Color.Inherit" IconSize="Size.Medium">Create Event</MudButton>
 </MudContainer>
 
 
