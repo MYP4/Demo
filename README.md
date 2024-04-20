@@ -36,7 +36,7 @@
     -	Билеты на мероприятия
     -	Созданные им мероприятия
 
-    ![Image](https://github.com/MYP4/event-pad/blob/main/DataBase.jpg)
+    ![Image](https://github.com/MYP4/EventPad/blob/main/DataBase.jpg)
     
 # 4. Функциональное описание
   - 4.1. Администрирование мероприятия
