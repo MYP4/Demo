@@ -76,7 +76,7 @@
             //Snackbar.Add(ex.Message, Severity.Error);
         }
     }
-    
+
     private async void EditProfile()
     {
         var parameters = new DialogParameters();
@@ -89,22 +89,27 @@
         if (result.Canceled)
             return;
 
-        var file = ((ProfileDialog)dialog.Dialog).file;
-        var buffer = new byte[file.Size];
+        FilePayload image = null;
+        if (((ProfileDialog)dialog.Dialog).file != null)
+        {
+            var file = ((ProfileDialog)dialog.Dialog).file;
+            var buffer = new byte[file.Size];
 
-        await file.OpenReadStream(int.MaxValue).ReadAsync(buffer);
-        var content = Convert.ToBase64String(buffer);
+            await file.OpenReadStream(int.MaxValue).ReadAsync(buffer);
+            var content = Convert.ToBase64String(buffer);
 
+            image = new FilePayload()
+                {
+                    FileName = file.Name,
+                    Content = content
+                };
+        }
         var model = ((ProfileDialog)dialog.Dialog).Model;
         var updateModel = new UpdateProfileModel()
             {
                 FirstName = model.FirstName,
                 SecondName = model.SecondName,
-                Image = new FilePayload()
-                {
-                    FileName = file.Name,
-                    Content = content
-                }
+                Image = image
             };
 
         await UserService.EditUser(profileId, updateModel);

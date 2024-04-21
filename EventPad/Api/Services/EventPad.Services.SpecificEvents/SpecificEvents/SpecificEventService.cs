@@ -96,14 +96,6 @@ public class SpecificEventService : ISpecificEventService
 
     public async Task<IEnumerable<SpecificEventModel>> GetCurrentSpecificEvents(Guid userId, Guid id, int page = 1, int pageSize = 10)
     {
-        var redisKey = $"Event{id}Specifics";
-        var redisData = await redisService.Get<IEnumerable<SpecificEventModel>>(redisKey);
-
-        if (redisData != null)
-        {
-            return redisData;
-        }
-
         using var context = await dbContextFactory.CreateDbContextAsync();
 
         var events = context.SpecificEvents.AsQueryable().Where(e => e.Event.Uid == id);
@@ -116,13 +108,13 @@ public class SpecificEventService : ISpecificEventService
                 events = events.Where(x => x.Private == false);
             }
         }
+
         events = events.Skip((page - 1) * pageSize).Take(pageSize);
 
         var eventList = await events.ToListAsync();
 
         var result = mapper.Map<IEnumerable<SpecificEventModel>>(eventList);
 
-        await redisService.Put(redisKey, result);
 
         return result;
     }

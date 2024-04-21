@@ -129,11 +129,19 @@ public class UserService : IUserService
         if (user == null)
             throw new ProcessException($"User {id} not found");
 
+        var oldImage = user.Image;
         user = mapper.Map(model, user);
 
-        var fileName = await model.Image.SaveToFile(Path.Combine(mainSettings.RootDir, mainSettings.FileDir));
+        if (model.Image != null)
+        {
+            var fileName = await model.Image.SaveToFile(Path.Combine(mainSettings.RootDir, mainSettings.FileDir));
 
-        user.Image = fileName;
+            user.Image = fileName;
+        }
+        else
+        {
+            user.Image = oldImage;
+        }
 
         var result = await userManager.UpdateAsync(user);
         if (!result.Succeeded)

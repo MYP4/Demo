@@ -3,11 +3,9 @@ using EventPad.Api.Context;
 using EventPad.Api.Context.Entities;
 using EventPad.Api.Service.Users;
 using EventPad.Common;
-using EventPad.Settings;
-using EventPad.Services.Actions;
-using Microsoft.EntityFrameworkCore;
 using EventPad.Redis;
-using StackExchange.Redis;
+using EventPad.Settings;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventPad.Api.Services.Events;
 
@@ -20,6 +18,7 @@ public class EventService : IEventService
     private readonly IRightsService rightsService;
     private readonly MainSettings mainSettings;
     private readonly IRedisService redisService;
+
 
     public EventService(IDbContextFactory<ApiDbContext> dbContextFactory,
         IMapper mapper,
@@ -94,6 +93,9 @@ public class EventService : IEventService
     public async Task<IEnumerable<EventModel>> GetUserEvents(Guid id, int page = 1, int pageSize = 10)
     {
         var redisKey = $"User{id}Events";
+
+        //await redisService.Delete(redisKey);
+
         var redisData = await redisService.Get<IEnumerable<EventModel>>(redisKey);
 
         if (redisData != null)
@@ -152,6 +154,10 @@ public class EventService : IEventService
 
     public async Task<EventModel> Update(Guid id, UpdateEventModel model, Guid userId)
     {
+        var redisKey = $"User{id}Events";
+
+        await redisService.Delete(redisKey);
+
         await updateModelValidator.CheckAsync(model);
 
         using var context = await dbContextFactory.CreateDbContextAsync();
@@ -166,12 +172,19 @@ public class EventService : IEventService
             if (_event.Admin.Id != userId)
                 throw new ProcessException($"You don't have access to this feature");
         }
-
+        var oldImage = _event.Image;
         _event = mapper.Map(model, _event);
 
-        var fileName = await model.Image.SaveToFile(Path.Combine(mainSettings.RootDir, mainSettings.FileDir));
+        if (model.Image != null)
+        {
+            var fileName = await model.Image.SaveToFile(Path.Combine(mainSettings.RootDir, mainSettings.FileDir));
 
-        _event.Image = fileName;
+            _event.Image = fileName;
+        }
+        else
+        {
+            _event.Image = oldImage;
+        }
 
         context.Events.Update(_event);
 

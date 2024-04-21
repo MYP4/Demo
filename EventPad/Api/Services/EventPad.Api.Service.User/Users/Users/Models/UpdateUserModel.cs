@@ -9,7 +9,7 @@ public class UpdateUserModel
 {
     public string? FirstName { get; set; }
     public string? SecondName { get; set; }
-    public FileData Image { get; set; }
+    public FileData? Image { get; set; }
 }
 
 public class UpdateUserModelProfile : Profile

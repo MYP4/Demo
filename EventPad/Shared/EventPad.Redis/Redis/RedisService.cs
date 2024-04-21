@@ -5,7 +5,7 @@ using StackExchange.Redis;
 
 public class RedisService : IRedisService
 {
-    private TimeSpan defaultLifetime = TimeSpan.FromMinutes(1);
+    private TimeSpan defaultLifetime = TimeSpan.FromSeconds(10);
 
     private readonly RedisSettings settings;
     private readonly IDatabase cacheDb;
@@ -19,7 +19,7 @@ public class RedisService : IRedisService
         this.settings = settings;
 
         redisUri = this.settings.Uri;
-        defaultLifetime = TimeSpan.FromMinutes(this.settings.CacheLifeTime);
+        defaultLifetime = TimeSpan.FromSeconds(this.settings.CacheLifeTime);
 
         cacheDb = Connection.GetDatabase();
     }

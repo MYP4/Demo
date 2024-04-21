@@ -17,6 +17,7 @@
 
 <MudContainer>
     <MudText Typo="Typo.h4" Class="ma-8">Your Events</MudText>
+    <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="AddEvent" Class="mt-4" Size="Size.Large" Icon="Icons.Material.AddCircleOutline" IconColor="Color.Inherit" IconSize="Size.Medium">Create Event</MudButton>
     <MudGrid>
         @if (EventList.Any())
         {
@@ -48,7 +49,6 @@
             <MudText Typo="Typo.body1" Class="ma-8">No elements</MudText>
         }
     </MudGrid>
-    <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="AddEvent" Class="mt-4" Size="Size.Large" Icon="Icons.Material.AddCircleOutline" IconColor="Color.Inherit" IconSize="Size.Medium">Create Event</MudButton>
 </MudContainer>
 
 
@@ -109,19 +109,19 @@
             var content = Convert.ToBase64String(buffer);
 
             var createModel = new CreateModel()
+            {
+                Name = model.Name,
+                Description = model.Description,
+                Price = model.Price,
+                Address = model.Address,
+                Type = model.Type,
+                AdminId = model.AdminId,
+                Image = new FilePayload() 
                 {
-                    Name = model.Name,
-                    Description = model.Description,
-                    Price = model.Price,
-                    Address = model.Address,
-                    Type = model.Type,
-                    AdminId = model.AdminId,
-                    Image = new FilePayload() 
-                    {
-                        FileName = file.Name,
-                        Content = content
-                    }
-                };
+                    FileName = file.Name,
+                    Content = content
+                }
+            };
 
             await EventService.AddEvent(createModel);
             await ReloadData();
@@ -144,11 +144,22 @@
         if (result.Canceled)
             return;
 
-        var file = ((EventDialog)dialog.Dialog).file;
-        var buffer = new byte[file.Size];
+        FilePayload image = null;
 
-        await file.OpenReadStream(int.MaxValue).ReadAsync(buffer);
-        var content = Convert.ToBase64String(buffer);
+        if (((EventDialog)dialog.Dialog).file != null)
+        {
+            var file = ((EventDialog)dialog.Dialog).file;
+            var buffer = new byte[file.Size];
+
+            await file.OpenReadStream(int.MaxValue).ReadAsync(buffer);
+            var content = Convert.ToBase64String(buffer);
+
+            image = new FilePayload()
+            {
+                FileName = file.Name,
+                Content = content
+            };
+        }
 
         var model = ((EventDialog)dialog.Dialog).Model;
         var updateModel = new UpdateModel()
@@ -158,11 +169,7 @@
                 Price = model.Price,
                 Address = model.Address,
                 Type = model.Type,
-                Image = new FilePayload()
-                {
-                    FileName = file.Name,
-                    Content = content
-                }
+                Image = image
             };
 
         await EventService.EditEvent(eventId, updateModel);

@@ -13,7 +13,7 @@ public class UpdateEventRequest
     public float? Price { get; set; }
     public string? Address { get; set; }
     public EventType? Type { get; set; }
-    public FilePayload Image { get; set; }
+    public FilePayload? Image { get; set; }
 }
 
 
