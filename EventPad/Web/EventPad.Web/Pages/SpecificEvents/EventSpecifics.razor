@@ -15,28 +15,44 @@
 <PageTitle>SpecificEvents</PageTitle>
 
 <MudContainer>
-    <MudText Typo="Typo.h4" Class="ma-8">SpecificEvents</MudText>
-    <MudGrid>
-        @foreach (var eventItem in SpecificList)
-        {
-            <MudItem xs="12" sm="6" md="3">
-                <MudNavLink Href="@($"/specific/{eventItem.Id}")">
-                    <MudCard>                       
-                        <MudCardContent>
-                            <MudText Typo="Typo.h5">@eventItem.Description</MudText>
-                                <MudText Typo="Typo.body2">Ticket Count: @eventItem.TicketCount</MudText>
-                                <MudText Typo="Typo.body2">Price: @eventItem.Price</MudText>
-                                <MudText Typo="Typo.body2">Address: @eventItem.Address</MudText>
-                                <MudText Typo="Typo.body2">Date: @eventItem.Date.ToString("d")</MudText>
-                                <MudText Typo="Typo.body2">Day of Week: @eventItem.DayOfWeek.ToString()</MudText>
-                                <MudText Typo="Typo.body2">Time: @eventItem.Time.ToString("t")</MudText>
-                                <MudText Typo="Typo.body2">Rating: @eventItem.Rating</MudText>
-                        </MudCardContent>
-                    </MudCard>
-                </MudNavLink>
-            </MudItem>
-        }
-    </MudGrid>
+    @if (SpecificList != null)
+    {
+        <MudText Typo="Typo.h4" Class="ma-8">SpecificEvents</MudText>
+        <MudGrid>
+            @foreach (var eventItem in SpecificList)
+            {
+
+
+                Console.WriteLine(eventItem.Id);
+                Console.WriteLine(eventItem.Description);
+                Console.WriteLine(eventItem.TicketCount);
+                Console.WriteLine(eventItem.Price);
+                Console.WriteLine(eventItem.Address);
+                Console.WriteLine(eventItem.Date);
+                Console.WriteLine(eventItem.DayOfWeek);
+                Console.WriteLine(eventItem.Time);
+                Console.WriteLine(eventItem.Rating);
+
+
+                <MudItem xs="12" sm="6" md="3">
+                    <MudNavLink Href="@($"/specific/{eventItem.Id}")">
+                        <MudCard>                       
+                            <MudCardContent>
+                                <MudText Typo="Typo.h5">@eventItem.Description</MudText>
+                                    <MudText Typo="Typo.body2">Ticket Count: @eventItem.TicketCount</MudText>
+                                    <MudText Typo="Typo.body2">Price: @eventItem.Price</MudText>
+                                    <MudText Typo="Typo.body2">Address: @eventItem.Address</MudText>
+                                    <MudText Typo="Typo.body2">Date: @eventItem.Date.ToString("d")</MudText>
+                                    <MudText Typo="Typo.body2">Day of Week: @eventItem.DayOfWeek.ToString()</MudText>
+                                    <MudText Typo="Typo.body2">Time: @eventItem.Time.ToString("t")</MudText>
+                                    <MudText Typo="Typo.body2">Rating: @eventItem.Rating</MudText>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudNavLink>
+                    </MudItem>
+            }
+        </MudGrid>
+    }
 </MudContainer>
 
 @code {
