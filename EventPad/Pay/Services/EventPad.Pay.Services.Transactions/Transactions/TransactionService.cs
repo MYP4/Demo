@@ -89,7 +89,6 @@ public class TransactionService : ITransactionService
         var userAccount = await context.UserAccounts.FirstOrDefaultAsync(x => x.Uid == model.UserAccountId);
         var eventAccount = await context.EventAccounts.FirstOrDefaultAsync(x => x.Uid == model.EventAccountId);
 
-
         var type = transaction.Type;
 
         await context.Transactions.AddAsync(transaction);
@@ -116,7 +115,7 @@ public class TransactionService : ITransactionService
         }
         if (type == TransactionType.Cashout)
         {
-            // Здесь сюда можно подключить внешний сервис
+            // Здесь можно подключить внешний сервис
         }
         if (type == TransactionType.Add)
         {

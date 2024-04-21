@@ -6,6 +6,8 @@ using EventPad.Common;
 using EventPad.Settings;
 using EventPad.Services.Actions;
 using Microsoft.EntityFrameworkCore;
+using EventPad.Redis;
+using StackExchange.Redis;
 
 namespace EventPad.Api.Services.Events;
 
@@ -13,32 +15,43 @@ public class EventService : IEventService
 {
     private readonly IDbContextFactory<ApiDbContext> dbContextFactory;
     private readonly IMapper mapper;
-    private readonly IAction action;
     private readonly IModelValidator<CreateEventModel> createModelValidator;
     private readonly IModelValidator<UpdateEventModel> updateModelValidator;
     private readonly IRightsService rightsService;
     private readonly MainSettings mainSettings;
+    private readonly IRedisService redisService;
 
     public EventService(IDbContextFactory<ApiDbContext> dbContextFactory,
         IMapper mapper,
-        IAction action,
         IModelValidator<CreateEventModel> createModelValidator,
         IModelValidator<UpdateEventModel> updateModelValidator,
         IRightsService rightsService,
-        MainSettings mainSettings)
+        MainSettings mainSettings,
+        IRedisService redisService)
     {
         this.dbContextFactory = dbContextFactory;
-        this.action = action;
         this.mapper = mapper;
         this.createModelValidator = createModelValidator;
         this.updateModelValidator = updateModelValidator;
         this.rightsService = rightsService;
         this.mainSettings = mainSettings;
+        this.redisService = redisService;
     }
 
 
     public async Task<IEnumerable<EventModel>> GetAllEvents(int page = 1, int pageSize = 10, EventModelFilter filter = null)
     {
+        var redisKey = $"AllEvents";
+        var redisData = await redisService.Get<IEnumerable<EventModel>>(redisKey);
+
+        if (filter == null)
+        {
+            if (redisData != null)
+            {
+                return redisData;
+            }
+        }
+
         var name = filter?.Name;
         var minPrice = filter?.MinPrice;
         var maxPrice = filter?.MaxPrice;
@@ -73,11 +86,21 @@ public class EventService : IEventService
 
         var result = mapper.Map<IEnumerable<EventModel>>(eventList);
 
+        await redisService.Put(redisKey, result);
+
         return result;
     }
 
     public async Task<IEnumerable<EventModel>> GetUserEvents(Guid id, int page = 1, int pageSize = 10)
     {
+        var redisKey = $"User{id}Events";
+        var redisData = await redisService.Get<IEnumerable<EventModel>>(redisKey);
+
+        if (redisData != null)
+        {
+            return redisData;
+        }
+
         using var context = await dbContextFactory.CreateDbContextAsync();
 
         var events = context.Events.AsQueryable().Where(e => e.Admin.Id == id);
@@ -87,6 +110,8 @@ public class EventService : IEventService
         var eventList = await events.ToListAsync();
 
         var result = mapper.Map<IEnumerable<EventModel>>(eventList);
+
+        await redisService.Put(redisKey, result);
 
         return result;
     }

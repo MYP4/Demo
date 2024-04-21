@@ -168,6 +168,7 @@ public class DemoHelper
             new SpecificEvent
             {
                 Id = 1,
+                Uid = specificId1,
                 EventId = events[0].Id,
                 Description = "",
                 TicketCount = 14,
@@ -183,6 +184,7 @@ public class DemoHelper
             new SpecificEvent
             {
                 Id = 2,
+                Uid = specificId2,
                 EventId = events[0].Id,
                 Description = "",
                 TicketCount = 21,
@@ -198,6 +200,7 @@ public class DemoHelper
             new SpecificEvent
             {
                 Id = 3,
+                Uid = specificId3,
                 EventId = events[1].Id,
                 Description = "",
                 TicketCount = 15,
@@ -213,6 +216,7 @@ public class DemoHelper
             new SpecificEvent
             {
                 Id = 4,
+                Uid = specificId4,
                 EventId = events[2].Id,
                 Description = "",
                 TicketCount = 14,
@@ -228,6 +232,7 @@ public class DemoHelper
             new SpecificEvent
             {
                 Id = 5,
+                Uid = specificId5,
                 EventId = events[3].Id,
                 Description = "",
                 TicketCount = 12,
@@ -243,6 +248,7 @@ public class DemoHelper
             new SpecificEvent
             {
                 Id = 6,
+                Uid = specificId6,
                 EventId = events[4].Id,
                 Description = "",
                 TicketCount = 14,

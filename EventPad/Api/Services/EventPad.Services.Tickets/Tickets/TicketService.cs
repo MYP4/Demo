@@ -1,9 +1,11 @@
 ﻿
 using AutoMapper;
 using EventPad.Actions;
+using EventPad.Actions.Actions.Models;
 using EventPad.Api.Context;
 using EventPad.Api.Context.Entities;
 using EventPad.Common;
+using EventPad.Redis;
 using EventPad.Services.Actions;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,18 +18,21 @@ public class TicketService : ITicketService
     private readonly IModelValidator<CreateTicketModel> createModelValidator;
     private readonly IModelValidator<UpdateTicketModel> updateModelValidator;
     private readonly IAction action;
+    private readonly IRedisService redisService;
 
     public TicketService(IDbContextFactory<ApiDbContext> dbContextFactory,
         IMapper mapper,
         IModelValidator<CreateTicketModel> createModelValidator,
         IModelValidator<UpdateTicketModel> updateModelValidator,
-        IAction action)
+        IAction action,
+        IRedisService redisService)
     {
         this.dbContextFactory = dbContextFactory;
         this.mapper = mapper;
         this.createModelValidator = createModelValidator;
         this.updateModelValidator = updateModelValidator;
         this.action = action;
+        this.redisService = redisService;
     }
 
     public async Task<IEnumerable<TicketModel>> GetAllTickets(int page = 1, int pageSize = 10, TicketModelFilter filter = null)
@@ -114,12 +119,38 @@ public class TicketService : ITicketService
 
         var tickets = context.Tickets.Where(x => x.SpecificEvent.Uid == model.SpecificId);
 
+
         if (tickets.Where(x => x.Status == TicketStatus.Paid).Count() >= specific.TicketCount)
         {
             throw new ProcessException("Tickets are out");
         }
 
+        var requestId = redisService.KeyGenerate();
+
+        await action.GetUserAccount(new GetUserAccountModel()
+        {
+            RequestId = requestId,
+            UserId = user.Id
+        });
+
+        AccountModel result = new AccountModel() { Balance = 0, AccountNumber = "" };
+        for (var i = 0; i < 10; i++)
+        {
+            await Task.Delay(1000);
+
+            result = await redisService.Get<AccountModel>(requestId);
+
+            if (result != null)
+                break;
+        }
+        
+
         var ticket = mapper.Map<Ticket>(model);
+
+        if (result.Balance < specific.Price)
+        {
+            throw new ProcessException("Top up your balance");
+        }
 
         ticket.Uid = Guid.NewGuid();
 
@@ -132,7 +163,6 @@ public class TicketService : ITicketService
             Ticket = ticket.Uid,
             Amount = ticket.SpecificEvent.Price
         });
-
 
         await context.SaveChangesAsync();
 
@@ -156,7 +186,7 @@ public class TicketService : ITicketService
         return mapper.Map<TicketModel>(ticket);
     }
 
-    // работа с UID
+
     public async Task Delete(Guid id, Guid userId)
     {
         using var context = await dbContextFactory.CreateDbContextAsync();

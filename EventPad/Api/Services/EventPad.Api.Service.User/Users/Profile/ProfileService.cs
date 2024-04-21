@@ -43,17 +43,17 @@ public class ProfileService : IProfileService
         for (var i = 0; i < 10; i++)
         {
             await Task.Delay(1000);
-            try
-            {
+            //try
+            //{
                 result = await redisService.Get<AccountModel>(requestId);
 
                 if (result != null)
                     break;
-            }
-            catch (Exception ex)
-            {
+            //}
+            //catch (Exception ex)
+            //{
 
-            }
+            //}
         }
 
         var model = mapper.Map<UserProfileModel>(user);

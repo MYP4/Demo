@@ -43,9 +43,9 @@ public class CreateModelActions : IMappingAction<CreateTicketModel, Ticket>
         var user = db.Users.FirstOrDefault(x => x.Id == sourse.UserId);
         var specific = db.SpecificEvents.FirstOrDefault(x => x.Uid == sourse.SpecificId);
 
+        dest.Status = TicketStatus.Paid;
         dest.UserId = user.Id;
         dest.SpecificEventId = specific.Id;
-        dest.Status = TicketStatus.Check;
     }
 }
 
