@@ -21,19 +21,6 @@
         <MudGrid>
             @foreach (var eventItem in SpecificList)
             {
-
-
-                Console.WriteLine(eventItem.Id);
-                Console.WriteLine(eventItem.Description);
-                Console.WriteLine(eventItem.TicketCount);
-                Console.WriteLine(eventItem.Price);
-                Console.WriteLine(eventItem.Address);
-                Console.WriteLine(eventItem.Date);
-                Console.WriteLine(eventItem.DayOfWeek);
-                Console.WriteLine(eventItem.Time);
-                Console.WriteLine(eventItem.Rating);
-
-
                 <MudItem xs="12" sm="6" md="3">
                     <MudNavLink Href="@($"/specific/{eventItem.Id}")">
                         <MudCard>                       

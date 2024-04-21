@@ -68,7 +68,7 @@ public class SpecificEventController : ControllerBase
     }
 
 
-    [HttpGet("{code}")]
+    [HttpGet("search/{code}")]
     [Authorize]
     public async Task<IActionResult> GetByCode([FromRoute] string code)
     {

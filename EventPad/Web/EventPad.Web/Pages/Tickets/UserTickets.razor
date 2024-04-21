@@ -19,8 +19,8 @@
 <PageTitle>UserTickets</PageTitle>
 <MudContainer>
     <MudText Typo="Typo.h4" Class="ma-8">Tickets</MudText>
-@*     @if (TicketList.Any())
-    { *@
+    @if (TicketList.Any())
+    { 
         <MudTable Items="@TicketList" Hover="true" Breakpoint="Breakpoint.Sm" Class="custom-table">
             <HeaderContent>
                 <MudTh>User</MudTh>
@@ -33,17 +33,13 @@
                     <MudTd>@eventNames[context.SpecificId]</MudTd>
                     <MudTd>@context.Status</MudTd>
                     <MudTd>@context.Feedback</MudTd>
-                    <MudTd>
-                        Action
-                    </MudTd>
             </RowTemplate>
-
-            </MudTable>
-@*     }
+        </MudTable>
+    }
     else
     {
         <MudText Typo="Typo.body1" Class="ma-8">No contain elements</MudText>
-    } *@
+    } 
 </MudContainer>
 
 

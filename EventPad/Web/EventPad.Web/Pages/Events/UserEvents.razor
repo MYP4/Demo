@@ -29,7 +29,7 @@
                             <MudCardContent>
                                 <MudText Typo="Typo.h5">@eventItem.Name</MudText>
                                     <MudText Typo="Typo.body2">@eventItem.Description</MudText>
-                                    <MudText Typo="Typo.body2">Price: @eventItem.Price</MudText>
+                                    @* <MudText Typo="Typo.body2">Price: @eventItem.Price</MudText> *@
                                     <MudText Typo="Typo.body2">Address: @eventItem.Address</MudText>
                                     <MudText Typo="Typo.body2">Type: @eventItem.Type</MudText>
                                     <MudText Typo="Typo.body2">Rating: @eventItem.Rating</MudText>
@@ -45,7 +45,7 @@
         }
         else
         {
-            <MudText Typo="Typo.body1" Class="ma-8">No contain elements</MudText>
+            <MudText Typo="Typo.body1" Class="ma-8">No elements</MudText>
         }
     </MudGrid>
     <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="AddEvent" Class="mt-4" Size="Size.Large" Icon="Icons.Material.AddCircleOutline" IconColor="Color.Inherit" IconSize="Size.Medium">Create Event</MudButton>

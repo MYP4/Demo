@@ -44,7 +44,7 @@ public class SpecificService(HttpClient httpClient) : ISpecificService
 
     public async Task<SpecificModel> GetSpecificByCode(string code)
     {
-        var response = await httpClient.GetAsync($"v1/specific-event/{code}");
+        var response = await httpClient.GetAsync($"v1/specific-event/search/{code}");
         if (!response.IsSuccessStatusCode)
         {
             var content = await response.Content.ReadAsStringAsync();

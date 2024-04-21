@@ -11,50 +11,45 @@
 @inject IUserService userService;
 @inject IEventService eventService
 @inject ISpecificService specificService
-@inject ISnackbar Snackbar
-@inject IDialogService DialogService
+@inject ISnackbar snackbar
+@inject IDialogService dialogService
 @inject IProfileService profileService
 @inject ITicketService ticketService
+@inject NavigationManager navigationManager
 
 @attribute [Authorize]
 @layout MainLayout
 
 <PageTitle>Event</PageTitle>
-
-<MudContainer>
-    <MudGrid>
-        <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
-            <MudCard Elevation="2" Outlined="true">
-                <MudCardContent>
-                    <MudGrid>
-                        <MudItem xs="12" sm="6" md="6" lg="6" xl="6">
-                            <MudImage Src="@($"{Settings.ApiRoot}/{eventModel.Image}")" Height="400" Width="300" ObjectFit="ObjectFit.Cover" />
-                        </MudItem>
-                        <MudItem xs="12" sm="6" md="6" lg="6" xl="6">
-                            <MudText Typo="Typo.h5" Class="mb-2">@specificModel.Description</MudText>
-                                <MudText Typo="Typo.body2" Class="mb-2">Ticket Count: @specificModel.TicketCount</MudText>
-                                <MudText Typo="Typo.body2" Class="mb-2">Price: @specificModel.Price</MudText>
-                                <MudText Typo="Typo.body2" Class="mb-2">Address: @specificModel.Address</MudText>
-                                <MudText Typo="Typo.body2" Class="mb-2">Date: @specificModel.Date.ToString("d")</MudText>
-                                <MudText Typo="Typo.body2" Class="mb-2">Day of Week: @specificModel.DayOfWeek.ToString()</MudText>
-                                <MudText Typo="Typo.body2" Class="mb-2">Time: @specificModel.Time.ToString("t")</MudText>
-                                @if (isOwner)
-                            {
-                                <MudText Typo="Typo.body2" Class="mb-2">Private: @specificModel.Private</MudText>
-                                <MudText Typo="Typo.body2" Class="mb-2">Code: @specificModel.Code</MudText>
-                            }
-                            <MudText Typo="Typo.body2" Class="mb-2">Rating: @specificModel.Rating</MudText>
+@if (specificModel != null)
+{
+    <MudContainer>
+        <MudGrid>
+            <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
+                <MudCard Elevation="2" Outlined="true">
+                    <MudCardContent>
+                        <MudGrid>
+                            <MudItem xs="12" sm="6" md="6" lg="6" xl="6">
+                                <MudImage Src="@($"{Settings.ApiRoot}/{eventModel.Image}")" Height="400" Width="300" ObjectFit="ObjectFit.Cover" />
                             </MudItem>
-                        </MudGrid>
-                    </MudCardContent>
-                    @if (isOwner)
-                {
-                    <MudCardActions>
-                        <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="EditSpecificModel">Edit</MudButton>
-                        <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="DeleteSpecificModel">Delete</MudButton>
-                    </MudCardActions>
-                }
-            </MudCard>
+                            <MudItem xs="12" sm="6" md="6" lg="6" xl="6">
+                                <MudText Typo="Typo.h5" Class="mb-2">@specificModel.Description</MudText>
+                                    <MudText Typo="Typo.body2" Class="mb-2">Ticket Count: @specificModel.TicketCount</MudText>
+                                    <MudText Typo="Typo.body2" Class="mb-2">Price: @specificModel.Price</MudText>
+                                    <MudText Typo="Typo.body2" Class="mb-2">Address: @specificModel.Address</MudText>
+                                    <MudText Typo="Typo.body2" Class="mb-2">Date: @specificModel.Date.ToString("d")</MudText>
+                                    <MudText Typo="Typo.body2" Class="mb-2">Day of Week: @specificModel.DayOfWeek.ToString()</MudText>
+                                    <MudText Typo="Typo.body2" Class="mb-2">Time: @specificModel.Time.ToString("t")</MudText>
+                                    @if (isOwner)
+                                    {
+                                        <MudText Typo="Typo.body2" Class="mb-2">Private: @specificModel.Private</MudText>
+                                        <MudText Typo="Typo.body2" Class="mb-2">Code: @specificModel.Code</MudText>
+                                    }
+                                <MudText Typo="Typo.body2" Class="mb-2">Rating: @specificModel.Rating</MudText>
+                                </MudItem>
+                            </MudGrid>
+                        </MudCardContent>
+                </MudCard>
         </MudItem>
     </MudGrid>
 </MudContainer>
@@ -69,11 +64,11 @@
 <MudContainer>
     <MudGrid>
         <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
-            <SpecificTickets specificId="specificModel.Id"></SpecificTickets>
+                <SpecificTickets specificId="specificModel.Id"></SpecificTickets>
         </MudItem>
     </MudGrid>
 </MudContainer>
-
+}
 
 @code {
     private SpecificModel specificModel;
@@ -100,7 +95,7 @@
         }
         catch (Exception ex)
         {
-            Snackbar.Add(ex.Message, Severity.Error);
+            snackbar.Add(ex.Message, Severity.Error);
         }
     }
 
@@ -115,25 +110,16 @@
         else isOwner = false;
     }
 
-    private void BuyTicket()
+    private async void BuyTicket()
     {
         try
         {
-            ticketService.AddTicket(new Tickets.CreateModel() { SpecificId = specificModel.Id });
+            await ticketService.AddTicket(new Tickets.CreateModel() { SpecificId = specificModel.Id });
+            navigationManager.NavigateTo(navigationManager.Uri, true);
         }
         catch (Exception ex)
         {
-            Snackbar.Add(ex.Message, Severity.Error);
+            snackbar.Add("Top up your balance", Severity.Error);
         }
-    }
-
-    private void EditSpecificModel()
-    {
-        // Implementation for editing the event
-    }
-
-    private void DeleteSpecificModel()
-    {
-        // Implementation for deleting the event
     }
 }

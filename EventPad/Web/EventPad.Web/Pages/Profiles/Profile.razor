@@ -21,35 +21,37 @@
 
 <PageTitle>Profile</PageTitle>
 
-<MudContainer>
-    <MudGrid>
-        <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
-            <MudCard Elevation="2" Outlined="true">
-                <MudCardContent>
-                    <MudGrid>
-                        <MudItem xs="12" sm="6" md="6" lg="6" xl="6">
-                            <MudImage Src="@($"{Settings.ApiRoot}/{profileModel.Image}")" Height="400" Width="300" ObjectFit="ObjectFit.Cover" />
-                        </MudItem>
-                        <MudItem xs="12" sm="6" md="6" lg="6" xl="6">
-                            <MudText Typo="Typo.h5" Class="mb-2">@profileModel.FirstName @profileModel.SecondName</MudText>
-                            <MudText Typo="Typo.body2" Class="mb-2">Email: @profileModel.Email</MudText>
-                            <MudText Typo="Typo.body2" Class="mb-2">Account Number: @profileModel.AccountNumber</MudText>
-                            <MudText Typo="Typo.body2" Class="mb-2">Balance: @profileModel.Balance</MudText>
-                        </MudItem>
-                    </MudGrid>
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="EditProfile">Edit Profile</MudButton>
-                    <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="DeleteProfile">Delete Profile</MudButton>
-                </MudCardActions>
-            </MudCard>
-        </MudItem>
-    </MudGrid>
-</MudContainer>
+@if (profileModel != null)
+{
+        <MudContainer>
+        <MudGrid>
+            <MudItem xs="12" sm="12" md="12" lg="12" xl="12">
+                <MudCard Elevation="2" Outlined="true">
+                    <MudCardContent>
+                        <MudGrid>
+                            <MudItem xs="12" sm="6" md="6" lg="6" xl="6">
+                                <MudImage Src="@($"{Settings.ApiRoot}/{profileModel.Image}")" Height="400" Width="300" ObjectFit="ObjectFit.Cover" />
+                            </MudItem>
+                            <MudItem xs="12" sm="6" md="6" lg="6" xl="6">
+                                <MudText Typo="Typo.h5" Class="mb-2">@profileModel.FirstName @profileModel.SecondName</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Email: @profileModel.Email</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Account Number: @profileModel.AccountNumber</MudText>
+                                <MudText Typo="Typo.body2" Class="mb-2">Balance: @profileModel.Balance</MudText>
+                            </MudItem>
+                        </MudGrid>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="EditProfile">Edit Profile</MudButton>
+                        <MudButton Color="Color.Secondary" Variant="Variant.Text" OnClick="DeleteProfile">Delete Profile</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
 
-<UserEvents></UserEvents>
-<UserTickets></UserTickets>
-
+    <UserEvents></UserEvents>
+    <UserTickets></UserTickets>
+}
 
 
 @code {
@@ -60,6 +62,7 @@
     {
         profileModel = await ProfileService.Me();
         profileId = profileModel.Id;
+        StateHasChanged();
     }
 
     protected override async Task OnInitializedAsync()
@@ -70,7 +73,7 @@
         }
         catch (Exception ex)
         {
-            Snackbar.Add(ex.Message, Severity.Error);
+            //Snackbar.Add(ex.Message, Severity.Error);
         }
     }
     

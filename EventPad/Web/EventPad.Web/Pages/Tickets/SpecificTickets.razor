@@ -21,7 +21,7 @@
 <PageTitle>SpecificTickets</PageTitle>
 <MudContainer>
     <MudText Typo="Typo.h4" Class="ma-8">Tickets</MudText>
-    <MudTable Items="@TicketList" Hover="true" Breakpoint="Breakpoint.Sm" Class="custom-table">
+    <MudTable Items="@TicketList" Hover="true" Breakpoint="Breakpoint.Sm">
         <HeaderContent>
             <MudTh>User</MudTh>
             <MudTh>Specific</MudTh>
@@ -35,13 +35,10 @@
             <MudTd>@context.Feedback</MudTd>
 
         </RowTemplate>
-        <PagerContent>
-            <MudTablePager />
-        </PagerContent>
     </MudTable>
 </MudContainer>
 
-@code {
+    @code {
     [Parameter]
     public Guid specificId { get; set; }
 
@@ -49,7 +46,7 @@
     private Dictionary<Guid, string> userNames = new Dictionary<Guid, string>();
     private Dictionary<Guid, string> eventNames = new Dictionary<Guid, string>();
 
-    private async Task ReloadData()
+    public async Task ReloadData()
     {
         TicketList = await TicketService.GetSpecificTickets(specificId);
     }
