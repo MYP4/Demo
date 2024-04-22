@@ -38,16 +38,14 @@
 git clone https://github.com/MYP4/EventPad.git
 ```
 
-Заполните appsettings.json в Worker/Systems для отправки email:
+Заполните env.worker в папке проекта для отправки email:
 ```cmd
-  "EmailSender": {
-    "Host": "",
-    "Port": "465",
-    "UseSsl": "true",
-    "Email": "",
-    "SenderName": "",
-    "Password": ""
-  }
+EmailSender__Host=
+EmailSender__Port=465
+EmailSender__UseSsl=true
+EmailSender__Email=
+EmailSender__SenderName=
+EmailSender__Password=
 ```
 
 Зайдите в папку прокта и выполните команды:
@@ -81,12 +79,8 @@ Login: GusevMaks@pad.com
 Password: MaksGus
 ```
 
-
-## Разработка
-
-
 ### Зачем вы разработали этот проект?
-Проект был разработан в рамках курсовой работы для DSR NetSchool и Воронежского государственного университета.
+Проект был разработан в рамках курсовой работы для DSR NetSchool.
 
 ## To do
 - [ ] Написать тесты для сервиса
