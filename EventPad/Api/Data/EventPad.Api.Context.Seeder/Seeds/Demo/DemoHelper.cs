@@ -16,6 +16,8 @@ public class DemoHelper
     public Guid specificId5 = Guid.Parse("70cc5113-2558-4c2d-a38a-fb69e84edaff");
     public Guid specificId6 = Guid.Parse("841ca45e-ac56-4cc2-bb82-c6983263dced");
 
+    private string avatar = "5c9cd0f461e3430c9f847d264a39167c_avatar.png";
+
     private readonly UserManager<User> userManager;
     private List<User> users = new List<User>();
     private List<Event> events = new List<Event>();
@@ -36,7 +38,7 @@ public class DemoHelper
             Role = UserRole.Regular,
             Rating = 3,
             Account = userId1,
-            Image = "5c9cd0f4-61e3-430c-9f84-7d264a39167c_avatar.png",
+            Image = avatar,
             Email = "Petrov@pad.com",
 
             UserName = "Petrov@pad.com",
@@ -57,7 +59,7 @@ public class DemoHelper
             Role = UserRole.Regular,
             Rating = 3,
             Account = userId2,
-            Image = "5c9cd0f4-61e3-430c-9f84-7d264a39167c_avatar.png",
+            Image = avatar,
             Email = "a.olga@pad.com",
 
             UserName = "a.olga@pad.com",
@@ -196,8 +198,7 @@ public class DemoHelper
                 Private = true,
                 Code = "5f2a74a1-0c24-4bf1-8ed4-632deb170aa3".ToUpper().Replace("-", ""),
                 Rating = 4
-            },
-            new SpecificEvent
+            },            new SpecificEvent
             {
                 Id = 3,
                 Uid = specificId3,

@@ -86,7 +86,7 @@ public static class DbSeeder
             Rating = 0,
             Account = adminId,
             Email = "Admin@adm.com",
-            Image = "5c9cd0f4-61e3-430c-9f84-7d264a39167c_avatar.png",
+            Image = "5c9cd0f461e3430c9f847d264a39167c_avatar.png",
 
             UserName = "Admin@adm.com",  
             EmailConfirmed = true,

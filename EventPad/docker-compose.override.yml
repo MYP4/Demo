@@ -38,7 +38,7 @@ services:
       - shared_eventpad_net
     volumes:      
       - .volumes/api/keys:/app/keys 
-      - .volumes/api/wwwroot:/app/wwwroot/Files
+      - .volumes/api/wwwroot/Files:/app/wwwroot/Files
     env_file:
       - env.api
 
