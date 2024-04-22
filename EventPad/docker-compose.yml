@@ -44,3 +44,14 @@ services:
       - eventpad_api
       - eventpad_pay
       
+  eventpad_web:
+    image: ${DOCKER_REGISTRY-}eventpadweb
+    build:
+      context: .
+      dockerfile: Web/EventPad.Web/Dockerfile
+    depends_on:
+      - eventpad_postgresql
+      - eventpad_rabbitmq
+      - eventpad_redis
+      - eventpad_api
+      - eventpad_pay
