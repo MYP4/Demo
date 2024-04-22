@@ -15,6 +15,13 @@
 - [To do](#to-do)
 - [Команда проекта](#команда-проекта)
 
+## Технологии
+- ASP.Net Web.Api
+- Blazor WebAssembly
+- Http(s), Rest
+- Компоненты: Entity Framework (code first), Serilog, Swagger, AutoMapper, FluentValidation, IdentityServer
+- Сторонние сервисы: PostgreSQL, RabbitMQ, Redis, Docker, Docker Compose
+
 ## Архитектура
 - Микро-сервис "EventPad.API"
 - Микро-сервис "PayMS"
@@ -26,15 +33,7 @@
 
 ![Image](https://github.com/MYP4/EventPad/blob/main/DataBase.jpg)
 
-## Технологии
-- ASP.Net Web.Api
-- Blazor WebAssembly
-- Http(s), Rest
-- Компоненты: Entity Framework (code first), Serilog, Swagger, AutoMapper, FluentValidation, IdentityServer
-- Сторонние сервисы: PostgreSQL, RabbitMQ, Redis, Docker, Docker Compose
-
-## Использование
-
+## Начало работы
 Клонируйте репозиторий на свой компьютер:
 ```cmd
 git clone https://github.com/MYP4/EventPad.git
