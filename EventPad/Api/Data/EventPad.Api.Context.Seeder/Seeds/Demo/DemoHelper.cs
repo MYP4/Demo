@@ -1,7 +1,13 @@
 ﻿namespace EventPad.Api.Context.Seeder;
 
+using AutoMapper;
 using EventPad.Api.Context.Entities;
+using EventPad.Api.Services.Events;
+using EventPad.Common.Files;
+using EventPad.Settings;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.Design;
 
 public class DemoHelper
 {
@@ -16,20 +22,30 @@ public class DemoHelper
     public Guid specificId5 = Guid.Parse("70cc5113-2558-4c2d-a38a-fb69e84edaff");
     public Guid specificId6 = Guid.Parse("841ca45e-ac56-4cc2-bb82-c6983263dced");
 
-    private string avatar = "5c9cd0f461e3430c9f847d264a39167c_avatar.png";
-
     private readonly UserManager<User> userManager;
+    private readonly IEventService eventService;
+    private readonly DbSettings dbSettings;
+    private readonly MainSettings mainSettings;
     private List<User> users = new List<User>();
     private List<Event> events = new List<Event>();
     private List<SpecificEvent> specifics = new List<SpecificEvent>();
 
-    public DemoHelper(UserManager<User> userManager)
+    public DemoHelper(UserManager<User> userManager, IEventService eventService, DbSettings dbSettings, MainSettings mainSettings)
     {
         this.userManager = userManager;
+        this.eventService = eventService;
+        this.dbSettings = dbSettings;
+        this.mainSettings = mainSettings;
     }
 
     public async Task GenerateUsers()
     {
+        var avatarName = "avatar.png";
+        var source = Path.Combine(dbSettings.Init.DemoFiles, avatarName);
+        var target = Path.Combine(mainSettings.RootDir, mainSettings.FileDir, avatarName);
+        File.Copy(source, target);
+
+
         var user1 = new User()
         {
             Id = userId1,
@@ -38,7 +54,7 @@ public class DemoHelper
             Role = UserRole.Regular,
             Rating = 3,
             Account = userId1,
-            Image = avatar,
+            Image = Path.Combine(mainSettings.FileDir, avatarName),
             Email = "Petrov@pad.com",
 
             UserName = "Petrov@pad.com",
@@ -59,7 +75,7 @@ public class DemoHelper
             Role = UserRole.Regular,
             Rating = 3,
             Account = userId2,
-            Image = avatar,
+            Image = Path.Combine(mainSettings.FileDir, avatarName),
             Email = "a.olga@pad.com",
 
             UserName = "a.olga@pad.com",
@@ -80,7 +96,7 @@ public class DemoHelper
             Role = UserRole.Regular,
             Rating = 3,
             Account = userId3,
-            Image = "4b951cc9f4ea475d89f7890de34e5dff_AMM.jpg",
+            Image = Path.Combine(mainSettings.FileDir, avatarName),
             Email = "GusevMaks@pad.com",
 
             UserName = "GusevMaks@pad.com",
@@ -95,72 +111,75 @@ public class DemoHelper
 
     public async Task GenerateEvents(ApiDbContext context)
     {
-        var events = new List<Event>
+        var events = new List<CreateEventModel>
         {
-            new Event()
+            new CreateEventModel()
             {
-                Id = 1,
-                Uid = Guid.NewGuid(),
                 Name = "Волейбол",
                 Description = "2 часа",
                 Price = 150,
                 Address = "ВГУ",
                 Type = EventType.Multiple,
-                Image = "40ca53b3914545a1bea0e700a40de577_volleyball.jpg",
+                Image = new FileData() {Name = "volleyball.jpg"},
                 AdminId = users[0].Id
             },
-            new Event()
+            new CreateEventModel()
             {
-                Id = 2,
-                Uid = Guid.NewGuid(),
                 Name = "Баскетбол",
                 Description = "1 час",
                 Price = 100,
                 Address = "ВГАУ",
                 Type = EventType.Single,
-                Image = "6d9dd28f491f4d0081a5a5d3da828d18_basketball.jpg",
+                Image = new FileData() {Name = "basketball.jpg"},
                 AdminId = users[0].Id
             },
-            new Event()
+            new CreateEventModel()
             {
-                Id = 3,
-                Uid = Guid.NewGuid(),
                 Name = "Футбол",
                 Description = "2 часа",
                 Price = 200,
                 Address = "ВГУ",
                 Type = EventType.Single,
-                Image = "7b5d5f54e04f4f51ae597a8ecd9526d1_football.jpg",
+                Image = new FileData() {Name = "football.jpg"},
                 AdminId = users[2].Id
             },
-            new Event()
+            new CreateEventModel()
             {
-                Id = 4,
-                Uid = Guid.NewGuid(),
                 Name = "Футбол",
                 Description = "3 часа",
                 Price = 300,
                 Address = "ВГТУ",
                 Type = EventType.Single,
-                Image = "7b5d5f54e04f4f51ae597a8ecd9526d1_football.jpg",
+                Image = new FileData() {Name = "football.jpg"},
                 AdminId = users[2].Id
             },
-            new Event()
+            new CreateEventModel()
             {
-                Id = 5,
-                Uid = Guid.NewGuid(),
                 Name = "Баскетбол",
                 Description = "2 часа",
                 Price = 200,
                 Address = "ВГАУ",
                 Type = EventType.Single,
-                Image = "6d9dd28f491f4d0081a5a5d3da828d18_basketball.jpg",
+                Image = new FileData() {Name = "basketball.jpg"},
                 AdminId = users[2].Id
             }
         };
 
-        this.events = events;
-        await context.Events.AddRangeAsync(events);
+        foreach (var _event in events)
+        {
+            var source = Path.Combine(dbSettings.Init.DemoFiles, _event.Image.Name);
+
+            var content = File.ReadAllBytes(source);
+
+            _event.Image = new FileData() { Name = _event.Image.Name, Extension = ".jpg", Content = content};
+
+            var model = await eventService.Create(_event);
+
+            var eventEntity = await context.Events.FirstOrDefaultAsync(x => x.Uid == model.Id);
+
+            this.events.Add(eventEntity);
+        }
+        
     }
 
     public async Task GenerateSpecifics(ApiDbContext context)

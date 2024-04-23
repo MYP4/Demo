@@ -11,6 +11,7 @@ public class DbInitSettings
 {
     public bool AddDemoData { get; private set; }
     public bool AddAdmin { get; private set; }
+    public string DemoFiles { get; private set; }
     public UserCredentials Admin { get; private set; }
 }
 

@@ -6,3 +6,4 @@
 **/.dockerignore
 appsettings.Development.json
 rabbitmq
+.docker

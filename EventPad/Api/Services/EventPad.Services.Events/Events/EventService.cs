@@ -92,16 +92,18 @@ public class EventService : IEventService
 
     public async Task<IEnumerable<EventModel>> GetUserEvents(Guid id, int page = 1, int pageSize = 10)
     {
-        var redisKey = $"User{id}Events";
+        //Пример подключения кэша
+
+        //var redisKey = $"User{id}Events";
 
         //await redisService.Delete(redisKey);
 
-        var redisData = await redisService.Get<IEnumerable<EventModel>>(redisKey);
+        //var redisData = await redisService.Get<IEnumerable<EventModel>>(redisKey);
 
-        if (redisData != null)
-        {
-            return redisData;
-        }
+        //if (redisData != null)
+        //{
+        //    return redisData;
+        //}
 
         using var context = await dbContextFactory.CreateDbContextAsync();
 
@@ -113,7 +115,7 @@ public class EventService : IEventService
 
         var result = mapper.Map<IEnumerable<EventModel>>(eventList);
 
-        await redisService.Put(redisKey, result);
+        //await redisService.Put(redisKey, result);
 
         return result;
     }
@@ -154,9 +156,9 @@ public class EventService : IEventService
 
     public async Task<EventModel> Update(Guid id, UpdateEventModel model, Guid userId)
     {
-        var redisKey = $"User{id}Events";
+        //var redisKey = $"User{id}Events";
 
-        await redisService.Delete(redisKey);
+        //await redisService.Delete(redisKey);
 
         await updateModelValidator.CheckAsync(model);
 

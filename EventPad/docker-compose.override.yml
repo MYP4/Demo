@@ -36,6 +36,7 @@ services:
       - "10000:8080"
     networks:
       - shared_eventpad_net
+    restart: on-failure
     volumes:      
       - .docker/api/keys:/app/keys 
       - .docker/api/wwwroot/Files:/app/wwwroot/Files
@@ -47,12 +48,14 @@ services:
       - "10001:8080"
     networks:
       - shared_eventpad_net
+    restart: on-failure
     env_file:
       - env.pay
 
   eventpad_worker:
     networks:
       - shared_eventpad_net
+    restart: on-failure
     ports:
       - "10002:8080"
     env_file:
@@ -61,6 +64,7 @@ services:
   eventpad_web:
     networks:
       - shared_eventpad_net
+    restart: on-failure
     ports:
       - "10003:80"
 

@@ -80,7 +80,6 @@ public class UserService : IUserService
             Role = UserRole.Regular,
             Rating = 0,
 
-
             UserName = model.Email,
             Email = model.Email,
             EmailConfirmed = true,

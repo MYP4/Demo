@@ -2,6 +2,8 @@
 
 using EventPad.Api.Context;
 using EventPad.Api.Context.Entities;
+using EventPad.Api.Services.Events;
+using EventPad.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,9 +43,11 @@ public static class DbSeeder
         if (!(settings.Init?.AddDemoData ?? false))
             return;
 
-
+        var eventService = scope.ServiceProvider.GetService<IEventService>();
+        var mainSettings = scope.ServiceProvider.GetService<MainSettings>();
         var userManager = scope.ServiceProvider.GetService<UserManager<User>>();
-        var demoHelper = new DemoHelper(userManager);
+
+        var demoHelper = new DemoHelper(userManager, eventService, settings, mainSettings);
 
 
         if ((await userManager.Users.AnyAsync(x => x.Id == demoHelper.userId1)))
@@ -75,6 +79,9 @@ public static class DbSeeder
         if ((await userManager.Users.AnyAsync()))
             return;
 
+        var mainSettings = scope.ServiceProvider.GetService<MainSettings>();
+
+        var avatarName = "avatar.png";
         var adminId = Guid.Parse("5152f065-e458-4869-b4d0-4c11f72deeca");
         var admin = new User()
         {
@@ -86,7 +93,7 @@ public static class DbSeeder
             Rating = 0,
             Account = adminId,
             Email = "Admin@adm.com",
-            Image = "5c9cd0f461e3430c9f847d264a39167c_avatar.png",
+            Image = avatarName,
 
             UserName = "Admin@adm.com",  
             EmailConfirmed = true,

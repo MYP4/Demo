@@ -1,7 +1,6 @@
 ﻿namespace EventPad.Pay.Context.Seeder;
 
 using EventPad.Pay.Context.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -70,7 +69,6 @@ public static class DbSeeder
 
         var adminAccount = new UserAccount()
         {
-            Id = 1,
             Uid = adminId,
             AccountNumber = "1234569871012146",
             Balance = 1000
