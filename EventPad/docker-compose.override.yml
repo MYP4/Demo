@@ -11,7 +11,7 @@ services:
     networks:
       - shared_eventpad_net
     volumes:      
-      - .volumes/postgresql/data/:/var/lib/postgresql/data
+      - .docker/postgresql/data/:/var/lib/postgresql/data
 
   eventpad_rabbitmq:
     ports:
@@ -21,7 +21,7 @@ services:
     networks:
       - shared_eventpad_net
     volumes:      
-      - .volumes/rabbitmq:/var/lib/rabbitmq
+      - .docker/rabbitmq:/var/lib/rabbitmq
     
   eventpad_redis:
     ports:
@@ -29,7 +29,7 @@ services:
     networks:
       - shared_eventpad_net
     volumes:      
-      - .volumes/redis/data/:/data
+      - .docker/redis/data/:/data
 
   eventpad_api:
     ports:
@@ -37,8 +37,8 @@ services:
     networks:
       - shared_eventpad_net
     volumes:      
-      - .volumes/api/keys:/app/keys 
-      - .volumes/api/wwwroot/Files:/app/wwwroot/Files
+      - .docker/api/keys:/app/keys 
+      - .docker/api/wwwroot/Files:/app/wwwroot/Files
     env_file:
       - env.api
 
