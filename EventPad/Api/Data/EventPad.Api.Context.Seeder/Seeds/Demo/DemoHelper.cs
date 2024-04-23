@@ -54,7 +54,7 @@ public class DemoHelper
             Role = UserRole.Regular,
             Rating = 3,
             Account = userId1,
-            Image = Path.Combine(mainSettings.FileDir, avatarName),
+            Image = avatarName,
             Email = "Petrov@pad.com",
 
             UserName = "Petrov@pad.com",
@@ -75,7 +75,7 @@ public class DemoHelper
             Role = UserRole.Regular,
             Rating = 3,
             Account = userId2,
-            Image = Path.Combine(mainSettings.FileDir, avatarName),
+            Image = avatarName,
             Email = "a.olga@pad.com",
 
             UserName = "a.olga@pad.com",
@@ -96,7 +96,7 @@ public class DemoHelper
             Role = UserRole.Regular,
             Rating = 3,
             Account = userId3,
-            Image = Path.Combine(mainSettings.FileDir, avatarName),
+            Image = avatarName,
             Email = "GusevMaks@pad.com",
 
             UserName = "GusevMaks@pad.com",

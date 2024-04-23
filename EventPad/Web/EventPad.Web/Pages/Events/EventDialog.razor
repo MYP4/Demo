@@ -8,7 +8,7 @@
 
 
 
-<MudDialog>
+@* <MudDialog>
     <DialogContent>
         <MudForm Model="Model" @ref="form">
             <MudGrid>
@@ -73,8 +73,76 @@
         <MudButton OnClick="Cancel">Cancel</MudButton>
         <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">Ok</MudButton>
     </DialogActions>
-</MudDialog>
+</MudDialog> *@
 
+<MudDialog>
+    <DialogContent>
+        <MudForm Model="Model" @ref="form">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudTextField Label="Name" @bind-Value="Model.Name"
+                                  For="@(() => Model.Name)"
+                                  Required="true"
+                                  RequiredError="Name is required!">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="Description"
+                                  Lines="5"
+                                  For="@(() => Model.Description)"
+                                  @bind-Value="Model.Description">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="Price" @bind-Value="Model.Price"
+                                  For="@(() => Model.Price)"
+                                  Required="true"
+                                  RequiredError="Price is required!">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="Address" @bind-Value="Model.Address"
+                                  For="@(() => Model.Address)"
+                                  Required="true"
+                                  RequiredError="Address is required!">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudSelect T="string" Label="Type" AnchorOrigin="Origin.BottomCenter" Required="true">
+                        <MudSelectItem Value="@("Single")" />
+                        <MudSelectItem Value="@("Multiple")" />
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudFileUpload T="IBrowserFile" FilesChanged="HandleFileUploaded">
+                        <ButtonTemplate>
+                            <MudButton HtmlTag="label"
+                                       Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       for="@context.Id">
+                                Avatar*
+                            </MudButton>
+                        </ButtonTemplate>
+                        <SelectedTemplate>
+                            @if (context != null)
+                            {
+                                <MudText>@context.Name</MudText>
+                            }
+                            else
+                            {
+                                <MudText>No File</MudText>
+                            }
+                        </SelectedTemplate>
+                    </MudFileUpload>
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
 
 @code {
     [CascadingParameter] 

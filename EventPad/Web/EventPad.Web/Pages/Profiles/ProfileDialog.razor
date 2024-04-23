@@ -3,7 +3,7 @@
 @inherits MudComponentBase
 
 
-<MudDialog>
+@* <MudDialog>
     <DialogContent>
         <MudForm Model="Model" @ref="form">
             <MudGrid>
@@ -41,6 +41,55 @@
                         }
                     </SelectedTemplate>
                 </MudFileUpload>
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog> *@
+
+<MudDialog>
+    <DialogContent>
+        <MudForm Model="Model" @ref="form">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudTextField Label="FirstName" @bind-Value="Model.FirstName"
+                                  For="@(() => Model.FirstName)"
+                                  Required="true"
+                                  RequiredError="FirstName is required!">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="SecondName" @bind-Value="Model.SecondName"
+                                  For="@(() => Model.SecondName)"
+                                  Required="true"
+                                  RequiredError="SecondName is required!">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudFileUpload T="IBrowserFile" FilesChanged="HandleFileUploaded">
+                        <ButtonTemplate>
+                            <MudButton HtmlTag="label"
+                                       Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       for="@context.Id">
+                                Avatar
+                            </MudButton>
+                        </ButtonTemplate>
+                        <SelectedTemplate>
+                            @if (context != null)
+                            {
+                                <MudText>@context.Name</MudText>
+                            }
+                            else
+                            {
+                                <MudText>No File</MudText>
+                            }
+                        </SelectedTemplate>
+                    </MudFileUpload>
+                </MudItem>
             </MudGrid>
         </MudForm>
     </DialogContent>
