@@ -11,7 +11,8 @@ public class ProfileService(HttpClient httpClient) : IProfileService
         if (!response.IsSuccessStatusCode)
         {
             var content = await response.Content.ReadAsStringAsync();
-            throw new Exception(content);
+            Console.WriteLine(content);
+            //throw new Exception(content);
         }
 
         return await response.Content.ReadFromJsonAsync<ProfileModel>() ?? new();

@@ -99,10 +99,10 @@
             var content = Convert.ToBase64String(buffer);
 
             image = new FilePayload()
-                {
-                    FileName = file.Name,
-                    Content = content
-                };
+            {
+                FileName = file.Name,
+                Content = content
+            };
         }
         var model = ((ProfileDialog)dialog.Dialog).Model;
         var updateModel = new UpdateProfileModel()

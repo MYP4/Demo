@@ -73,12 +73,15 @@ public class UserService : IUserService
         if (user != null)
             throw new ProcessException($"User account with email {model.Email} already exist.");
 
+        var avatar = "avatar.png";
+
         user = new User()
         {
             FirstName = model.FirstName,
             SecondName = model.SecondName,
             Role = UserRole.Regular,
             Rating = 0,
+            Image = avatar,
 
             UserName = model.Email,
             Email = model.Email,
@@ -86,10 +89,6 @@ public class UserService : IUserService
             PhoneNumber = null,
             PhoneNumberConfirmed = false
         };
-
-        var fileName = await model.Image.SaveToFile(Path.Combine(mainSettings.RootDir, mainSettings.FileDir));
-
-        user.Image = fileName;
 
         var result = await userManager.CreateAsync(user, model.Password);
         if (!result.Succeeded)

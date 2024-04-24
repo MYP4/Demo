@@ -43,7 +43,7 @@ public class DemoHelper
         var avatarName = "avatar.png";
         var source = Path.Combine(dbSettings.Init.DemoFiles, avatarName);
         var target = Path.Combine(mainSettings.RootDir, mainSettings.FileDir, avatarName);
-        File.Copy(source, target);
+        File.Copy(source, target, true);
 
 
         var user1 = new User()

@@ -3,7 +3,7 @@
     "Application": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:1000/docs",
+      "launchUrl": "http://localhost:10000/docs",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

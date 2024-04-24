@@ -40,6 +40,7 @@ services:
     volumes:      
       - .docker/api/keys:/app/keys 
       - .docker/api/wwwroot/Files:/app/wwwroot/Files
+      - .docker/api/logs:/app/logs
     env_file:
       - env.api
 
