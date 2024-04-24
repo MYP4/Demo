@@ -17,6 +17,7 @@ public class RegisterUserProfile : Profile
 {
     public RegisterUserProfile()
     {
-        CreateMap<RegisterUserRequest, RegiserUserModel>();
+        CreateMap<RegisterUserRequest, RegiserUserModel>()
+            .ForMember(dest => dest.Image, opt => opt.Ignore());
     }
 }
