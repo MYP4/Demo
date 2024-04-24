@@ -97,7 +97,7 @@ public class TransactionService : ITransactionService
         {
             try
             {
-                if (userAccount.Balance <= model.Amount)
+                if (userAccount.Balance < model.Amount)
                     throw new Exception();
 
                 await userAccountService.Update(userAccount.Uid, new UpdateUserAccountModel() { Amount = -transaction.Amount }, context);
