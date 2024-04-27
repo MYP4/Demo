@@ -9,6 +9,7 @@
 ## Содержание
 - [Технологии](#технологии)
 - [Архитектура](#архитектура)
+- [База данных](#база-данных)
 - [Начало работы](#начало-работы)
 - [ToDo](#todo)
 - [Команда проекта](#команда-проекта)
@@ -21,14 +22,19 @@
 - Сторонние сервисы: PostgreSQL, RabbitMQ, Redis, Docker, Docker Compose
 
 ## Архитектура
-- Микро-сервис "EventPad.API"
-- Микро-сервис "PayMS"
-- Микро-сервис "Worker"
 - Веб-клиент на Blazor WebAssembly
+- Основной backend "EventPad.API"
+- Микро-сервис для работы с платежами "EventPad.PayMS"
+- Микро-сервис для отправки сообщений "EventPad.Worker"
 - База данных PostgerSQL
 - Взаимодействие между микро-сервисами осуществляется при помощи RabbitMQ и Redis.
 - Для авторизации используется JWT и Duende IdentityServer
 
+
+## База данных
+### База данных "EventPad.API"
+![Image](https://github.com/MYP4/EventPad/blob/main/DataBase.jpg)
+### База данных "EventPad.PayMS"
 ![Image](https://github.com/MYP4/EventPad/blob/main/DataBase.jpg)
 
 ## Начало работы
@@ -55,8 +61,17 @@ docker-compose build
 docker-compose up
 ```
 
-Демонстрационные аккаунты:
+После запуска всех контейнеров откройте в браузере:
+- Веб-клиент:
+```
+http://localhost:10003/
+```
+- API Swagger
+```
+http://localhost:10000/docs
+```
 
+Демонстрационные аккаунты:
 ```cmd
 Administrator:
 Login: Admin@adm.com
@@ -77,11 +92,6 @@ Regular user:
 Login: GusevMaks@pad.com
 Password: MaksGus
 ```
-После запуска всех контейнеров откройте в браузере:
-```
-http://localhost:10003/
-```
-
 
 ## ToDo
 - [ ] Написать тесты для сервиса
