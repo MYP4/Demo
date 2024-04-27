@@ -33,9 +33,9 @@
 
 ## База данных
 ### База данных "EventPad.API"
-![Image](https://github.com/MYP4/EventPad/blob/main/DataBase.jpg)
+![Image](https://github.com/MYP4/EventPad/blob/main/EventPad.Api.jpg)
 ### База данных "EventPad.PayMS"
-![Image](https://github.com/MYP4/EventPad/blob/main/DataBase.jpg)
+![Image](https://github.com/MYP4/EventPad/blob/main/EventPad.PayMS.jpg)
 
 ## Начало работы
 Клонируйте репозиторий на свой компьютер:
