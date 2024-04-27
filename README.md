@@ -77,6 +77,11 @@ Regular user:
 Login: GusevMaks@pad.com
 Password: MaksGus
 ```
+После запуска всех контейнеров откройте в браузере:
+```
+http://localhost:10003/
+```
+
 
 ## ToDo
 - [ ] Написать тесты для сервиса
